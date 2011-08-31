@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="OggReader">
+</Property><Property Name="Projektmappendatei" Value="D:\Programmieren\Ressourcen\OggTagger\OggReader.sln">
+</Property><Property Name="Date" Value="Mittwoch, 25. August 2010">
+</Property><Property Name="Time" Value="21:48:32">
+</Property></Properties><Event ErrorLevel="0" Project="OggReader" Source="OggReader.csproj" Description="Projektdatei erfolgreich gesichert als D:\Programmieren\Ressourcen\OggTagger\Backup\OggReader.csproj">
+</Event><Event ErrorLevel="0" Project="OggReader" Source="OggReader.csproj.user" Description="Die Projektbenutzerdatei wurde erfolgreich als &quot;D:\Programmieren\Ressourcen\OggTagger\Backup\OggReader.csproj.user&quot; gesichert.">
+</Event><Event ErrorLevel="0" Project="OggReader" Source="AssemblyInfo.cs" Description="Datei erfolgreich gesichert als D:\Programmieren\Ressourcen\OggTagger\Backup\AssemblyInfo.cs">
+</Event><Event ErrorLevel="0" Project="OggReader" Source="OggReader.cs" Description="Datei erfolgreich gesichert als D:\Programmieren\Ressourcen\OggTagger\Backup\OggReader.cs">
+</Event><Event ErrorLevel="1" Project="OggReader" Source="OggReader.csproj" Description="Das Projekt ist für .NET Framework 2.0 oder 3.0 konzipiert. Wenn für das Projekt Assemblys verwendet werden, die eine neuere Version von .NET Framework erfordern, kann das Projekt nicht erstellt werden. Die .NET Framework-Version kann durch Klicken auf &quot;Eigenschaften&quot; im Projektmenü und durch anschließendes Auswählen einer neuen Version im Dropdownfeld &quot;.NET Framework&quot; geändert werden. (In Visual Basic befindet sich dieses Feld auf der Registerkarte &quot;Kompilieren&quot;. Klicken Sie auf die Schaltfläche &quot;Erweiterte Compileroptionen...&quot;.)">
+</Event><Event ErrorLevel="0" Project="OggReader" Source="OggReader.csproj" Description="Projekt erfolgreich konvertiert">
+</Event><Event ErrorLevel="3" Project="OggReader" Source="OggReader.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="OggReader" Source="OggReader.csproj" Description="Überprüfung abgeschlossen: Upgrade der Projektdateien nicht erforderlich.">
+</Event></UpgradeLog>

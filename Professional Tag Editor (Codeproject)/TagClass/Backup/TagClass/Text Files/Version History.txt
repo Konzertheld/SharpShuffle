@@ -1,0 +1,21 @@
+	Ver 2.0.0.0:
+Remove		"TagStream.ReadByte()" because FileStream.ReadByte() do as we want
+Improved	"TagStream.HaveID3v2" goto begining of file and then back to current position
+Improved	"TagStream.ReadText()"
+Removed		"Frame.IsAscii()"
+Added		"TagStream.IsAscii()"
+Removed		"Frame.GetStream"
+Added		"Frame.WriteData()"
+Added		"Frame.OnWriting Data" using WritingData instead of GetStream
+Changed		"Frame.Length"
+Added		"Frame.OnGetLength()" this protected function used in inherited classes
+Changed		"TagStream.ReadVersion()"
+		Add Seek line to sure that place of file
+Added		"ID3v2.MakeTempFileName()"
+Added		"ID3v2.GetFilePath()"
+Changed		"ID3v2.Save()"
+		minimized for better understaning and flexibilty
+Added		"ID3v2.DeleteRename()"
+Added		"ID3v2.WriteFrames()"
+Changed		"ID3v2.MakeFileName()"
+		To make name from any type of TextFrame

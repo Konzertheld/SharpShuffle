@@ -1,0 +1,350 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1F089C14-9588-48A3-B2C4-C0433E18F00F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TagInfoControls</RootNamespace>
+    <AssemblyName>TagInfoControls</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\TagInfoControls.XML</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FilterTextBox, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Controls\FilterTextBox 2.0\FilterTextBox\bin\Release\FilterTextBox.dll</HintPath>
+    </Reference>
+    <Reference Include="HexBox, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Controls\HexBox\HexBox\bin\Release\HexBox.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ASF Controls\aExContentText.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ASF Controls\aExContentText.Designer.cs">
+      <DependentUpon>aExContentText.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ASF Controls\aContentBranding.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ASF Controls\aContentBranding.Designer.cs">
+      <DependentUpon>aContentBranding.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ASF Controls\aExContentDescription.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ASF Controls\aExContentDescription.Designer.cs">
+      <DependentUpon>aExContentDescription.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ID3 Controls\CommentAndLyric.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ID3 Controls\CommentAndLyric.Designer.cs">
+      <DependentUpon>CommentAndLyric.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ID3 Controls\Commercial.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ID3 Controls\Commercial.Designer.cs">
+      <DependentUpon>Commercial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ID3 Controls\AttachedFiles.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ID3 Controls\AttachedFiles.Designer.cs">
+      <DependentUpon>AttachedFiles.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ID3 Controls\FileIdentifiers.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ID3 Controls\FileIdentifiers.Designer.cs">
+      <DependentUpon>FileIdentifiers.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ID3 Controls\Lyric.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ID3 Controls\Lyric.Designer.cs">
+      <DependentUpon>Lyric.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ID3 Controls\MusicCDIdentifier.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ID3 Controls\MusicCDIdentifier.Designer.cs">
+      <DependentUpon>MusicCDIdentifier.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ID3 Controls\Ownership.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ID3 Controls\Ownership.Designer.cs">
+      <DependentUpon>Ownership.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ID3 Controls\AttachedPictures.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ID3 Controls\AttachedPictures.Designer.cs">
+      <DependentUpon>AttachedPictures.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ID3 Controls\Popularimeter.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ID3 Controls\Popularimeter.Designer.cs">
+      <DependentUpon>Popularimeter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="ASF Controls\aSimpleText.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ASF Controls\aSimpleText.Designer.cs">
+      <DependentUpon>aSimpleText.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SmallControls\DescriptableBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SmallControls\DescriptableBox.Designer.cs">
+      <DependentUpon>DescriptableBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SmallControls\FrameList.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SmallControls\FrameList.Designer.cs">
+      <DependentUpon>FrameList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SmallControls\HexBoxEx.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SmallControls\HexBoxEx.Designer.cs">
+      <DependentUpon>HexBoxEx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SmallControls\PriceBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SmallControls\PriceBox.Designer.cs">
+      <DependentUpon>PriceBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="sEquality.cs" />
+    <Compile Include="SmallControls\GenreBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SmallControls\InitialKeyBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SmallControls\LanguageBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SmallControls\MediaTypeBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ID3 Controls\SimpleTextInformations.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ID3 Controls\SimpleTextInformations.Designer.cs">
+      <DependentUpon>SimpleTextInformations.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SmallControls\SLyricEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SmallControls\SLyricEditor.Designer.cs">
+      <DependentUpon>SLyricEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="StaticMethods.cs" />
+    <Compile Include="TagInfoUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SmallControls\LanguageTextBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SmallControls\LanguageTextBox.Designer.cs">
+      <DependentUpon>LanguageTextBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ID3 Controls\TextInformations.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ID3 Controls\TextInformations.Designer.cs">
+      <DependentUpon>TextInformations.cs</DependentUpon>
+    </Compile>
+    <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TagClass\TagClass\Tag.csproj">
+      <Project>{5D66099A-A8C5-47AB-B230-C9B60DFC1B40}</Project>
+      <Name>Tag</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ID3 Controls\CommentAndLyric.resx">
+      <DependentUpon>CommentAndLyric.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ID3 Controls\Commercial.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>Commercial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ID3 Controls\AttachedFiles.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AttachedFiles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ID3 Controls\FileIdentifiers.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FileIdentifiers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ID3 Controls\Lyric.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>Lyric.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ID3 Controls\MusicCDIdentifier.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MusicCDIdentifier.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ID3 Controls\Ownership.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>Ownership.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ID3 Controls\AttachedPictures.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AttachedPictures.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ID3 Controls\Popularimeter.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>Popularimeter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SmallControls\DescriptableBox.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>DescriptableBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SmallControls\FrameList.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrameList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SmallControls\HexBoxEx.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>HexBoxEx.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SmallControls\PriceBox.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>PriceBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ID3 Controls\SimpleTextInformations.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SimpleTextInformations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SmallControls\SLyricEditor.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SLyricEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SmallControls\LanguageTextBox.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>LanguageTextBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ID3 Controls\TextInformations.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>TextInformations.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Diagram.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NewDocumentHS.png" />
+    <None Include="Resources\DeleteHS.png" />
+    <None Include="Resources\DeleteFolderHS.png" />
+    <None Include="Resources\RightToLeftDoucmentHS.png" />
+    <None Include="Resources\RightToLeftDoucmentHS1.png" />
+    <None Include="Resources\saveHS.png" />
+    <None Include="Resources\WarningHS.png" />
+    <None Include="Resources\RightArrowHS.png" />
+    <None Include="Resources\LeftArrowHS.png" />
+    <None Include="Resources\FullScreenHS.png" />
+    <None Include="Resources\openHS.png" />
+    <EmbeddedResource Include="ASF Controls\aContentBranding.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>aContentBranding.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ASF Controls\aExContentDescription.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>aExContentDescription.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ASF Controls\aExContentText.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>aExContentText.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PriceBox.bmp" />
+    <EmbeddedResource Include="ASF Controls\aSimpleText.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>aSimpleText.cs</DependentUpon>
+    </EmbeddedResource>
+    <Content Include="ASF Tags.txt" />
+    <EmbeddedResource Include="AttachedFiles.bmp" />
+    <EmbeddedResource Include="InitialKey.bmp" />
+    <EmbeddedResource Include="LyricList.bmp" />
+    <EmbeddedResource Include="keys.bmp" />
+    <EmbeddedResource Include="ListImage.bmp" />
+    <EmbeddedResource Include="Lyric.bmp" />
+    <EmbeddedResource Include="OwnerShip.bmp" />
+    <EmbeddedResource Include="Star.bmp" />
+    <None Include="Resources\IsoLanguages.txt" />
+    <None Include="Resources\RFC1766.txt" />
+    <Content Include="TODO.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="AxWMPLib">
+      <Guid>{6BF52A50-394A-11D3-B153-00C04F79FAA6}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>aximp</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
+    <COMReference Include="WMPLib">
+      <Guid>{6BF52A50-394A-11D3-B153-00C04F79FAA6}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

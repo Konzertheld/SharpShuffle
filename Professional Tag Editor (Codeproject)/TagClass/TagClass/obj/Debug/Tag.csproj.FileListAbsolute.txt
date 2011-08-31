@@ -1,0 +1,15 @@
+D:\Programmieren\Projekte\Professional Tag Editor (Codeproject)\TagClass\TagClass\bin\Debug\Tags.dll
+D:\Programmieren\Projekte\Professional Tag Editor (Codeproject)\TagClass\TagClass\bin\Debug\Tags.pdb
+D:\Programmieren\Projekte\Professional Tag Editor (Codeproject)\TagClass\TagClass\obj\Debug\ResolveAssemblyReference.cache
+D:\Programmieren\Projekte\Professional Tag Editor (Codeproject)\TagClass\TagClass\obj\Debug\Tags.dll
+D:\Programmieren\Projekte\Professional Tag Editor (Codeproject)\TagClass\TagClass\obj\Debug\Tags.pdb
+D:\Programmieren\Projekte\WPF Musicplayer\Professional Tag Editor (Codeproject)\TagClass\TagClass\bin\Debug\Tags.dll
+D:\Programmieren\Projekte\WPF Musicplayer\Professional Tag Editor (Codeproject)\TagClass\TagClass\bin\Debug\Tags.pdb
+D:\Programmieren\Projekte\WPF Musicplayer\Professional Tag Editor (Codeproject)\TagClass\TagClass\obj\Debug\ResolveAssemblyReference.cache
+D:\Programmieren\Projekte\WPF Musicplayer\Professional Tag Editor (Codeproject)\TagClass\TagClass\obj\Debug\Tags.dll
+D:\Programmieren\Projekte\WPF Musicplayer\Professional Tag Editor (Codeproject)\TagClass\TagClass\obj\Debug\Tags.pdb
+M:\Programmieren\Projekte\WPF Musicplayer\Professional Tag Editor (Codeproject)\TagClass\TagClass\bin\Debug\Tags.dll
+M:\Programmieren\Projekte\WPF Musicplayer\Professional Tag Editor (Codeproject)\TagClass\TagClass\bin\Debug\Tags.pdb
+M:\Programmieren\Projekte\WPF Musicplayer\Professional Tag Editor (Codeproject)\TagClass\TagClass\obj\Debug\ResolveAssemblyReference.cache
+M:\Programmieren\Projekte\WPF Musicplayer\Professional Tag Editor (Codeproject)\TagClass\TagClass\obj\Debug\Tags.dll
+M:\Programmieren\Projekte\WPF Musicplayer\Professional Tag Editor (Codeproject)\TagClass\TagClass\obj\Debug\Tags.pdb

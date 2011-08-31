@@ -1,0 +1,2 @@
+Check lenght of zero for reading frames
+TODO: Add Error Level to Error Class

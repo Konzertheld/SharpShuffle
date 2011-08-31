@@ -1,0 +1,10 @@
+D:\Programmieren\Projekte\Testprojekt Tagging\OggTagger\bin\Debug\oggReader.dll
+D:\Programmieren\Projekte\Testprojekt Tagging\OggTagger\bin\Debug\oggReader.pdb
+D:\Programmieren\Projekte\Testprojekt Tagging\OggTagger\obj\Debug\ResolveAssemblyReference.cache
+D:\Programmieren\Projekte\Testprojekt Tagging\OggTagger\obj\Debug\oggReader.dll
+D:\Programmieren\Projekte\Testprojekt Tagging\OggTagger\obj\Debug\oggReader.pdb
+D:\Programmieren\Projekte\WPF Musicplayer\OggTagger\bin\Debug\oggReader.dll
+D:\Programmieren\Projekte\WPF Musicplayer\OggTagger\bin\Debug\oggReader.pdb
+D:\Programmieren\Projekte\WPF Musicplayer\OggTagger\obj\Debug\ResolveAssemblyReference.cache
+D:\Programmieren\Projekte\WPF Musicplayer\OggTagger\obj\Debug\oggReader.dll
+D:\Programmieren\Projekte\WPF Musicplayer\OggTagger\obj\Debug\oggReader.pdb

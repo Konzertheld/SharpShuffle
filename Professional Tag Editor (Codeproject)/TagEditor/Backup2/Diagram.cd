@@ -1,0 +1,256 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Font Name="Segoe UI" Size="9" />
+  <Class Name="TagInfoControls.GenreBox" Collapsed="true">
+    <Position X="41.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>SmallControls\GenreBox.cs</FileName>
+      <HashCode>AAAAAAAAAAAACAAAAAIAAAAIAAAAAAAAAAAACBABAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TagInfoControls.InitialKeyBox" Collapsed="true">
+    <Position X="44.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>SmallControls\InitialKeyBox.cs</FileName>
+      <HashCode>AAAAAEAAAAAACAAACAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TagInfoControls.LanguageBox" Collapsed="true">
+    <Position X="39.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>SmallControls\LanguageBox.cs</FileName>
+      <HashCode>AIAAAAAIAAAACAIAAIAAAAAAAAAAAAAAAIAAAAAACAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TagInfoControls.MediaTypeBox" Collapsed="true">
+    <Position X="43" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>SmallControls\MediaTypeBox.cs</FileName>
+      <HashCode>AAQAAAAAAAAACggAQgAAAAAAAAIAAAAAIAAAQBAABAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TagInfoControls.SubMediaTypeBox" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="44.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>SmallControls\MediaTypeBox.cs</FileName>
+      <HashCode>AAAAAAAAAAAACgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="TagInfoControls.MediaType" Collapsed="true">
+    <Position X="41.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>SmallControls\MediaTypeBox.cs</FileName>
+      <HashCode>AAAAAAAIAAAAABAAAAAAIAQAAAAAAgAAAAAgAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TagInfoControls.SimpleTextInformation" Collapsed="true">
+    <Position X="19" Y="3.5" Width="2" />
+    <TypeIdentifier>
+      <FileName>ID3 Controls\SimpleTextInformations.cs</FileName>
+      <HashCode>AEAShABAACQYEAQCIACACEACAAAgEADARAAAACABAAY=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TagInfoControls.TagInfoUserControl&lt;TagType&gt;" Collapsed="true">
+    <Position X="19.25" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <FileName>TagInfoUserControl.cs</FileName>
+      <HashCode>gEAAAIAAAAQAAABCAAAgAlAAAAAAAAAAGAAQAChAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TagInfoControls.ID3UserControl" Collapsed="true">
+    <Position X="21" Y="2" Width="2" />
+    <TypeIdentifier>
+      <FileName>TagInfoUserControl.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TagInfoControls.ASFUserControl" Collapsed="true">
+    <Position X="5.5" Y="2" Width="2.25" />
+    <TypeIdentifier>
+      <FileName>TagInfoUserControl.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TagInfoControls.TextInformation" Collapsed="true">
+    <Position X="25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>ID3 Controls\TextInformations.cs</FileName>
+      <HashCode>CMAKwxplPW4kWU0vbcG3Dk8yKARvL2AszDHJFyYT1XQ=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TagInfoControls.AttachedFiles" Collapsed="true">
+    <Position X="23" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>ID3 Controls\AttachedFiles.cs</FileName>
+      <HashCode>AGACKIAACCSEAYACEACADAhGEAABACJABACAQACIAAQ=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TagInfoControls.AttachedPictures" Collapsed="true">
+    <Position X="21.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>ID3 Controls\AttachedPictures.cs</FileName>
+      <HashCode>BEBACKgAQCQEAQECEICAAChOkEAAAEIAABCgUACIAgQ=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TagInfoControls.CommentAndLyric" Collapsed="true">
+    <Position X="24.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>ID3 Controls\CommentAndLyric.cs</FileName>
+      <HashCode>AEIEAAABACwAAAACAACAUAECAAgAAAAAAEBAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TagInfoControls.Commercial" Collapsed="true">
+    <Position X="26.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>ID3 Controls\Commercial.cs</FileName>
+      <HashCode>CFAAAIAAACaAQAJSBCCgASgSQABIIBIABAABAAIBQAQ=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TagInfoControls.FileIdentifiers" Collapsed="true">
+    <Position X="17.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>ID3 Controls\FileIdentifiers.cs</FileName>
+      <HashCode>AEAgAEAAACRAAAACAACEAAACKABAAYAAAQAABAAAAAQ=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TagInfoControls.Lyric" Collapsed="true">
+    <Position X="21.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>ID3 Controls\Lyric.cs</FileName>
+      <HashCode>AEAAABACACUAAAECACCgAAADAAQAAAAAAAAEAAAAAAE=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TagInfoControls.MusicCDIdentifier" Collapsed="true">
+    <Position X="26.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>ID3 Controls\MusicCDIdentifier.cs</FileName>
+      <HashCode>AEAAAAAAACQAAAACAACAAAACAAAAAAAAAQAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TagInfoControls.Ownership" Collapsed="true">
+    <Position X="23.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>ID3 Controls\Ownership.cs</FileName>
+      <HashCode>AEAAAAIAACaAAABChACAAAACAABIAAAAAAAAAAIAQAQ=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TagInfoControls.SmallControls.DescriptableBox" Collapsed="true">
+    <Position X="0.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>SmallControls\DescriptableBox.cs</FileName>
+      <HashCode>AAAAAIAAACAgCACAAICAAAhCAAAAAAEAAAAAAADCAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TagInfoControls.SmallControls.SLyricEditor" Collapsed="true">
+    <Position X="0.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>SmallControls\SLyricEditor.cs</FileName>
+      <HashCode>AQAAABgBDCAAEQAAAACAAEBiEAAAgAEAIQBAAABCAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TagInfoControls.SmallControls.FrameList" Collapsed="true">
+    <Position X="39.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>SmallControls\FrameList.cs</FileName>
+      <HashCode>AAAAAQBAECCAAAAQAAGAAEACBAAAoBAAAgBBgAZEAAY=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TagInfoControls.SmallControls.HexBoxEx" Collapsed="true">
+    <Position X="43" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>SmallControls\HexBoxEx.cs</FileName>
+      <HashCode>AACAAAAAACEAAAAAAACAAAACYAAABBAAAQAABALAQAQ=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TagInfoControls.SmallControls.LanguageTextBox" Collapsed="true">
+    <Position X="0.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>SmallControls\LanguageTextBox.cs</FileName>
+      <HashCode>AAAAAAAgCDAASIgAEACEAAACAAoCAgUABAEACAFCkAQ=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TagInfoControls.SmallControls.PriceBox" Collapsed="true">
+    <Position X="44.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>SmallControls\PriceBox.cs</FileName>
+      <HashCode>AAAAAAAAASAAQAAAAACEAAACCAAAAAAAgAAACEABAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TagInfoControls.Popularimeter" Collapsed="true">
+    <Position X="19.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>ID3 Controls\Popularimeter.cs</FileName>
+      <HashCode>AEAAAAAAACQAAAASAACAAAACAQBEIAEIAAABAAAEAAQ=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TagInfoControls.Properties.Resources" Collapsed="true">
+    <Position X="39.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAEAEAABIAAAChMAAAAQAACQIAAAAAAACAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TagInfoControls.aContentBranding" Collapsed="true">
+    <Position X="4.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>ASF Controls\aContentBranding.cs</FileName>
+      <HashCode>AXAEABQAACQAABACIAKAACAGAEAAIBISBAABAAIAQAQ=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TagInfoControls.aExContentDescription" Collapsed="true">
+    <Position X="6.75" Y="3.5" Width="2" />
+    <TypeIdentifier>
+      <FileName>ASF Controls\aExContentDescription.cs</FileName>
+      <HashCode>AEAAAEAAACSAACASAACAAAACAQAAIAAQAAABBAAEACQ=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TagInfoControls.aSimpleText" Collapsed="true">
+    <Position X="9.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>ASF Controls\aSimpleText.cs</FileName>
+      <HashCode>AFACAIBAASQAAAgSAACAgGgCAAAAIABABgABADGFAAQ=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TagInfoControls.sEquality" Collapsed="true">
+    <Position X="41.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>sEquality.cs</FileName>
+      <HashCode>BABAQQQAAAAAAAAABAAAAAAAAAAgAAAAAQAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TagInfoControls.StaticMethods" Collapsed="true">
+    <Position X="43" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>StaticMethods.cs</FileName>
+      <HashCode>AAEEEAAAAAAAAAAAAQBAAAAAAAAAAAABAIAACAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TagInfoControls.aExContentTexts" Collapsed="true">
+    <Position X="2.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>ASF Controls\aExContentText.cs</FileName>
+      <HashCode>qFEu44JBT6QAQSjCKsCEG2gKQFNICwiCJZB5AjCBMtQ=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="TagInfoControls.ISubMediaType" Collapsed="true">
+    <Position X="39.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>SmallControls\MediaTypeBox.cs</FileName>
+      <HashCode>AAAAAAACAAAAAoAAAAAAAAAAAAAAAAAAAIAAQBAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="TagInfoControls.EditModes" Collapsed="true">
+    <Position X="41.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>TagInfoUserControl.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAEAAAAACAAAAAAAAAAAAAAAAAABA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="TagInfoControls.ControlTypes" Collapsed="true">
+    <Position X="39.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>ID3 Controls\CommentAndLyric.cs</FileName>
+      <HashCode>AAAAAAAEAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+</ClassDiagram>

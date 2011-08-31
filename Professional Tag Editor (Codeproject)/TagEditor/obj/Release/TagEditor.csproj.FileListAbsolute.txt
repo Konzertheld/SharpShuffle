@@ -1,0 +1,4 @@
+D:\Programmieren\Projekte\Professional Tag Editor (Codeproject)\TagEditor\bin\Release\TagEditor.exe.config
+D:\Programmieren\Projekte\Professional Tag Editor (Codeproject)\TagEditor\obj\Release\ResolveAssemblyReference.cache
+D:\Programmieren\Projekte\Professional Tag Editor (Codeproject)\TagEditor\obj\Release\ResGen.read.1.tlog
+D:\Programmieren\Projekte\Professional Tag Editor (Codeproject)\TagEditor\obj\Release\ResGen.write.1.tlog

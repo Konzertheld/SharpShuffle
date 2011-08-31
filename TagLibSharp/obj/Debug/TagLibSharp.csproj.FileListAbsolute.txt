@@ -1,0 +1,5 @@
+M:\Programmieren\Projekte\WPF Musicplayer\TagLibSharp\bin\Debug\TagLibSharp.dll
+M:\Programmieren\Projekte\WPF Musicplayer\TagLibSharp\bin\Debug\TagLibSharp.pdb
+M:\Programmieren\Projekte\WPF Musicplayer\TagLibSharp\obj\Debug\ResolveAssemblyReference.cache
+M:\Programmieren\Projekte\WPF Musicplayer\TagLibSharp\obj\Debug\TagLibSharp.dll
+M:\Programmieren\Projekte\WPF Musicplayer\TagLibSharp\obj\Debug\TagLibSharp.pdb

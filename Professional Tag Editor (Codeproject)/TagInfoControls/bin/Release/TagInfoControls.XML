@@ -1,0 +1,1757 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TagInfoControls</name>
+    </assembly>
+    <members>
+        <member name="T:TagInfoControls.MediaTypeBox">
+            <summary>
+            A Box for selecting MediaTypes
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.MediaTypeBox.#ctor">
+            <summary>
+            Create new MediaTypeBox
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.MediaTypeBox.OnTextChanged(System.EventArgs)">
+            <summary>
+            Occur when text of control changed
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.MediaTypeBox.Items">
+            <summary>
+            Just for hiding inherited item from ComboBox
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.MediaTypeBox.DataSource">
+            <summary>
+            Just for hiding inherited item from ComboBox
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.MediaTypeBox.DisplayMember">
+            <summary>
+            Just for hiding inherited item from ComboBox
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.MediaTypeBox.ValueMember">
+            <summary>
+            Just for hiding inherited item from ComboBox
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.MediaTypeBox.SubMediaBox">
+            <summary>
+            SubMediaBox class to hold submedia types
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.MediaTypeBox.MediaType">
+            <summary>
+            MediaType of current MediaTypeBox
+            </summary>
+        </member>
+        <member name="T:TagInfoControls.SubMediaTypeBox">
+            <summary>
+            Provide a class for submedia types to use with MediaTypeBox
+            </summary>
+        </member>
+        <member name="T:TagInfoControls.ISubMediaType">
+            <summary>
+            An interface for SubMediaTypeBox.
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.ISubMediaType.DataSource">
+            <summary>
+            Gets or sets values of sub media types
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.ISubMediaType.Enabled">
+            <summary>
+            Gets of set if control must be enable
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.ISubMediaType.DisplayMember">
+            <summary>
+            Gets or sets display member of submedia types
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.ISubMediaType.ValueMember">
+            <summary>
+            Gets of sets value member of SubMediaTypes
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.ISubMediaType.SelectedIndex">
+            <summary>
+            Gets or sets selected index of SubMediatype
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.ISubMediaType.SelectedValue">
+            <summary>
+            Get or sets value of selected item in SubMediatype
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.SubMediaTypeBox.#ctor">
+            <summary>
+            Create new SubMediaTypeBox
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.SubMediaTypeBox.TagInfoControls#ISubMediaType#get_Enabled">
+            <summary>
+            Provide a class for submedia types to use with MediaTypeBox
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.SubMediaTypeBox.TagInfoControls#ISubMediaType#set_Enabled(System.Boolean)">
+            <summary>
+            Provide a class for submedia types to use with MediaTypeBox
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.SubMediaTypeBox.TagInfoControls#ISubMediaType#get_DisplayMember">
+            <summary>
+            Provide a class for submedia types to use with MediaTypeBox
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.SubMediaTypeBox.TagInfoControls#ISubMediaType#set_DisplayMember(System.String)">
+            <summary>
+            Provide a class for submedia types to use with MediaTypeBox
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.SubMediaTypeBox.TagInfoControls#ISubMediaType#get_ValueMember">
+            <summary>
+            Provide a class for submedia types to use with MediaTypeBox
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.SubMediaTypeBox.TagInfoControls#ISubMediaType#set_ValueMember(System.String)">
+            <summary>
+            Provide a class for submedia types to use with MediaTypeBox
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.SubMediaTypeBox.TagInfoControls#ISubMediaType#get_SelectedValue">
+            <summary>
+            Provide a class for submedia types to use with MediaTypeBox
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.SubMediaTypeBox.TagInfoControls#ISubMediaType#set_SelectedValue(System.Object)">
+            <summary>
+            Provide a class for submedia types to use with MediaTypeBox
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.SubMediaTypeBox.DataSource">
+            <summary>
+            Array of mediatypes to show
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.SubMediaTypeBox.Items">
+            <summary>
+            Just a method to hide inherited method
+            </summary>
+        </member>
+        <member name="T:TagInfoControls.MediaType">
+            <summary>
+            Contain a media type contain Name and ID3 standard string according to name
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.MediaType.#ctor(System.String,System.String,TagInfoControls.MediaType[])">
+            <summary>
+            Create new MediaType
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.MediaType.SubTypes">
+            <summary>
+            MediaType[] Contains subtypes of current Type
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.MediaType.Name">
+            <summary>
+            Name of MediaType
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.MediaType.Value">
+            <summary>
+            ID3 standard name of current MediaType
+            </summary>
+        </member>
+        <member name="T:TagInfoControls.Ownership">
+            <summary>
+            Provide a control to view and edit Ownership information of tag
+            </summary>
+        </member>
+        <member name="T:TagInfoControls.ID3UserControl">
+            <summary>
+            Inherited class to use for ID3 user Controls
+            </summary>
+        </member>
+        <member name="T:TagInfoControls.TagInfoUserControl`1">
+            <summary>
+            Base class for Tag user controls
+            </summary>
+        </member>
+        <member name="F:TagInfoControls.TagInfoUserControl`1.MData">
+            <summary>
+            Tags array for multiple tag editing
+            </summary>
+        </member>
+        <member name="F:TagInfoControls.TagInfoUserControl`1.SData">
+            <summary>
+            Tag for single tag editing
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.TagInfoUserControl`1.OnSingleSet(`0)">
+            <summary>
+            View One ITagInfo
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.TagInfoUserControl`1.OnMultipleSet(`0[])">
+            <summary>
+            View Multiple ITagInfo
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.TagInfoUserControl`1.OnCollectSingle">
+            <summary>
+            Gather data of single ITagInfo
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.TagInfoUserControl`1.OnCollectMultiple(`0)">
+            <summary>
+            Gather data of multiple ITagInfo
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.TagInfoUserControl`1.OnClear">
+            <summary>
+            Clear all fields of control
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.TagInfoUserControl`1.Clear">
+            <summary>
+            Clear all fields of control
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.TagInfoUserControl`1.CollectData">
+            <summary>
+            Collect data from form and edit selected tag(s)
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.TagInfoUserControl`1.GetControlByTag(System.String)">
+            <summary>
+            Find control that must show specific tag
+            </summary>
+            <param name="TagName">Tag to find relative control</param>
+            <returns>Control that related to tag or null</returns>
+        </member>
+        <member name="P:TagInfoControls.TagInfoUserControl`1.MultipleData">
+            <summary>
+            ITagInfos that must show in control
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.TagInfoUserControl`1.SingleData">
+            <summary>
+            ITagInfo that must show in control
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.TagInfoUserControl`1.EditMode">
+            <summary>
+            Indicate is current Editor edit multiple ITagInfo or just one
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.TagInfoUserControl`1.ConflictColor">
+            <summary>
+            Indicate backcolor of controls when the values is diffrent
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.Ownership.#ctor">
+            <summary>
+            Create new ownership control
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.Ownership.OnSingleSet(Tags.ID3.ID3Info)">
+            <summary>
+            Show data of single tag
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.Ownership.OnCollectSingle">
+            <summary>
+            Collect data as single Tag
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.Ownership.OnClear">
+            <summary>
+            Clear all fields
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.Ownership.Validate">
+            <summary>
+            Indicate if current Owenership control contains valid value and show error
+            </summary>
+        </member>
+        <member name="F:TagInfoControls.Ownership.components">
+            <summary> 
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.Ownership.Dispose(System.Boolean)">
+            <summary> 
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:TagInfoControls.Ownership.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.Ownership.Activated">
+            <summary>
+            Indicate if current ID3Info contain ownership information
+            </summary>
+        </member>
+        <member name="T:TagInfoControls.aExContentTexts">
+            <summary>
+            Provide a Control to show and edit Items of Extended content description of ASFTagInfo file
+            </summary>
+        </member>
+        <member name="T:TagInfoControls.ASFUserControl">
+            <summary>
+            Inherited class to use for ASF user Controls
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.aExContentTexts.#ctor">
+            <summary>
+            Create new aExContentTexts
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.aExContentTexts.OnClear">
+            <summary>
+            Clear all fields
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.aExContentTexts.OnSingleSet(Tags.ASF.ASFTagInfo)">
+            <summary>
+            Show data of single tag
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.aExContentTexts.OnCollectSingle">
+            <summary>
+            Collect data as single Tag
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.aExContentTexts.OnMultipleSet(Tags.ASF.ASFTagInfo[])">
+            <summary>
+            Show data of multiple tags
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.aExContentTexts.OnCollectMultiple(Tags.ASF.ASFTagInfo)">
+            <summary>
+            Collect data as multi tag
+            </summary>
+        </member>
+        <member name="F:TagInfoControls.aExContentTexts.components">
+            <summary> 
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.aExContentTexts.Dispose(System.Boolean)">
+            <summary> 
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:TagInfoControls.aExContentTexts.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:TagInfoControls.SmallControls.FrameList">
+            <summary>
+            Provide a control to add/edit/remove list of array of frame class
+            </summary>
+        </member>
+        <member name="F:TagInfoControls.SmallControls.FrameList.components">
+            <summary> 
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.SmallControls.FrameList.Dispose(System.Boolean)">
+            <summary> 
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:TagInfoControls.SmallControls.FrameList.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="F:TagInfoControls.SmallControls.FrameList.tlpMain">
+            <summary>
+            The main tooltip provider
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.SmallControls.FrameList.#ctor">
+            <summary>
+            Create new FrameList control
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.SmallControls.FrameList.UpdateView">
+            <summary>
+            Update view of current list
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.SmallControls.FrameList.Clear">
+            <summary>
+            Clear the current list
+            </summary>
+        </member>
+        <member name="E:TagInfoControls.SmallControls.FrameList.AddClicked">
+            <summary>
+            Occure when add button clicked
+            </summary>
+        </member>
+        <member name="E:TagInfoControls.SmallControls.FrameList.SelectedIndexChanged">
+            <summary>
+            Occur when selected index of List changed
+            </summary>
+        </member>
+        <member name="E:TagInfoControls.SmallControls.FrameList.SaveClicked">
+            <summary>
+            Occur when save button clicked
+            </summary>
+        </member>
+        <member name="E:TagInfoControls.SmallControls.FrameList.ListCleared">
+            <summary>
+            Occur when list clear
+            </summary>
+        </member>
+        <member name="E:TagInfoControls.SmallControls.FrameList.RemovingItem">
+            <summary>
+            Occur when remove button click on an item
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.SmallControls.FrameList.PromptOnClearAll">
+            <summary>
+            Show a MessageBox when wants to clear the list
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.SmallControls.FrameList.PromtOnRemove">
+            <summary>
+            Indicate if need to show a message before removing an item
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.SmallControls.FrameList.List">
+            <summary>
+            Gets Listbox of current control
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.SmallControls.FrameList.ShowSaveButton">
+            <summary>
+            Indicate is Save button visible or not
+            </summary>
+        </member>
+        <member name="T:TagInfoControls.Popularimeter">
+            <summary>
+            Provide a control to view and clear popularimeter values of tag
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.Popularimeter.#ctor">
+            <summary>
+            Create new popularimeter control
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.Popularimeter.OnSingleSet(Tags.ID3.ID3Info)">
+            <summary>
+            Show data of single tag
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.Popularimeter.OnCollectSingle">
+            <summary>
+            Collect data as single Tag
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.Popularimeter.OnClear">
+            <summary>
+            Clear all fields
+            </summary>
+        </member>
+        <member name="F:TagInfoControls.Popularimeter.components">
+            <summary> 
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.Popularimeter.Dispose(System.Boolean)">
+            <summary> 
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:TagInfoControls.Popularimeter.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:TagInfoControls.AttachedPictures">
+            <summary>
+            Provide a control to view and edit pictures of ID3
+            </summary>
+        </member>
+        <member name="F:TagInfoControls.AttachedPictures.components">
+            <summary> 
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.AttachedPictures.Dispose(System.Boolean)">
+            <summary> 
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:TagInfoControls.AttachedPictures.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.AttachedPictures.#ctor">
+            <summary>
+            Create new Attached picture control
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.AttachedPictures.AddPicture(System.String)">
+            <summary>
+            Add picture from specific address to list
+            </summary>
+            <param name="path">path of file</param>
+        </member>
+        <member name="M:TagInfoControls.AttachedPictures.ViewImage(Tags.ID3.ID3v2Frames.BinaryFrames.AttachedPictureFrame)">
+            <summary>
+            View and image in the picture box
+            </summary>
+            <param name="image">AttachedPictureFrame to view</param>
+        </member>
+        <member name="M:TagInfoControls.AttachedPictures.OnSingleSet(Tags.ID3.ID3Info)">
+            <summary>
+            Show data of single tag
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.AttachedPictures.OnCollectSingle">
+            <summary>
+            Collect data as single Tag
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.AttachedPictures.OnClear">
+            <summary>
+            Clear all fields
+            </summary>
+        </member>
+        <member name="T:TagInfoControls.Commercial">
+            <summary>
+            Provide a control to view and edit commercial information of a tag
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.Commercial.#ctor">
+            <summary>
+            Create new commercial control
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.Commercial.OnSingleSet(Tags.ID3.ID3Info)">
+            <summary>
+            Show data of single tag
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.Commercial.OnCollectSingle">
+            <summary>
+            Collect data as single Tag
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.Commercial.OnClear">
+            <summary>
+            Clear all fields
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.Commercial.Validate">
+            <summary>
+            Indicate is available data in screen valid or not
+            </summary>
+            <returns>true if all fields contain valid information otherwise false</returns>
+        </member>
+        <member name="F:TagInfoControls.Commercial.components">
+            <summary> 
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.Commercial.Dispose(System.Boolean)">
+            <summary> 
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:TagInfoControls.Commercial.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.Commercial.Activated">
+            <summary>
+            Indicate if current ID3Info contain Commercial information
+            </summary>
+        </member>
+        <member name="T:TagInfoControls.EditModes">
+            <summary>
+            Indicates diffrent modes of tag editing for controls
+            </summary>
+        </member>
+        <member name="F:TagInfoControls.EditModes.Single">
+            <summary>
+            Editing single tag
+            </summary>
+        </member>
+        <member name="F:TagInfoControls.EditModes.Multiple">
+            <summary>
+            Edit multiple tags together
+            </summary>
+        </member>
+        <member name="F:TagInfoControls.EditModes.Unknown">
+            <summary>
+            Unknown type of editing
+            </summary>
+        </member>
+        <member name="T:TagInfoControls.SmallControls.PriceBox">
+            <summary>
+            Provide a control to edit and add Price values
+            </summary>
+        </member>
+        <member name="F:TagInfoControls.SmallControls.PriceBox.components">
+            <summary> 
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.SmallControls.PriceBox.Dispose(System.Boolean)">
+            <summary> 
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:TagInfoControls.SmallControls.PriceBox.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.SmallControls.PriceBox.#ctor">
+            <summary>
+            Creates new PriceBox with USD as currency
+            </summary>
+        </member>
+        <member name="E:TagInfoControls.SmallControls.PriceBox.TextChanged">
+            <summary>
+            Occur when price value changed
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.SmallControls.PriceBox.Currency">
+            <summary>
+            Gets or sets currency of current PriceBox
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.SmallControls.PriceBox.Text">
+            <summary>
+            Get Price + Currency
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.SmallControls.PriceBox.Price">
+            <summary>
+            Gets or sets price of current PriceBox
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.SmallControls.PriceBox.BackColor">
+            <summary>
+            Gets or set backcolor of controls when multiple values are diffrent
+            </summary>
+        </member>
+        <member name="T:TagInfoControls.SmallControls.HexBoxEx">
+            <summary>
+            Provide a control to view and edit binary data in base of 16
+            </summary>
+        </member>
+        <member name="F:TagInfoControls.SmallControls.HexBoxEx.components">
+            <summary> 
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.SmallControls.HexBoxEx.Dispose(System.Boolean)">
+            <summary> 
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:TagInfoControls.SmallControls.HexBoxEx.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.SmallControls.HexBoxEx.#ctor">
+            <summary>
+            Create new HexBox
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.SmallControls.HexBoxEx.Clear">
+            <summary>
+            Clear all data
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.SmallControls.HexBoxEx.Data">
+            <summary>
+            Gets or sets data of current HexBoxEx
+            </summary>
+        </member>
+        <member name="T:TagInfoControls.Lyric">
+            <summary>
+            Provide a control to view and edit Synchronized lyric of tag
+            </summary>
+        </member>
+        <member name="F:TagInfoControls.Lyric.components">
+            <summary> 
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.Lyric.Dispose(System.Boolean)">
+            <summary> 
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:TagInfoControls.Lyric.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.Lyric.#ctor">
+            <summary>
+            Create new lyric control
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.Lyric.DescriptionExists(System.String@,System.Int32)">
+            <summary>
+            Take a description if list contains this description change it
+            </summary>
+            <param name="description">Description to check and change if need</param>
+            <param name="Index">Index of selected item</param>
+            <returns>true if needed to change otherwise false</returns>
+        </member>
+        <member name="M:TagInfoControls.Lyric.OnSingleSet(Tags.ID3.ID3Info)">
+            <summary>
+            Show data of single tag
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.Lyric.OnCollectSingle">
+            <summary>
+            Collect data as single Tag
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.Lyric.OnClear">
+            <summary>
+            Clear all fields
+            </summary>
+        </member>
+        <member name="T:TagInfoControls.aContentBranding">
+            <summary>
+            Provide a control to view and edit ContentBranding object of ASF tag
+            </summary>
+        </member>
+        <member name="F:TagInfoControls.aContentBranding.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.aContentBranding.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:TagInfoControls.aContentBranding.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.aContentBranding.#ctor">
+            <summary>
+            Create new ContentBranding control
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.aContentBranding.ViewImage(System.Drawing.Image,System.String)">
+            <summary>
+            View image in picture box and set zoom automatically
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.aContentBranding.GetFilterFromType">
+            <summary>
+            Get filter for current type of images
+            </summary>
+            <returns>string contain Filter for common dialogs</returns>
+        </member>
+        <member name="M:TagInfoControls.aContentBranding.OnCollectSingle">
+            <summary>
+            Collect data as single Tag
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.aContentBranding.OnSingleSet(Tags.ASF.ASFTagInfo)">
+            <summary>
+            Show data of single tag
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.aContentBranding.OnClear">
+            <summary>
+            Clear all fields
+            </summary>
+        </member>
+        <member name="T:TagInfoControls.SmallControls.SLyricEditor">
+            <summary>
+            Provide a control to view and edit UnSynchronized lyric of tag
+            </summary>
+        </member>
+        <member name="T:TagInfoControls.SmallControls.DescriptableBox">
+            <summary>
+            Provide a text box with LanguageBox and DescriptionBox
+            </summary>
+        </member>
+        <member name="T:TagInfoControls.SmallControls.LanguageTextBox">
+            <summary>
+            Control to view and edit TermOfUse frame
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.SmallControls.LanguageTextBox.OnDataUpdated(System.EventArgs)">
+            <summary>
+            Raise DataUpdatted event
+            </summary>
+            <param name="e">EventArgs to raise event</param>
+        </member>
+        <member name="M:TagInfoControls.SmallControls.LanguageTextBox.#ctor">
+            <summary>
+            Create new TermOfUse frame
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.SmallControls.LanguageTextBox.Clear">
+            <summary>
+            Clear all form data
+            </summary>
+        </member>
+        <member name="F:TagInfoControls.SmallControls.LanguageTextBox.components">
+            <summary> 
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.SmallControls.LanguageTextBox.Dispose(System.Boolean)">
+            <summary> 
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:TagInfoControls.SmallControls.LanguageTextBox.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="F:TagInfoControls.SmallControls.LanguageTextBox.lnbLanguage">
+            <summary>
+            Language Box
+            </summary>
+        </member>
+        <member name="F:TagInfoControls.SmallControls.LanguageTextBox.txtText">
+            <summary>
+            TextBox for holding text data
+            </summary>
+        </member>
+        <member name="F:TagInfoControls.SmallControls.LanguageTextBox.lblLanguage">
+            <summary>
+            ComboBox for languages
+            </summary>
+        </member>
+        <member name="F:TagInfoControls.SmallControls.LanguageTextBox.rdbRTL">
+            <summary>
+            Radio button to choose for RTL languages
+            </summary>
+        </member>
+        <member name="F:TagInfoControls.SmallControls.LanguageTextBox.rdbLTR">
+            <summary>
+            Radio button to choose for LTR languages
+            </summary>
+        </member>
+        <member name="F:TagInfoControls.SmallControls.LanguageTextBox.tlpMain">
+            <summary>
+            Tooltip provider
+            </summary>
+        </member>
+        <member name="E:TagInfoControls.SmallControls.LanguageTextBox.DataUpdated">
+            <summary>
+            Occur when data updated
+            </summary>
+        </member>
+        <member name="E:TagInfoControls.SmallControls.LanguageTextBox.ValidatingLanguage">
+            <summary>
+            Occur when validating language
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.SmallControls.LanguageTextBox.RightToLeftLanguage">
+            <summary>
+            Indicate if current editing text is right to left language
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.SmallControls.LanguageTextBox.Language">
+            <summary>
+            Language of current DesLang control
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.SmallControls.LanguageTextBox.Text">
+            <summary>
+            Gets or sets text of current control
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.SmallControls.LanguageTextBox.TermOfUse">
+            <summary>
+            Gets or sets TermOfUse
+            </summary>
+        </member>
+        <member name="F:TagInfoControls.SmallControls.DescriptableBox.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.SmallControls.DescriptableBox.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:TagInfoControls.SmallControls.DescriptableBox.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="F:TagInfoControls.SmallControls.DescriptableBox.lblDescription">
+            <summary>
+            Description Label
+            </summary>
+        </member>
+        <member name="F:TagInfoControls.SmallControls.DescriptableBox.txtDescription">
+            <summary>
+            TextBox contains Description
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.SmallControls.DescriptableBox.#ctor">
+            <summary>
+            Create new Descriptablebox
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.SmallControls.DescriptableBox.Clear">
+            <summary>
+            Clear current control
+            </summary>
+        </member>
+        <member name="E:TagInfoControls.SmallControls.DescriptableBox.ValidatingDescription">
+            <summary>
+            Occur when description box of current control validating
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.SmallControls.DescriptableBox.TextWithLanguageValue">
+            <summary>
+            Gets or sets TextWithLanguageFrame according to this control
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.SmallControls.DescriptableBox.Description">
+            <summary>
+            Gets or sets description string of current Control
+            </summary>
+        </member>
+        <member name="F:TagInfoControls.SmallControls.SLyricEditor.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.SmallControls.SLyricEditor.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:TagInfoControls.SmallControls.SLyricEditor.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.SmallControls.SLyricEditor.#ctor">
+            <summary>
+            Creates new SLyric control
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.SmallControls.SLyricEditor.Clear">
+            <summary>
+            Clear all fields of current control
+            </summary>
+        </member>
+        <member name="E:TagInfoControls.SmallControls.SLyricEditor.ValidatingType">
+            <summary>
+            Occure when control is validating
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.SmallControls.SLyricEditor.Sylables">
+            <summary>
+            Gets or sets syllables of current text editor
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.SmallControls.SLyricEditor.Lyric">
+            <summary>
+            Gets or sets Lyric value of current control
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.SmallControls.SLyricEditor.FilePath">
+            <summary>
+            Gets or sets path of file
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.SmallControls.SLyricEditor.Type">
+            <summary>
+            Gets or sets selected text type
+            </summary>
+        </member>
+        <member name="T:TagInfoControls.StaticMethods">
+            <summary>
+            Provide static methods for current Application
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.StaticMethods.SetTextBox(System.Boolean,System.Windows.Forms.Control,System.String,System.Drawing.Color)">
+            <summary>
+            Set Text of specific TextBox
+            </summary>
+            <param name="Indicator">if true means for multiple view all values are one value</param>
+            <param name="Ctrl">Control to set text or change background</param>
+            <param name="Value">Text to set for control</param>
+            <param name="ConflictColor">Backcolor of controls when multiple values are diffrent</param>
+        </member>
+        <member name="M:TagInfoControls.StaticMethods.GetExtension(System.String)">
+            <summary>
+            Get Extension of MIMEType
+            </summary>
+            <param name="MIMEType">MimeType to find extension</param>
+            <returns>System.string contain file extension</returns>
+        </member>
+        <member name="M:TagInfoControls.StaticMethods.GetMIMEType(System.String)">
+            <summary>
+            Get MimeType of specific Extension
+            </summary>
+            <param name="Extension"></param>
+            <returns></returns> 
+        </member>
+        <member name="M:TagInfoControls.StaticMethods.GetMemoryStream(System.String)">
+            <summary>
+            Gets MemoryStream from specific file path
+            </summary>
+            <param name="FilePath">File path to read from</param>
+            <returns>MemoryStream readed from file</returns>
+        </member>
+        <member name="M:TagInfoControls.StaticMethods.GetLengthString(System.Int64)">
+            <summary>
+            Convert specific long value to Length String contain B, KB or MB
+            </summary>
+            <param name="Length">Number to convert</param>
+            <returns>System.String Contain number plus B, KB or MB</returns>
+        </member>
+        <member name="M:TagInfoControls.StaticMethods.ContainValue(System.String,System.Int32,TagInfoControls.SmallControls.FrameList,System.String)">
+            <summary>
+            Indicate if specific list contains specific value
+            </summary>
+            <param name="BaseValue">Value to find</param>
+            <param name="Index">Index of value that we don't want to check</param>
+            <param name="List">List of frames to search in</param>
+            <param name="PropertyName">Name of property to compare</param>
+            <returns>true if list contains otherwise false</returns>
+        </member>
+        <member name="M:TagInfoControls.StaticMethods.ValidatingProperty(System.String@,System.Int32,TagInfoControls.SmallControls.FrameList,System.String)">
+            <summary>
+            Change specific string if specific List contains specific value
+            </summary>
+            <param name="BaseValue">Value to search and change</param>
+            <param name="Index">Index of item that don't need to check</param>
+            <param name="List">List to search in</param>
+            <param name="PropertyName">Name of property to to search</param>
+            <returns>True if name changed otherwise false</returns>
+        </member>
+        <member name="M:TagInfoControls.StaticMethods.ValidatingControlAsProperty(System.Windows.Forms.Control,System.Int32,TagInfoControls.SmallControls.FrameList,System.String)">
+            <summary>
+            Check if specific list contains specific Item
+            </summary>
+            <param name="ctrl">GetText of control to search for</param>
+            <param name="Index">Index of item that must not check</param>
+            <param name="List">List of frames</param>
+            <param name="PropertyName">Name opf proeprty to check for equality</param>
+            <returns>true if valid otherwise false</returns>
+        </member>
+        <member name="T:TagInfoControls.aExContentDescription">
+            <summary>
+            Provide a control to view and edit ExtendedDescription of ASF tag
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.aExContentDescription.#ctor">
+            <summary>
+            Create new ExContentDescription control
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.aExContentDescription.OnSingleSet(Tags.ASF.ASFTagInfo)">
+            <summary>
+            Show data of single tag
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.aExContentDescription.OnClear">
+            <summary>
+            Clear all fields
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.aExContentDescription.OnCollectSingle">
+            <summary>
+            Collect data as single Tag
+            </summary>
+        </member>
+        <member name="F:TagInfoControls.aExContentDescription.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.aExContentDescription.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:TagInfoControls.aExContentDescription.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:TagInfoControls.AttachedFiles">
+            <summary>
+            Provide a control to read and write Attached file of ID3
+            </summary>
+        </member>
+        <member name="F:TagInfoControls.AttachedFiles.components">
+            <summary> 
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.AttachedFiles.Dispose(System.Boolean)">
+            <summary> 
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:TagInfoControls.AttachedFiles.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.AttachedFiles.#ctor">
+            <summary>
+            Create new Attached files control
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.AttachedFiles.OnSingleSet(Tags.ID3.ID3Info)">
+            <summary>
+            Show data of single tag
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.AttachedFiles.OnCollectSingle">
+            <summary>
+            Collect data as single Tag
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.AttachedFiles.OnClear">
+            <summary>
+            Clear all fields
+            </summary>
+        </member>
+        <member name="T:TagInfoControls.SimpleTextInformation">
+            <summary>
+            Control for usual text information of ID3s
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.SimpleTextInformation.#ctor">
+            <summary>
+            Create new SimpleTextInformation box
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.SimpleTextInformation.OnSingleSet(Tags.ID3.ID3Info)">
+            <summary>
+            Show data of single tag
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.SimpleTextInformation.OnCollectSingle">
+            <summary>
+            Collect data as single Tag
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.SimpleTextInformation.OnMultipleSet(Tags.ID3.ID3Info[])">
+            <summary>
+            Show data of multiple tags
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.SimpleTextInformation.OnCollectMultiple(Tags.ID3.ID3Info)">
+            <summary>
+            Collect data as multi tag
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.SimpleTextInformation.GetTextBox(System.Windows.Forms.TextBox,System.String,Tags.ID3.ID3Info)">
+            <summary>
+            Set text of specific TextBox to specific ID3Info
+            </summary>
+            <param name="Ctrl">Control to use value</param>
+            <param name="FrameID">FrameID of frame</param>
+            <param name="Data">ID3Info to set text for</param>
+        </member>
+        <member name="M:TagInfoControls.SimpleTextInformation.OnClear">
+            <summary>
+            Clear all fields
+            </summary>
+        </member>
+        <member name="F:TagInfoControls.SimpleTextInformation.components">
+            <summary> 
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.SimpleTextInformation.Dispose(System.Boolean)">
+            <summary> 
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:TagInfoControls.SimpleTextInformation.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.SimpleTextInformation.ID3Version">
+            <summary>
+            ID3 Version to use for UI
+            </summary>
+        </member>
+        <member name="T:TagInfoControls.CommentAndLyric">
+            <summary>
+            Provide a control to view and edit UnSynchronized lyric and Comment frames
+            </summary>
+        </member>
+        <member name="F:TagInfoControls.CommentAndLyric.components">
+            <summary> 
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.CommentAndLyric.Dispose(System.Boolean)">
+            <summary> 
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:TagInfoControls.CommentAndLyric.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.CommentAndLyric.#ctor">
+            <summary>
+            Create new Control
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.CommentAndLyric.OnSingleSet(Tags.ID3.ID3Info)">
+            <summary>
+            Show data of single tag
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.CommentAndLyric.OnCollectSingle">
+            <summary>
+            Collect data as single Tag
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.CommentAndLyric.OnClear">
+            <summary>
+            Clear all fields
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.CommentAndLyric.ControlType">
+            <summary>
+            Gets or sets ControlType of current control
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.CommentAndLyric.FrameID">
+            <summary>
+            Indicate what FrameID must use for this type of form
+            </summary>
+        </member>
+        <member name="T:TagInfoControls.MusicCDIdentifier">
+            <summary>
+            Provide a control to view and edit Music CD Identifier of ID3Info
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.MusicCDIdentifier.#ctor">
+            <summary>
+            Create new Music CD Identifier control
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.MusicCDIdentifier.OnClear">
+            <summary>
+            Clear all fields
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.MusicCDIdentifier.OnSingleSet(Tags.ID3.ID3Info)">
+            <summary>
+            Show data of single tag
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.MusicCDIdentifier.OnCollectSingle">
+            <summary>
+            Collect data as single Tag
+            </summary>
+        </member>
+        <member name="F:TagInfoControls.MusicCDIdentifier.components">
+            <summary> 
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.MusicCDIdentifier.Dispose(System.Boolean)">
+            <summary> 
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:TagInfoControls.MusicCDIdentifier.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:TagInfoControls.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.Properties.Resources.IsoLanguages">
+            <summary>
+              Looks up a localized string similar to ;Abkhazian [abk];Achinese [ace];Acoli [ach];Adangme [ada];Adygei [ady];Afar [aar];Afrihili [afh];Afrikaans [afr];Afro-Asiatic (Other) [afa];Ainu [ain];Akan [aka];Akkadian [akk];Albanian [alb];Aleut [ale];Algonquian languages [alg];Altaic (Other) [tut];Amharic [amh];Angika [anp];Apache languages [apa];Arabic [ara];Aragonese [arg];Aramaic [arc];Arapaho [arp];Arawak [arw];Armenian [arm];Artificial (Other) [art];Assamese [asm];Asturian,Bable [ast];Athapascan languages [ath];Australian languages [aus];Austronesi [rest of string was truncated]&quot;;.
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.Properties.Resources.RFC1766">
+            <summary>
+              Looks up a localized string similar to ;Afrikaans [af];Arabic (U.A.E.) [ar-ae];Arabic (Bahrain) [ar-bh];Arabic (Algeria) [ar-dz];Arabic (Egypt) [ar-eg];Arabic (Iraq) [ar-iq];Arabic (Jordan) [ar-jo];Arabic (Kuwait) [ar-kw];Arabic (Lebanon) [ar-lb];Arabic (Libya) [ar-ly];Arabic (Morocco) [ar-ma];Arabic (Oman) [ar-om];Arabic (Qatar) [ar-qa];Arabic (Saudi Arabia) [ar-sa];Arabic (Syria) [ar-sy];Arabic (Tunisia) [ar-tn];Arabic (Yemen) [ar-ye];Arabic [ar];Assamese [as];Azeri [az];Belarusian [be];Bulgarian [bg];Bengali [bn];Catalan [ca];Czech [cs];Danis [rest of string was truncated]&quot;;.
+            </summary>
+        </member>
+        <member name="T:TagInfoControls.FileIdentifiers">
+            <summary>
+            Provide a control to view and edit File identifiers
+            </summary>
+        </member>
+        <member name="F:TagInfoControls.FileIdentifiers.components">
+            <summary> 
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.FileIdentifiers.Dispose(System.Boolean)">
+            <summary> 
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:TagInfoControls.FileIdentifiers.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.FileIdentifiers.#ctor">
+            <summary>
+            Create new File Indentifier control
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.FileIdentifiers.OnClear">
+            <summary>
+            Clear all fields
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.FileIdentifiers.OnSingleSet(Tags.ID3.ID3Info)">
+            <summary>
+            Show data of single tag
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.FileIdentifiers.OnCollectSingle">
+            <summary>
+            Collect data as single Tag
+            </summary>
+        </member>
+        <member name="T:TagInfoControls.TextInformation">
+            <summary>
+            Control for All text informatio of ID3s
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.TextInformation.#ctor">
+            <summary>
+            Create new TextInformation control
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.TextInformation.ValidatingUserFrame(System.Char,System.String,System.String,System.Windows.Forms.DataGridView,System.Int32)">
+            <summary>
+            Validate values of DataGridView for specific type of Frame
+            </summary>
+            <param name="StartChar">Start character of FrameID</param>
+            <param name="FrameID">FrameID that must validate</param>
+            <param name="Description">Description of value</param>
+            <param name="DGV">DataGridView to use for checking values</param>
+            <param name="SelectedIndex">Index of validating value</param>
+            <returns>true if UserFrame is valid otherwise false</returns>
+        </member>
+        <member name="M:TagInfoControls.TextInformation.InitTextControls">
+            <summary>
+            Initialize TextControl property
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.TextInformation.SetText(System.String,System.String)">
+            <summary>
+            Set Specific FrameID value in UI
+            </summary>
+            <param name="FrameID">FrameID to Set</param>
+            <param name="Value">Value of frame</param>
+        </member>
+        <member name="M:TagInfoControls.TextInformation.AddUserTextFrame(System.String,System.String,System.String)">
+            <summary>
+            Add specific UserText frame to related DataGridView
+            </summary>
+            <param name="FrameID">FrameID of user text frame</param>
+            <param name="Description">Description of frame</param>
+            <param name="Value">Value of frame</param>
+        </member>
+        <member name="M:TagInfoControls.TextInformation.AddUserData(System.Windows.Forms.DataGridView)">
+            <summary>
+            Add all frames of specific DataGridView to SData
+            </summary>
+            <param name="DGV">DataGridView for use content</param>
+        </member>
+        <member name="M:TagInfoControls.TextInformation.UpdateInterface(System.Int32)">
+            <summary>
+            Update UI for specific version of ID3
+            </summary>
+            <param name="Ver">ID3version to update form for</param>
+        </member>
+        <member name="M:TagInfoControls.TextInformation.GetDateTime(System.Windows.Forms.MaskedTextBox)">
+            <summary>
+            Convert specific MaskedTextBox to string
+            </summary>
+            <param name="MTB">MaskedTextBox to use value</param>
+            <returns>String contain DateTime</returns>
+        </member>
+        <member name="M:TagInfoControls.TextInformation.OnMultipleSet(Tags.ID3.ID3Info[])">
+            <summary>
+            Show data of multiple tags
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.TextInformation.OnCollectMultiple(Tags.ID3.ID3Info)">
+            <summary>
+            Collect data as multi tag
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.TextInformation.OnClear">
+            <summary>
+            Clear all fields
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.TextInformation.OnSingleSet(Tags.ID3.ID3Info)">
+            <summary>
+            Show data of single tag
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.TextInformation.IsDateTimeBox(System.Windows.Forms.Control)">
+            <summary>
+            Indicate whether specific control is MaskedTextBox for DateTime or not
+            </summary>
+            <param name="Ctrl">Control To check</param>
+            <returns>true if is DateTimeBox otherwise false</returns>
+        </member>
+        <member name="M:TagInfoControls.TextInformation.OnCollectSingle">
+            <summary>
+            Collect data as single Tag
+            </summary>
+        </member>
+        <member name="F:TagInfoControls.TextInformation.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.TextInformation.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:TagInfoControls.TextInformation.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.TextInformation.TextControls">
+            <summary>
+            Contains all TextBoxs of current form
+            </summary>
+        </member>
+        <member name="T:TagInfoControls.InitialKeyBox">
+            <summary>
+            Provide a Combobox for initial key value
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.InitialKeyBox.#ctor">
+            <summary>
+            Create new InitialKeyBox
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.InitialKeyBox.InitialKey">
+            <summary>
+            Initial Key name accroding to ID3 standard
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.InitialKeyBox.Items">
+            <summary>
+            All keys
+            </summary>
+        </member>
+        <member name="T:TagInfoControls.sEquality">
+            <summary>
+            This class use for comparing TagInfos of an array
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.sEquality.TextFrame(Tags.ID3.ID3Info[],System.String)">
+            <summary>
+            Indicate if specific ID3Info contains specific TextFrame
+            </summary>
+            <param name="Data">Array to check values</param>
+            <param name="FrameID">FrameID to search in array</param>
+        </member>
+        <member name="M:TagInfoControls.sEquality.UserTextFrame(Tags.ID3.ID3Info[],System.String)">
+            <summary>
+            Indicate if specific ID3Info contains specific UserTextFrame
+            </summary>
+            <param name="Data">Array To Check</param>
+            <param name="FrameID">FrameID to search in array</param>
+        </member>
+        <member name="M:TagInfoControls.sEquality.FindUTF(Tags.ID3.ID3Info,System.String,System.String@,System.String@)">
+            <summary>
+            Find specific UserTextFrame in ID3Info
+            </summary>
+            <param name="Source">ID3Info to search for UserTextFrame</param>
+            <param name="FrameID">FrameID of UserTextFrame to search</param>
+            <param name="Text">Out value for text of found UserTextFrame</param>
+            <param name="Description">Out value for description of found UserTextFrame</param>
+        </member>
+        <member name="M:TagInfoControls.sEquality.HaveV1(Tags.ID3.ID3Info[])">
+            <summary>
+            Indicate if all specific items of array contains ID3v1
+            </summary>
+            <param name="Data">Array of ID3Info to check for ID3v1</param>
+            <returns>0 if non of them contains ID3v1, 1 if all of them contains otherwise 2</returns>
+        </member>
+        <member name="M:TagInfoControls.sEquality.HaveV2(Tags.ID3.ID3Info[])">
+            <summary>
+            Indicate if all specific items of array contains ID3v1
+            </summary>
+            <param name="Data">Array of ID3Info to check for ID3v2</param>
+            <returns>0 if non of them contains ID3v2, 1 if all of them contains otherwise 2</returns>
+        </member>
+        <member name="M:TagInfoControls.sEquality.IsPropertyEqual(Tags.ITagInfo[],System.String[])">
+            <summary>
+            Indicate if all values of specific property of array items be equal together
+            </summary>
+            <param name="Arr">Array to control</param>
+            <param name="PropertyNames">Name of properties</param>
+            <returns>true if all values equal together otherwise false</returns>
+        </member>
+        <member name="M:TagInfoControls.sEquality.GetValueOfProperty(System.Object,System.String[])">
+            <summary>
+            Get value of specific property from specific object
+            </summary>
+            <param name="ob">Object to get property value</param>
+            <param name="PropertyNames">Name of properties</param>
+        </member>
+        <member name="M:TagInfoControls.sEquality.GetItemOfExContent(Tags.ASF.ASFTagInfo,System.String[])">
+            <summary>
+            Get specific property from specific Item of ExContentDescription
+            </summary>
+            <param name="Tag">Tag to get value</param>
+            <param name="index">Name of properties</param>
+        </member>
+        <member name="M:TagInfoControls.sEquality.IsItemEqual(Tags.ASF.ASFTagInfo[],System.Object@,System.String[])">
+            <summary>
+            Indicate if all values of specific property in ASFTagInfo is one
+            </summary>
+            <param name="Arr">Array to check values</param>
+            <param name="Value">Default Value</param>
+            <param name="index">Name of properties</param>
+        </member>
+        <member name="T:TagInfoControls.aSimpleText">
+            <summary>
+            Provde a control to view and edit Simple texts of ASF tag
+            </summary>
+        </member>
+        <member name="F:TagInfoControls.aSimpleText.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.aSimpleText.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:TagInfoControls.aSimpleText.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.aSimpleText.#ctor">
+            <summary>
+            Create new SimpleASFTag control
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.aSimpleText.OnSingleSet(Tags.ASF.ASFTagInfo)">
+            <summary>
+            Show data of single tag
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.aSimpleText.OnCollectSingle">
+            <summary>
+            Collect data as single Tag
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.aSimpleText.OnMultipleSet(Tags.ASF.ASFTagInfo[])">
+            <summary>
+            Show data of multiple tags
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.aSimpleText.OnCollectMultiple(Tags.ASF.ASFTagInfo)">
+            <summary>
+            Collect data as multi tag
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.aSimpleText.OnClear">
+            <summary>
+            Clear all fields
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.aSimpleText.ShowRating">
+            <summary>
+            Shows or hides rating part of control
+            </summary>
+        </member>
+        <member name="T:TagInfoControls.LanguageBox">
+            <summary>
+            Provide a control to view and edit language value according to ISO
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.LanguageBox.#ctor">
+            <summary>
+            Create new LanguageBox
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.LanguageBox.GetLangID(System.String)">
+            <summary>
+            Gets ID of language from language string
+            </summary>
+            <param name="st">Language string</param>
+            <returns>Language ID</returns>
+        </member>
+        <member name="P:TagInfoControls.LanguageBox.DropDownStyle">
+            <summary>
+            Gets drop down style of current LanguageBox
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.LanguageBox.SelectedLanguage">
+            <summary>
+            Get or Set selected language
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.LanguageBox.Items">
+            <summary>
+            Just for hiding inherited member of ComboBox
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.LanguageBox.TagType">
+            <summary>
+            Indicate type of Language box
+            </summary>
+        </member>
+        <member name="T:TagInfoControls.GenreBox">
+            <summary>
+            Provide a control to view and edit Genres for both ID3v1 and ID3v2
+            </summary>
+        </member>
+        <member name="M:TagInfoControls.GenreBox.#ctor">
+            <summary>
+            Create new GenreBox
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.GenreBox.Genre">
+            <summary>
+            Get or set Genre String of current GenreBox
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.GenreBox.GenreIndex">
+            <summary>
+            Get or Set ID3v1 GenreIndex
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.GenreBox.ID3Version">
+            <summary>
+            Gets or sets ID3 version for current GenreBox
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.GenreBox.Items">
+            <summary>
+            Items of current GenreBox
+            </summary>
+        </member>
+        <member name="P:TagInfoControls.GenreBox.Text">
+            <summary>
+            Gets or sets Genre of current box
+            </summary>
+        </member>
+        <member name="T:TagInfoControls.ControlTypes">
+            <summary>
+            Indicates diffrent mode of TextWithLanguage frames editing
+            </summary>
+        </member>
+        <member name="F:TagInfoControls.ControlTypes.UnSynchronizedLyric">
+            <summary>
+            Editing Lyric
+            </summary>
+        </member>
+        <member name="F:TagInfoControls.ControlTypes.Comment">
+            <summary>
+            Editing Comments
+            </summary>
+        </member>
+    </members>
+</doc>

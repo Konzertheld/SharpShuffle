@@ -1,0 +1,456 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{5DA0E592-C77E-4188-BE89-8FEB24C2D6B2}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TagEditor</RootNamespace>
+    <AssemblyName>TagEditor</AssemblyName>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <ManifestCertificateThumbprint>13EBB2BF425EFA7BACC107330C6C7E4B7DAF2DEC</ManifestCertificateThumbprint>
+    <ManifestKeyFile>TagEditor_TemporaryKey.pfx</ManifestKeyFile>
+    <GenerateManifests>true</GenerateManifests>
+    <SignManifests>false</SignManifests>
+    <ApplicationIcon>MainIcon.ico</ApplicationIcon>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <PublishUrl>D:\dotNET Projects\Applications\Tag Editor\Publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ProductName>Professional Tag Editor</ProductName>
+    <PublisherName>Hamed J.I</PublisherName>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>2.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FilterTextBox, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Controls\FilterTextBox 2.0\FilterTextBox\bin\Release\FilterTextBox.dll</HintPath>
+    </Reference>
+    <Reference Include="HexBox, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Controls\HexBox\HexBox\bin\Release\HexBox.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.Services, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Windows\assembly\GAC_MSIL\System.Web.Services\2.0.0.0__b03f5f7f11d50a3a\System.Web.Services.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Agreement.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Agreement.Designer.cs">
+      <DependentUpon>Agreement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ExceptionDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ExceptionDialog.Designer.cs">
+      <DependentUpon>ExceptionDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Other Dialogs\AboutDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Other Dialogs\AboutDialog.Designer.cs">
+      <DependentUpon>AboutDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Other Dialogs\EditFormula.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Other Dialogs\EditFormula.Designer.cs">
+      <DependentUpon>EditFormula.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Other Dialogs\SaveFiles.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Other Dialogs\SaveFiles.Designer.cs">
+      <DependentUpon>SaveFiles.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\Settings.cs" />
+    <Compile Include="Splash.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Splash.Designer.cs">
+      <DependentUpon>Splash.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tag Forms\aIdentifier.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tag Forms\aIdentifier.Designer.cs">
+      <DependentUpon>aIdentifier.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tag Forms\aPicture.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tag Forms\aPicture.Designer.cs">
+      <DependentUpon>aPicture.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tag Forms\aTextInformation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tag Forms\aTextInformation.Designer.cs">
+      <DependentUpon>aTextInformation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tag Forms\aSimpleText.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tag Forms\aSimpleText.Designer.cs">
+      <DependentUpon>aSimpleText.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Columns\ColumnsCollection.cs" />
+    <Compile Include="Columns\frmColumnSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Columns\frmColumnSetting.Designer.cs">
+      <DependentUpon>frmColumnSetting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Other Dialogs\SelectFolder.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Other Dialogs\SelectFolder.Designer.cs">
+      <DependentUpon>SelectFolder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="sM3U.cs" />
+    <Compile Include="Tag Forms\iPictures.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tag Forms\iPictures.Designer.cs">
+      <DependentUpon>iPictures.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tag Forms\iLyric.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tag Forms\iLyric.Designer.cs">
+      <DependentUpon>iLyric.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tag Forms\iSelling.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tag Forms\iSelling.Designer.cs">
+      <DependentUpon>iSelling.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tag Forms\iPopularimeter.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tag Forms\iPopularimeter.Designer.cs">
+      <DependentUpon>iPopularimeter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tag Forms\iIdentifiers.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tag Forms\iIdentifiers.Designer.cs">
+      <DependentUpon>iIdentifiers.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tag Forms\iComments.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tag Forms\iComments.Designer.cs">
+      <DependentUpon>iComments.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tag Forms\iFiles.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tag Forms\iFiles.Designer.cs">
+      <DependentUpon>iFiles.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tag Forms\iTextInformation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tag Forms\iTextInformation.Designer.cs">
+      <DependentUpon>iTextInformation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tag Forms\frmBase.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tag Forms\frmBase.Designer.cs">
+      <DependentUpon>frmBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MainDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainDialog.Designer.cs">
+      <DependentUpon>MainDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Columns\ListColumn.cs" />
+    <Compile Include="Tag Forms\iGeneral.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tag Forms\iGeneral.Designer.cs">
+      <DependentUpon>iGeneral.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Agreement.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>Agreement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ExceptionDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ExceptionDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Other Dialogs\AboutDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AboutDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Columns\frmColumnSetting.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmColumnSetting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Other Dialogs\EditFormula.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>EditFormula.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Other Dialogs\SaveFiles.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SaveFiles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Other Dialogs\SelectFolder.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SelectFolder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Splash.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>Splash.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tag Forms\aPicture.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>aPicture.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tag Forms\aIdentifier.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>aIdentifier.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tag Forms\aSimpleText.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>aSimpleText.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tag Forms\aTextInformation.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>aTextInformation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tag Forms\iLyric.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>iLyric.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tag Forms\iPictures.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>iPictures.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tag Forms\iPopularimeter.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>iPopularimeter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tag Forms\iIdentifiers.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>iIdentifiers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tag Forms\iComments.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>iComments.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tag Forms\iFiles.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>iFiles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tag Forms\iSelling.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>iSelling.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tag Forms\iTextInformation.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>iTextInformation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tag Forms\frmBase.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmBase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MainDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tag Forms\iGeneral.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>iGeneral.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\TagSummary.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>TagSummary.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Templates\frmSelectTemplate.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmSelectTemplate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Templates\frmSetTemplate.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmSetTemplate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Templates\TemplateManager.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>TemplateManager.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Other Dialogs\TrackNumberModeDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>TrackNumberModeDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Controls\TagSummary.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\TagSummary.Designer.cs">
+      <DependentUpon>TagSummary.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\frmSelectTemplate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Templates\frmSelectTemplate.Designer.cs">
+      <DependentUpon>frmSelectTemplate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\frmSetTemplate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Templates\frmSetTemplate.Designer.cs">
+      <DependentUpon>frmSetTemplate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Template.cs" />
+    <Compile Include="Templates\sTemplateCollection.cs" />
+    <Compile Include="Templates\TemplateManager.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Templates\TemplateManager.Designer.cs">
+      <DependentUpon>TemplateManager.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Other Dialogs\TrackNumberModeDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Other Dialogs\TrackNumberModeDialog.Designer.cs">
+      <DependentUpon>TrackNumberModeDialog.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TagClass\TagClass\Tag.csproj">
+      <Project>{5D66099A-A8C5-47AB-B230-C9B60DFC1B40}</Project>
+      <Name>Tag</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TagInfoControls\TagInfoControls.csproj">
+      <Project>{1F089C14-9588-48A3-B2C4-C0433E18F00F}</Project>
+      <Name>TagInfoControls</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Icon_132.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MP3Columns.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\WMAColumns.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Control_FolderBrowserDialog.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ClearAll.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SaveAllHS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Resources\save.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+    <None Include="Resources\Reload.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="TODO.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="MainIcon.ico" />
+    <None Include="Resources\id3v2.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

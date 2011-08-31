@@ -1,0 +1,6 @@
+D:\Programmieren\Projekte\Professional Tag Editor (Codeproject)\TagClass\TagClass\bin\Release\Tags.XML
+D:\Programmieren\Projekte\Professional Tag Editor (Codeproject)\TagClass\TagClass\bin\Release\Tags.dll
+D:\Programmieren\Projekte\Professional Tag Editor (Codeproject)\TagClass\TagClass\bin\Release\Tags.pdb
+D:\Programmieren\Projekte\Professional Tag Editor (Codeproject)\TagClass\TagClass\obj\Release\ResolveAssemblyReference.cache
+D:\Programmieren\Projekte\Professional Tag Editor (Codeproject)\TagClass\TagClass\obj\Release\Tags.dll
+D:\Programmieren\Projekte\Professional Tag Editor (Codeproject)\TagClass\TagClass\obj\Release\Tags.pdb
