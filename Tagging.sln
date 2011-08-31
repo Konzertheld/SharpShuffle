@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tag", "Professional Tag Editor (Codeproject)\TagClass\TagClass\Tag.csproj", "{5D66099A-A8C5-47AB-B230-C9B60DFC1B40}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lastfm-sharp", "SharpFM\lastfm-sharp\lastfm-sharp.csproj", "{91E7DBDB-431C-432F-8430-8A1E564B43DD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThePlayer", "ThePlayer\ThePlayer.csproj", "{8C95A856-FC6B-4701-B901-7EE8A089AD3B}"
@@ -10,6 +8,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TagLibSharp", "TagLibSharp\TagLibSharp.csproj", "{A3FA28A7-D170-4066-A234-F5E5BD643BAE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThePlayer (WF)", "ThePlayer (WF)\ThePlayer (WF).csproj", "{0FB351FC-09AD-4AB0-894F-41434DDC4A4A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6089FCAA-552B-44B1-A1A1-08A3E4CB0062}"
+	ProjectSection(SolutionItems) = preProject
+		Nächste Schritte.txt = Nächste Schritte.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,16 +24,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5D66099A-A8C5-47AB-B230-C9B60DFC1B40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5D66099A-A8C5-47AB-B230-C9B60DFC1B40}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5D66099A-A8C5-47AB-B230-C9B60DFC1B40}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{5D66099A-A8C5-47AB-B230-C9B60DFC1B40}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{5D66099A-A8C5-47AB-B230-C9B60DFC1B40}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{5D66099A-A8C5-47AB-B230-C9B60DFC1B40}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5D66099A-A8C5-47AB-B230-C9B60DFC1B40}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5D66099A-A8C5-47AB-B230-C9B60DFC1B40}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{5D66099A-A8C5-47AB-B230-C9B60DFC1B40}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{5D66099A-A8C5-47AB-B230-C9B60DFC1B40}.Release|x86.ActiveCfg = Release|Any CPU
 		{91E7DBDB-431C-432F-8430-8A1E564B43DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{91E7DBDB-431C-432F-8430-8A1E564B43DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{91E7DBDB-431C-432F-8430-8A1E564B43DD}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU

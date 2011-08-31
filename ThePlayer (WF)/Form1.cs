@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace ThePlayer__WF_
+namespace ThePlayer
 {
     public partial class Form1 : Form
     {

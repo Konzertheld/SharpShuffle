@@ -1,4 +1,4 @@
-﻿namespace ThePlayer__WF_
+﻿namespace ThePlayer
 {
     partial class Form1
     {
