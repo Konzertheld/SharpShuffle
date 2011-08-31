@@ -107,10 +107,6 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Professional Tag Editor %28Codeproject%29\TagClass\TagClass\Tag.csproj">
-      <Project>{5D66099A-A8C5-47AB-B230-C9B60DFC1B40}</Project>
-      <Name>Tag</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SharpFM\lastfm-sharp\lastfm-sharp.csproj">
       <Project>{91E7DBDB-431C-432F-8430-8A1E564B43DD}</Project>
       <Name>lastfm-sharp</Name>

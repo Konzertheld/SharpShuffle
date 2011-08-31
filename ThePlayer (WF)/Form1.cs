@@ -22,11 +22,13 @@ namespace ThePlayer__WF_
         private void Form1_Load(object sender, EventArgs e)
         {
             vlcalt.addTarget(@"E:\Musik\Endsortierung\Blur - Song 2.mp3", null, AXVLC.VLCPlaylistMode.VLCPlayListAppend, 0);
-            vlcalt.addTarget(@"E:\Musik\Endsortierung\John Farnham - Youre The Voice.mp3", null, AXVLC.VLCPlaylistMode.VLCPlayListAppend, 0);
+            vlcalt.addTarget(@"E:\Musik\Endsortierung\John Farnham - Youre The Voice.mp3", null, AXVLC.VLCPlaylistMode.VLCPlayListReplace, 0);
             vlcalt.Volume = 100;
             vlcalt.play();
+
             vlcalt.MediaPlayerPositionChanged += new AxAXVLC.DVLCEvents_MediaPlayerPositionChangedEventHandler(vlcalt_MediaPlayerPositionChanged);
-            //this.BOOM += new BoomHandler(Form1_BOOM);
+
+
 
         }
 
