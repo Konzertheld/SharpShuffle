@@ -39,6 +39,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -60,6 +61,7 @@
     <Compile Include="Audiofilepool.cs" />
     <Compile Include="GlobalConfig.cs" />
     <Compile Include="OggReader.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="Scrobbel.cs" />
     <Compile Include="Song.cs" />
     <Compile Include="Stuff.cs" />
@@ -112,6 +114,10 @@
     <ProjectReference Include="..\SharpFM\lastfm-sharp\lastfm-sharp.csproj">
       <Project>{91E7DBDB-431C-432F-8430-8A1E564B43DD}</Project>
       <Name>lastfm-sharp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TagLibSharp\TagLibSharp.csproj">
+      <Project>{A3FA28A7-D170-4066-A234-F5E5BD643BAE}</Project>
+      <Name>TagLibSharp</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -14,7 +14,8 @@ namespace ThePlayer
         public Audiofilepool(string path)
         {
             audiofiles = new List<Audiofile>();
-            string[] files = (string[])Directory.GetFiles(path);
+            //TODO: Make this chosable
+            string[] files = (string[])Directory.GetFiles(path,"*",SearchOption.AllDirectories);
 
             foreach (string file in files)
             {
@@ -23,6 +24,11 @@ namespace ThePlayer
                     audiofiles.Add(new Audiofile(file));
                 }
             }
+        }
+
+        public List<Audiofile> getAudiofiles()
+        {
+            return audiofiles;
         }
 
         public Songpool createSongpool()

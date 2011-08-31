@@ -38,29 +38,15 @@ namespace ThePlayer
         /// </summary>
         public void ReadTags()
         {
-            ITagInfo info;
-            switch (Path.GetExtension(this.Filepath))
-            {
-                case ".mp3":
-                    info = new Tags.ID3.ID3Info(this.Filepath, true);
-                    foreach (Tags.ID3.ID3v2Frames.TextFrames.TextFrame frame in ((Tags.ID3.ID3Info)info).ID3v2Info.TextFrames)
-                        Track.setInformation(Song.getField(frame.FrameID), frame.Text);
-                    break;
-                case ".wma":
-                case ".asf":
-                    info = new Tags.ASF.ASFTagInfo(this.Filepath, true);
-                    foreach (Tags.Objects.Descriptor crap in ((Tags.ASF.ASFTagInfo)info).ExContentDescription)
-                        if (crap != null) Track.setInformation(Song.getField(crap.Name), crap.Value.ToString());
-                    break;
-                case ".flac":
-                case ".ogg":
-                    OggReader ogginfo = new OggReader(this.Filepath);
-                    foreach (KeyValuePair<string, string> tag in ogginfo.AllTheInformation)
-                        Track.setInformation(Song.getField(tag.Key), tag.Value);
-                    break;
-                default:
-                    throw new Exception("Not a supported format or not an audio file");
-            }
+            //TODO: Include more tags
+            //TODO: Include all artists, genres...
+            TagLib.File f = TagLib.File.Create(this.Filepath);
+            if (f.Tag.Performers.Count() > 0)
+                Track.setInformation("Artist", f.Tag.Performers[0]);
+            Track.setInformation("Title", f.Tag.Title);
+            Track.setInformation("Album", f.Tag.Album);
+            if (f.Tag.Genres.Count() > 0)
+                Track.setInformation("Genre", f.Tag.Genres[0]);
         }
 
 

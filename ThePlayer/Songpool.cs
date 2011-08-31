@@ -55,6 +55,28 @@ namespace ThePlayer
                 return new Songpool(results);
         }
 
+        /// <summary>
+        /// Get a list of artists, genres, whatever.
+        /// </summary>
+        /// <param name="identifier"></param>
+        /// <returns></returns>
+        public List<string> getList(string identifier)
+        {
+            List<string> result = new List<string>();
+            foreach (Song song in _songs)
+            {
+                if(song.getInformation(identifier) != "" && !result.Contains(song.getInformation(identifier)))
+                    result.Add(song.getInformation(identifier));
+            }
+            result = result.OrderBy(song => song).ToList();
+            return result;
+        }
+
+        /// <summary>
+        /// Add songs here to avoid duplicates.
+        /// </summary>
+        /// <param name="song"></param>
+        /// <returns></returns>
         public bool AddSong(Song song)
         {
             if (!_songs.Contains(song)) _songs.Add(song);
@@ -63,7 +85,7 @@ namespace ThePlayer
         }
 
         /// <summary>
-        /// Check if a song matches a filter.
+        /// Helpermethod: Check if a song matches a filter.
         /// </summary>
         /// <param name="filter"></param>
         /// <param name="song"></param>

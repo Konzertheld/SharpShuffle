@@ -12,7 +12,7 @@ namespace ThePlayer
 
         #region Static stuff
         private static string[] allowedFields = { "Artist", "Title", "Album", "Genre" };
-
+        
         //TODO: Übersetzungs-Dictionarys von allen Tagtypen zu meinen Fields bauen
         private static Dictionary<string, string> _id3Fields = new Dictionary<string, string> { { "COMM", "Comment" }, { "PCNT", "Tag-Playcount" }, { "POPM", "Tag-Rating" }, { "RVAD", "Tag-Volume" }, { "TALB", "Album" }, { "TBPM", "BPM" }, { "TCOM", "Composer" }, { "TCON", "Genre" }, { "TDAT", "Date" }, { "TENC", "Encoder" }, { "TIT1", "Contentgroup" }, { "TIT2", "Title" }, { "TIT3", "Subtitle" }, { "TLAN", "Language" }, { "TLEN", "Tag-Length" }, { "TPE1", "Artist" }, { "TPE2", "Artist2" }, { "TPE3", "Artist3" }, { "TPE4", "ModifiedBy" }, { "TPUB", "Publisher" }, { "TRCK", "TrackNr" }, { "TRDA", "Recording date" }, { "TYER", "Year" }, { "TXXX", "User defined" }, { "USER", "License" }, { "WCOP", "Copyright" } };
 

@@ -1,5 +1,0 @@
-Support Multiple Mode For Commercial
-add Try block for reading and saving Language in TextWithLanguageBox [OK]
-Test png with file control
-Add static function to ID3v1 and ID3v2 for removing ID3
-Check TagStream.StringLength to work better and take better arguments [OK]

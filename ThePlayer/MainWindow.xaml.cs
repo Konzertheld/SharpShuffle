@@ -21,9 +21,14 @@ namespace ThePlayer
     /// </summary>
     public partial class MainWindow : Window
     {
+        //TODO: WPF Shit. Where should this be stored?
+        Player p;
+        Audiofilepool afp;
+
         public MainWindow()
         {
             InitializeComponent();
+            p = new Player();
         }
 
         private void AddSongsFromFolder(object sender, RoutedEventArgs e)
@@ -31,11 +36,19 @@ namespace ThePlayer
             FolderBrowserDialog fbd = new FolderBrowserDialog();
             fbd.ShowNewFolderButton = false;
             fbd.ShowDialog();
-            Audiofilepool afp = new Audiofilepool(fbd.SelectedPath);
-            foreach (Song song in afp.createSongpool().getSongs())
-            {
-                textBox1.Text += song.getInformation("Artist") + " - " + song.getInformation("Title") + "\n";
-            }
+            afp = new Audiofilepool(fbd.SelectedPath);
+            p.Playlist = afp.createSongpool();
         }
+        
+        private void btnPlay_Click(object sender, RoutedEventArgs e)
+        {
+        
+        }
+
+        
+
+
+
+
     }
 }
