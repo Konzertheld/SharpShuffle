@@ -76,7 +76,7 @@ namespace ThePlayer
 
         void Events_TimeChanged(object sender, Declarations.Events.MediaPlayerTimeChanged e)
         {
-            PositionChanged(e.NewTime / vlc.Length);
+            PositionChanged((double)e.NewTime / vlc.Length);
         }
 
         void Events_MediaEnded(object sender, EventArgs e)
@@ -127,7 +127,7 @@ namespace ThePlayer
         {
             if (song == null)
             {
-                if (PlaylistEnded != null) PlaylistEnded();
+                raisePlaylistEnded();
                 return;
             }
             Stop();
@@ -140,7 +140,10 @@ namespace ThePlayer
                 isPlaying = true;
             }
             else
+            {
+                isPlaying = false;
                 throw new System.IO.FileNotFoundException("Der abzuspielende Song wurde nicht gefunden.", temp);
+            }
         }
 
         public void PlayPause()
@@ -152,12 +155,8 @@ namespace ThePlayer
 
         public void Stop()
         {
-            try
-            {
-                if (vlc.IsPlaying)
-                    vlc.Stop();
-            }
-            catch (Exception E) { }
+            if (vlc.IsPlaying)
+                vlc.Stop();
             isPlaying = false;
         }
 
@@ -186,8 +185,10 @@ namespace ThePlayer
             return "";
         }
 
-        #region Re-Implentations that do nothing
-
-        #endregion
+        private void raisePlaylistEnded()
+        {
+            isPlaying = false;
+            if (PlaylistEnded != null) PlaylistEnded();
+        }
     }
 }
