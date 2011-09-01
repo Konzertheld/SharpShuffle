@@ -6,6 +6,7 @@ using System.Text;
 
 namespace ThePlayer
 {
+    [Serializable]
     class Audiofilepool
     {
         public string Basepath { get; set; }
@@ -14,7 +15,8 @@ namespace ThePlayer
         public Audiofilepool(string path)
         {
             audiofiles = new List<Audiofile>();
-            //TODO: Make this chosable
+            //TODO: Make subdirs chosable
+            Basepath = path;
             string[] files = (string[])Directory.GetFiles(path,"*",SearchOption.AllDirectories);
 
             foreach (string file in files)

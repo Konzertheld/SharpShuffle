@@ -1,6 +1,6 @@
 ﻿namespace ThePlayer
 {
-    partial class Form1
+    partial class Mainform
     {
         /// <summary>
         /// Erforderliche Designervariable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Mainform));
             this.vlcalt = new AxAXVLC.AxVLCPlugin();
             this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
@@ -39,6 +39,8 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.dateiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.songsAusOrdnerHinzufügenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.lsvSongpools = new System.Windows.Forms.ListView();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             ((System.ComponentModel.ISupportInitialize)(this.vlcalt)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -125,20 +127,38 @@
             this.dateiToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.songsAusOrdnerHinzufügenToolStripMenuItem});
             this.dateiToolStripMenuItem.Name = "dateiToolStripMenuItem";
-            this.dateiToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
-            this.dateiToolStripMenuItem.Text = "Datei";
+            this.dateiToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
+            this.dateiToolStripMenuItem.Text = "Medien";
             // 
             // songsAusOrdnerHinzufügenToolStripMenuItem
             // 
             this.songsAusOrdnerHinzufügenToolStripMenuItem.Name = "songsAusOrdnerHinzufügenToolStripMenuItem";
-            this.songsAusOrdnerHinzufügenToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
-            this.songsAusOrdnerHinzufügenToolStripMenuItem.Text = "Songs aus Ordner hinzufügen";
+            this.songsAusOrdnerHinzufügenToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.songsAusOrdnerHinzufügenToolStripMenuItem.Text = "Ordner hinzufügen";
+            this.songsAusOrdnerHinzufügenToolStripMenuItem.Click += new System.EventHandler(this.songsAusOrdnerHinzufügenToolStripMenuItem_Click);
             // 
-            // Form1
+            // lsvSongpools
+            // 
+            this.lsvSongpools.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1});
+            this.lsvSongpools.Location = new System.Drawing.Point(772, 95);
+            this.lsvSongpools.Name = "lsvSongpools";
+            this.lsvSongpools.Size = new System.Drawing.Size(261, 401);
+            this.lsvSongpools.TabIndex = 10;
+            this.lsvSongpools.UseCompatibleStateImageBehavior = false;
+            this.lsvSongpools.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "Poolname";
+            this.columnHeader1.Width = 257;
+            // 
+            // Mainform
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1071, 697);
+            this.Controls.Add(this.lsvSongpools);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.button4);
@@ -147,7 +167,7 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.vlcalt);
-            this.Name = "Form1";
+            this.Name = "Mainform";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.vlcalt)).EndInit();
@@ -170,6 +190,8 @@
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem dateiToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem songsAusOrdnerHinzufügenToolStripMenuItem;
+        private System.Windows.Forms.ListView lsvSongpools;
+        private System.Windows.Forms.ColumnHeader columnHeader1;
     }
 }
 

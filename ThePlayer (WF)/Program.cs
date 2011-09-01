@@ -25,13 +25,15 @@ namespace ThePlayer
         static void Main()
         {
             //TODO: Load instead of create config
-            GlobalConfig = new Config();
-            GlobalConfig.Appdatapath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + Application.ProductName;
+            GlobalConfig = Config.Load(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + System.Windows.Forms.Application.ProductName);
+            if (GlobalConfig == null)
+                GlobalConfig = new Config();
             if (!Directory.Exists(GlobalConfig.Appdatapath)) Directory.CreateDirectory(GlobalConfig.Appdatapath);
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            
+            Application.Run(new Mainform());
         }
     }
 }

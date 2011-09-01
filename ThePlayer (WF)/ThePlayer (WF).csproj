@@ -49,12 +49,18 @@
   <ItemGroup>
     <Compile Include="Audiofile.cs" />
     <Compile Include="Audiofilepool.cs" />
-    <Compile Include="Compare.cs" />
-    <Compile Include="Form1.cs">
+    <Compile Include="Audiofilepoolmanager.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Audiofilepoolmanager.Designer.cs">
+      <DependentUpon>Audiofilepoolmanager.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Compare.cs" />
+    <Compile Include="Mainform.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Mainform.Designer.cs">
+      <DependentUpon>Mainform.cs</DependentUpon>
     </Compile>
     <Compile Include="GlobalConfig.cs" />
     <Compile Include="Player.cs" />
@@ -64,8 +70,11 @@
     <Compile Include="Song.cs" />
     <Compile Include="Songpool.cs" />
     <Compile Include="Stuff.cs" />
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="Audiofilepoolmanager.resx">
+      <DependentUpon>Audiofilepoolmanager.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Mainform.resx">
+      <DependentUpon>Mainform.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
