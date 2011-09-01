@@ -11,9 +11,6 @@ namespace ThePlayer
 {
     public partial class Mainform : Form
     {
-
-        delegate MethodInvoker bang(string zeugs);
-
         public Mainform()
         {
             InitializeComponent();
