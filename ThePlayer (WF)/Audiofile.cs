@@ -38,11 +38,11 @@ namespace ThePlayer
             //TODO: Include all artists, genres...
             TagLib.File f = TagLib.File.Create(this.Filepath);
             if (f.Tag.Performers.Count() > 0)
-                Track.setInformation("Artist", f.Tag.Performers[0]);
-            Track.setInformation("Title", f.Tag.Title);
-            Track.setInformation("Album", f.Tag.Album);
+                Track.setInformation(META_IDENTIFIERS.Artist, f.Tag.Performers[0]);
+            Track.setInformation(META_IDENTIFIERS.Title, f.Tag.Title);
+            Track.setInformation(META_IDENTIFIERS.Album, f.Tag.Album);
             if (f.Tag.Genres.Count() > 0)
-                Track.setInformation("Genre", f.Tag.Genres[0]);
+                Track.setInformation(META_IDENTIFIERS.Genre, f.Tag.Genres[0]);
         }
 
 

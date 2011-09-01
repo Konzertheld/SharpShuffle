@@ -8,11 +8,9 @@ namespace ThePlayer
     [Serializable]
     public class Song
     {
-        private Dictionary<string, string> _allTheInformation;
+        private Dictionary<META_IDENTIFIERS, string> _allTheInformation;
 
         #region Static stuff
-        private static string[] allowedFields = { "Artist", "Title", "Album", "Genre" };
-
         //TODO: Übersetzungs-Dictionarys von allen Tagtypen zu meinen Fields bauen
         private static Dictionary<string, string> _id3Fields = new Dictionary<string, string> { { "COMM", "Comment" }, { "PCNT", "Tag-Playcount" }, { "POPM", "Tag-Rating" }, { "RVAD", "Tag-Volume" }, { "TALB", "Album" }, { "TBPM", "BPM" }, { "TCOM", "Composer" }, { "TCON", "Genre" }, { "TDAT", "Date" }, { "TENC", "Encoder" }, { "TIT1", "Contentgroup" }, { "TIT2", "Title" }, { "TIT3", "Subtitle" }, { "TLAN", "Language" }, { "TLEN", "Tag-Length" }, { "TPE1", "Artist" }, { "TPE2", "Artist2" }, { "TPE3", "Artist3" }, { "TPE4", "ModifiedBy" }, { "TPUB", "Publisher" }, { "TRCK", "TrackNr" }, { "TRDA", "Recording date" }, { "TYER", "Year" }, { "TXXX", "User defined" }, { "USER", "License" }, { "WCOP", "Copyright" } };
 
@@ -36,7 +34,7 @@ namespace ThePlayer
 
         public Song()
         {
-            _allTheInformation = new Dictionary<string, string>();
+            _allTheInformation = new Dictionary<META_IDENTIFIERS, string>();
         }
 
 
@@ -45,7 +43,7 @@ namespace ThePlayer
         /// </summary>
         /// <param name="identifier"></param>
         /// <returns></returns>
-        public string getInformation(string identifier)
+        public string getInformation(META_IDENTIFIERS identifier)
         {
             if (_allTheInformation.ContainsKey(identifier)) return _allTheInformation[identifier];
             else return "";
@@ -57,11 +55,8 @@ namespace ThePlayer
         /// <param name="identifier"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public bool setInformation(string identifier, string value)
+        public bool setInformation(META_IDENTIFIERS identifier, string value)
         {
-            if (!allowedFields.Contains(identifier))
-                return false;
-
             if (_allTheInformation.ContainsKey(identifier))
                 _allTheInformation[identifier] = value;
             else
@@ -72,7 +67,33 @@ namespace ThePlayer
         public override string ToString()
         {
             //TODO: Let the user choose
-            return string.Format("{1} - {2}", this.getInformation("Artist"), this.getInformation("Title"));
+            return string.Format("{1} - {2}", this.getInformation(META_IDENTIFIERS.Artist), this.getInformation(META_IDENTIFIERS.Title));
+        }
+    }
+
+    public class SongComparer : IComparer<Song>
+    {
+        private List<META_IDENTIFIERS> _orderby;
+
+        public SongComparer()
+        {
+            _orderby = new List<META_IDENTIFIERS>();
+            _orderby.Add(META_IDENTIFIERS.Artist);
+        }
+        public SongComparer(IEnumerable<META_IDENTIFIERS> orderby)
+        {
+            _orderby = new List<META_IDENTIFIERS>(orderby);
+        }
+
+        public int Compare(Song a, Song b)
+        {
+            foreach (META_IDENTIFIERS identifier in _orderby)
+            {
+                int test = String.Compare(a.getInformation(identifier), b.getInformation(identifier));
+                if (test != 0)
+                    return test;
+            }
+            return 0;
         }
     }
 }

@@ -10,6 +10,7 @@ namespace ThePlayer
     {
         private List<Song> _songs;
 
+        #region Konstruktoren
         public Songpool()
         {
             _songs = new List<Song>();
@@ -18,59 +19,7 @@ namespace ThePlayer
         {
             _songs = new List<Song>(songs);
         }
-
-        public List<Song> getSongs()
-        {
-            return _songs;
-        }
-
-        public Songpool findSongs(MP_Filter filter)
-        {
-            List<MP_Filter> filters = new List<MP_Filter>();
-            filters.Add(filter);
-            return findSongs(filters);
-        }
-        public Songpool findSongs(List<MP_Filter> filters)
-        {
-            return findSongs(filters, this, true);
-        }
-
-        /// <summary>
-        /// The actual recursive incremental search. Filters until no more filters are left.
-        /// </summary>
-        /// <param name="filters"></param>
-        /// <param name="songs"></param>
-        /// <returns></returns>
-        private Songpool findSongs(List<MP_Filter> filters, Songpool songs, bool ignorecase)
-        {
-            var results = from song in songs.getSongs()
-                          where CheckSong(filters[0], song, ignorecase)
-                          select song;
-            if (filters.Count > 1)
-            {
-                filters.RemoveAt(0);
-                return findSongs(filters, new Songpool(results), ignorecase);
-            }
-            else
-                return new Songpool(results);
-        }
-
-        /// <summary>
-        /// Get a list of artists, genres, whatever.
-        /// </summary>
-        /// <param name="identifier"></param>
-        /// <returns></returns>
-        public List<string> getList(string identifier)
-        {
-            List<string> result = new List<string>();
-            foreach (Song song in _songs)
-            {
-                if(song.getInformation(identifier) != "" && !result.Contains(song.getInformation(identifier)))
-                    result.Add(song.getInformation(identifier));
-            }
-            result = result.OrderBy(song => song).ToList();
-            return result;
-        }
+        #endregion
 
         /// <summary>
         /// Add songs here to avoid duplicates.
@@ -83,6 +32,112 @@ namespace ThePlayer
             else return false;
             return true;
         }
+
+        /// <summary>
+        /// Get a list of songs from this pool, not filtered, not ordered, ignoring the case. Just get it.
+        /// </summary>
+        /// <returns></returns>
+        public List<Song> getSongs()
+        {
+            return _songs;
+        }
+
+        /// <summary>
+        /// Get a list of songs from this pool, not ordered, ignoring the case.
+        /// </summary>
+        /// <param name="filters">Filters to match.</param>
+        /// <returns></returns>
+        public List<Song> getSongs(List<MP_Filter> filters)
+        {
+            return getSongs(filters, true);
+        }
+        /// <summary>
+        /// Get a filtered list of songs from this pool, not ordered.
+        /// </summary>
+        /// <param name="filters">Filters to match.</param>
+        /// <returns></returns>
+        public List<Song> getSongs(List<MP_Filter> filters, bool ignorecase)
+        {
+            return getSongs(filters, _songs, new List<META_IDENTIFIERS>(), ignorecase);
+        }
+        /// <summary>
+        /// Get an ordered list of songs from this pool, not filtered, ignoring the case.
+        /// </summary>
+        /// <param name="orderby">A list of meta identifiers to order by (in the order of appearance).</param>
+        /// <returns></returns>
+        public List<Song> getSongs(List<META_IDENTIFIERS> orderby)
+        {
+            return getSongs(orderby, true);
+        }
+        /// <summary>
+        /// Get an ordered list of songs from this pool, not filtered.
+        /// </summary>
+        /// <param name="orderby">A list of meta identifiers to order by (in the order of appearance).</param>
+        /// <returns></returns>
+        public List<Song> getSongs(List<META_IDENTIFIERS> orderby, bool ignorecase)
+        {
+            return getSongs(new List<MP_Filter>(), _songs, orderby, ignorecase);
+        }
+        /// <summary>
+        /// Get a list of songs from this pool, ignoring the case.
+        /// </summary>
+        /// <param name="filters">Filters to match.</param>
+        /// <param name="orderby">A list of meta identifiers to order by (in the order of appearance).</param>
+        /// <returns></returns>
+        public List<Song> getSongs(List<MP_Filter> filters, List<META_IDENTIFIERS> orderby)
+        {
+            return getSongs(filters, orderby, true);
+        }
+        /// <summary>
+        /// Get a list of songs from this pool.
+        /// </summary>
+        /// <param name="filters">Filters to match.</param>
+        /// <param name="orderby">A list of meta identifiers to order by (in the order of appearance).</param>
+        /// <returns></returns>
+        public List<Song> getSongs(List<MP_Filter> filters, List<META_IDENTIFIERS> orderby, bool ignorecase)
+        {
+            return getSongs(filters, _songs, new List<META_IDENTIFIERS>(), ignorecase);
+        }
+        /// <summary>
+        /// Get a list of songs.
+        /// </summary>
+        /// <param name="filters">Filters to match.</param>
+        /// <param name="songs">Songs to search in.</param>
+        /// <param name="orderby">A list of meta identifiers to order by (in the order of appearance).</param>
+        /// <returns></returns>
+        public List<Song> getSongs(List<MP_Filter> filters, List<Song> songs, List<META_IDENTIFIERS> orderby, bool ignorecase)
+        {
+            var results = songs
+                          .Where(song => CheckSong(filters[0], song, ignorecase))
+                          .OrderBy(song => song, new SongComparer(orderby))
+                          .Select(song => song);
+            if (filters.Count > 1)
+            {
+                filters.RemoveAt(0);
+                return getSongs(filters, new List<Song>(results), orderby, ignorecase);
+            }
+            else
+                return new List<Song>(results);
+        }
+
+        /// <summary>
+        /// Get a list of artists, genres, whatever.
+        /// </summary>
+        /// <param name="identifier"></param>
+        /// <returns></returns>
+        public List<string> getList(META_IDENTIFIERS identifier)
+        {
+            List<string> result = new List<string>();
+            foreach (Song song in _songs)
+            {
+                if(song.getInformation(identifier) != "" && !result.Contains(song.getInformation(identifier)))
+                    result.Add(song.getInformation(identifier));
+            }
+            result = result.OrderBy(song => song).ToList();
+            return result;
+        }
+
+
 
         /// <summary>
         /// Helpermethod: Check if a song matches a filter.

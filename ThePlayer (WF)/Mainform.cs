@@ -25,9 +25,9 @@ namespace ThePlayer
             Program.ActivePlayer.PositionChanged += new PlayerPositionChangedHandler(ActivePlayer_PositionChanged);
 
             // Load songview columns
-            foreach (string col in Program.GlobalConfig.CurrentSongviewColumns)
+            foreach (META_IDENTIFIERS col in Program.GlobalConfig.CurrentSongviewColumns)
             {
-                lsvCurrentSongview.Columns.Add(col);
+                lsvCurrentSongview.Columns.Add(col.ToString());
             }
         }
 
@@ -85,7 +85,7 @@ namespace ThePlayer
                 }
             }
             lsvCurrentSongview.Items.Clear();
-            foreach (Song song in Program.ActivePlayer.CurrentView.getSongs())
+            foreach (Song song in Program.ActivePlayer.CurrentView.getSongs(new List<META_IDENTIFIERS>(new META_IDENTIFIERS[1]{META_IDENTIFIERS.Artist})))
             {
                 ListViewItem lvi = new ListViewItem(song.getInformation(Program.GlobalConfig.CurrentSongviewColumns[0]));
                 for (int i = 1; i < Program.GlobalConfig.CurrentSongviewColumns.Count; i++)

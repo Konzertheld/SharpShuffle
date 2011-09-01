@@ -6,6 +6,30 @@ using System.IO;
 
 namespace ThePlayer
 {
+    //TODO: Find out if this can used like "is x element of ALLOWED_EXTENSIONS", if not, remove it
+    public enum ALLOWED_EXTENSIONS
+    {
+        aac,
+        aif,
+        aiff,
+        ape,
+        asf,
+        mp3,
+        ogg,
+        wma,
+        wav,
+        flac,
+        m4a
+    }
+
+    public enum META_IDENTIFIERS
+    {
+        Artist,
+        Title,
+        Genre,
+        Album
+    }
+
     static class Program
     {
         /// <summary>

@@ -32,7 +32,7 @@ namespace ThePlayer
         /// </summary>
         private List<string> _sourceFolders;
 
-        public List<string> CurrentSongviewColumns;
+        public List<META_IDENTIFIERS> CurrentSongviewColumns;
         #endregion
 
         #region Constructor
@@ -41,7 +41,7 @@ namespace ThePlayer
             Appdatapath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + System.Windows.Forms.Application.ProductName;
             Songpools = new Dictionary<string, Songpool>();
             Audiofilepools = new Dictionary<string, Audiofilepool>();
-            CurrentSongviewColumns = new List<string>(new string[4] { "Artist", "Title", "Genre", "Album" });
+            CurrentSongviewColumns = new List<META_IDENTIFIERS>(new META_IDENTIFIERS[4] { META_IDENTIFIERS.Artist, META_IDENTIFIERS.Title, META_IDENTIFIERS.Album, META_IDENTIFIERS.Genre });
         }
         #endregion
 

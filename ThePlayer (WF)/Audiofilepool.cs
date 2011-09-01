@@ -17,7 +17,7 @@ namespace ThePlayer
             audiofiles = new List<Audiofile>();
             //TODO: Make subdirs chosable
             Basepath = path;
-            string[] files = (string[])Directory.GetFiles(path,"*",SearchOption.AllDirectories);
+            string[] files = (string[])Directory.GetFiles(path, "*", SearchOption.AllDirectories);
 
             foreach (string file in files)
             {
