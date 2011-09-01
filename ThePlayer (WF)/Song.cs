@@ -67,13 +67,14 @@ namespace ThePlayer
         public override string ToString()
         {
             //TODO: Let the user choose
-            return string.Format("{1} - {2}", this.getInformation(META_IDENTIFIERS.Artist), this.getInformation(META_IDENTIFIERS.Title));
+            return string.Format("{0} - {1}", this.getInformation(META_IDENTIFIERS.Artist), this.getInformation(META_IDENTIFIERS.Title));
         }
     }
 
     public class SongComparer : IComparer<Song>
     {
         private List<META_IDENTIFIERS> _orderby;
+        private bool _ignorecase;
 
         public SongComparer()
         {
@@ -83,13 +84,20 @@ namespace ThePlayer
         public SongComparer(IEnumerable<META_IDENTIFIERS> orderby)
         {
             _orderby = new List<META_IDENTIFIERS>(orderby);
+            _ignorecase = true;
         }
+        public SongComparer(IEnumerable<META_IDENTIFIERS> orderby, bool ignorecase)
+            : this(orderby)
+        {
+            this._ignorecase = ignorecase;
+        }
+
 
         public int Compare(Song a, Song b)
         {
             foreach (META_IDENTIFIERS identifier in _orderby)
             {
-                int test = String.Compare(a.getInformation(identifier), b.getInformation(identifier));
+                int test = String.Compare(a.getInformation(identifier), b.getInformation(identifier), _ignorecase);
                 if (test != 0)
                     return test;
             }

@@ -35,7 +35,7 @@ namespace ThePlayer
         {
             this.Invoke((MethodInvoker)delegate
             {
-                prgSongposition.Value = (int)Math.Ceiling(position * 1000.0);
+                prgSongposition.Value = (position > 1) ? 1000 : (int)Math.Ceiling(position * 1000.0);
             });
         }
 
@@ -71,6 +71,7 @@ namespace ThePlayer
         private void songsAusOrdnerHinzufügenToolStripMenuItem_Click(object sender, EventArgs e)
         {
             new Audiofilepoolmanager().ShowDialog();
+            LoadSongpools();
         }
 
         private void lsvSongpools_SelectedIndexChanged(object sender, EventArgs e)
@@ -79,13 +80,14 @@ namespace ThePlayer
             foreach (ListViewItem item in lsvSongpools.SelectedItems)
             {
                 //TODO: Get lists for filters here (artists, genres...)
-                foreach (Song song in Program.GlobalConfig.Songpools[item.Text].getSongs())
+                foreach (Song song in Program.GlobalConfig.Songpools[item.Text].getSongs(new List<META_IDENTIFIERS>(new META_IDENTIFIERS[2] { META_IDENTIFIERS.Artist, META_IDENTIFIERS.Title })))
                 {
                     Program.ActivePlayer.CurrentView.AddSong(song);
                 }
             }
             lsvCurrentSongview.Items.Clear();
-            foreach (Song song in Program.ActivePlayer.CurrentView.getSongs(new List<META_IDENTIFIERS>(new META_IDENTIFIERS[1]{META_IDENTIFIERS.Artist})))
+            //TODO: Seriously, sorting does not belong HERE and not hardcoded for sure.
+            foreach (Song song in Program.ActivePlayer.CurrentView.getSongs(new List<META_IDENTIFIERS>(new META_IDENTIFIERS[2] { META_IDENTIFIERS.Artist, META_IDENTIFIERS.Title })))
             {
                 ListViewItem lvi = new ListViewItem(song.getInformation(Program.GlobalConfig.CurrentSongviewColumns[0]));
                 for (int i = 1; i < Program.GlobalConfig.CurrentSongviewColumns.Count; i++)

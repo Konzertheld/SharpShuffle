@@ -107,17 +107,27 @@ namespace ThePlayer
         /// <returns></returns>
         public List<Song> getSongs(List<MP_Filter> filters, List<Song> songs, List<META_IDENTIFIERS> orderby, bool ignorecase)
         {
-            var results = songs
-                          .Where(song => CheckSong(filters[0], song, ignorecase))
-                          .OrderBy(song => song, new SongComparer(orderby))
-                          .Select(song => song);
-            if (filters.Count > 1)
+            if (filters.Count > 0)
             {
-                filters.RemoveAt(0);
-                return getSongs(filters, new List<Song>(results), orderby, ignorecase);
+                var results = songs
+                              .Where(song => CheckSong(filters[0], song, ignorecase))
+                              .OrderBy(song => song, new SongComparer(orderby, ignorecase))
+                              .Select(song => song);
+                if (filters.Count > 1)
+                {
+                    filters.RemoveAt(0);
+                    return getSongs(filters, new List<Song>(results), orderby, ignorecase);
+                }
+                else
+                    return new List<Song>(results);
             }
             else
+            {
+                var results = songs
+                              .OrderBy(song => song, new SongComparer(orderby))
+                              .Select(song => song);
                 return new List<Song>(results);
+            }
         }
 
         /// <summary>
@@ -130,7 +140,7 @@ namespace ThePlayer
             List<string> result = new List<string>();
             foreach (Song song in _songs)
             {
-                if(song.getInformation(identifier) != "" && !result.Contains(song.getInformation(identifier)))
+                if (song.getInformation(identifier) != "" && !result.Contains(song.getInformation(identifier)))
                     result.Add(song.getInformation(identifier));
             }
             result = result.OrderBy(song => song).ToList();
