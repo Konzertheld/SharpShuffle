@@ -106,7 +106,7 @@ namespace ThePlayer
         private void AddSongToPlaylist(Song song)
         {
             Program.ActivePlayer.Playlist.AddSong(song);
-            lstPlaylist.Items.Add(song.getInformation("Artist") + " - " + song.getInformation("Title"));
+            lstPlaylist.Items.Add(song.ToString());
         }
 
         private void PlayPlaylist()
