@@ -21,15 +21,22 @@ namespace ThePlayer
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            vlcalt.Volume = 100;
-            vlcalt.MediaPlayerPositionChanged += new AxAXVLC.DVLCEvents_MediaPlayerPositionChangedEventHandler(vlcalt_MediaPlayerPositionChanged);
             LoadSongpools();
+            Program.ActivePlayer.PositionChanged += new PlayerPositionChangedHandler(ActivePlayer_PositionChanged);
 
             // Load songview columns
             foreach (string col in Program.GlobalConfig.CurrentSongviewColumns)
             {
                 lsvCurrentSongview.Columns.Add(col);
             }
+        }
+
+        void ActivePlayer_PositionChanged(int position)
+        {
+            this.Invoke((MethodInvoker)delegate
+            {
+                prgSongposition.Value = (int)Math.Ceiling(position * 1000.0);
+            });
         }
 
         private void LoadSongpools()
@@ -41,41 +48,24 @@ namespace ThePlayer
             }
         }
 
-
-        void vlcalt_MediaPlayerPositionChanged(object sender, AxAXVLC.DVLCEvents_MediaPlayerPositionChangedEvent e)
-        {
-            this.Invoke((MethodInvoker)delegate
-            {
-                prgSongposition.Value = (int)Math.Ceiling(vlcalt.Position * 1000);
-            });
-
-        }
-
         private void btnPlayPause_Click(object sender, EventArgs e)
         {
-            try
-            {
-                if (vlcalt.Playing)
-                    vlcalt.pause();
-                else
-                    vlcalt.play();
-            }
-            catch (Exception E) { vlcalt.play(); }
+            Program.ActivePlayer.PlayPause();
         }
 
         private void btnStop_Click(object sender, EventArgs e)
         {
-            vlcalt.stop();
+            Program.ActivePlayer.Stop();
         }
 
         private void btnNext_Click(object sender, EventArgs e)
         {
-            vlcalt.playlistNext();
+            Program.ActivePlayer.NextSong();
         }
 
         private void btnPrev_Click(object sender, EventArgs e)
         {
-            vlcalt.playlistPrev();
+            //TODO: Implement previous.
         }
 
         private void songsAusOrdnerHinzufügenToolStripMenuItem_Click(object sender, EventArgs e)
@@ -110,42 +100,22 @@ namespace ThePlayer
             {
                 AddSongToPlaylist(Program.ActivePlayer.CurrentView.getSongs()[i]);
             }
-            try
-            {
-                if (!vlcalt.Playing)
-                    vlcalt.play();
-            }
-            catch (Exception E) { vlcalt.play(); }
+            if (!Program.ActivePlayer.isPlaying) Program.ActivePlayer.PlayPlaylist();
         }
 
         private void AddSongToPlaylist(Song song)
         {
             Program.ActivePlayer.Playlist.AddSong(song);
             lstPlaylist.Items.Add(song.getInformation("Artist") + " - " + song.getInformation("Title"));
-            //TODO: Recognize all audiofile pools and let the user choose
-            vlcalt.addTarget(Program.GlobalConfig.Audiofilepools[Program.GlobalConfig.Audiofilepools.Keys.First()].findSong(song).Filepath, null, AXVLC.VLCPlaylistMode.VLCPlayListAppend, 0);
         }
 
         private void PlayPlaylist()
         {
-            try
-            {
-                vlcalt.stop();
-            }
-            catch (Exception E) { }
-            
-            vlcalt.playlistClear();
-
-            foreach (Song song in Program.ActivePlayer.Playlist.getSongs())
-            {
-                
-            }
-            vlcalt.play();
+            Program.ActivePlayer.PlayPlaylist();
         }
 
         private void leerenToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            vlcalt.playlistClear();
             Program.ActivePlayer.Playlist = new Songpool();
             lstPlaylist.Items.Clear();
         }

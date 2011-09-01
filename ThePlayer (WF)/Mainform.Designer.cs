@@ -28,8 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Mainform));
-            this.vlcalt = new AxAXVLC.AxVLCPlugin();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.dateiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.songsAusOrdnerHinzufügenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -45,18 +43,8 @@
             this.auswahlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.playlistToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.leerenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            ((System.ComponentModel.ISupportInitialize)(this.vlcalt)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // vlcalt
-            // 
-            this.vlcalt.Enabled = true;
-            this.vlcalt.Location = new System.Drawing.Point(1019, 636);
-            this.vlcalt.Name = "vlcalt";
-            this.vlcalt.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("vlcalt.OcxState")));
-            this.vlcalt.Size = new System.Drawing.Size(39, 30);
-            this.vlcalt.TabIndex = 1;
             // 
             // menuStrip1
             // 
@@ -218,11 +206,9 @@
             this.Controls.Add(this.prgSongposition);
             this.Controls.Add(this.lsvSongpools);
             this.Controls.Add(this.menuStrip1);
-            this.Controls.Add(this.vlcalt);
             this.Name = "Mainform";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.vlcalt)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -232,7 +218,6 @@
 
         #endregion
 
-        private AxAXVLC.AxVLCPlugin vlcalt;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem dateiToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem songsAusOrdnerHinzufügenToolStripMenuItem;
