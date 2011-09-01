@@ -10,6 +10,7 @@ namespace ThePlayer
     [Serializable]
     class Config
     {
+        //TODO: Split them up into config settings like song data, view settings...
         #region Attributes
         /// <summary>
         /// The path to the directory where all the data is stored (pools, settings etc).
@@ -30,6 +31,8 @@ namespace ThePlayer
         /// Folders in which the program should always look for audiofile instances of songs.
         /// </summary>
         private List<string> _sourceFolders;
+
+        public List<string> CurrentSongviewColumns;
         #endregion
 
         #region Constructor
@@ -38,6 +41,7 @@ namespace ThePlayer
             Appdatapath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + System.Windows.Forms.Application.ProductName;
             Songpools = new Dictionary<string, Songpool>();
             Audiofilepools = new Dictionary<string, Audiofilepool>();
+            CurrentSongviewColumns = new List<string>(new string[4] { "Artist", "Title", "Genre", "Album" });
         }
         #endregion
 
@@ -73,7 +77,7 @@ namespace ThePlayer
         /// </summary>
         /// <param name="Appdatapath">Path where all the data, including the config, is stored.</param>
         /// <returns></returns>
-        public static Config Load(string Appdatapath)
+        public bool Load(string Appdatapath)
         {
             BinaryFormatter bf = new BinaryFormatter();
             if (File.Exists(Appdatapath + "\\config.conf"))
@@ -81,9 +85,14 @@ namespace ThePlayer
                 FileStream fs = new FileStream(Appdatapath + "\\config.conf", FileMode.Open);
                 Config c = (Config)bf.Deserialize(fs);
                 fs.Close();
-                return c;
+                if (c.Appdatapath != null) this.Appdatapath = c.Appdatapath;
+                if (c.Audiofilepools != null) this.Audiofilepools = c.Audiofilepools;
+                if (c.CurrentSongviewColumns != null) this.CurrentSongviewColumns = c.CurrentSongviewColumns;
+                if (c.Songpools != null) this.Songpools = c.Songpools;
+                if (c._sourceFolders != null) this._sourceFolders = c._sourceFolders;
+                return true;
             }
-            else return null;
+            else return false;
         }
         #endregion
     }

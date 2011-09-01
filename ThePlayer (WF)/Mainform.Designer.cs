@@ -30,17 +30,21 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Mainform));
             this.vlcalt = new AxAXVLC.AxVLCPlugin();
-            this.label1 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.dateiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.songsAusOrdnerHinzufügenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lsvSongpools = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.prgSongposition = new System.Windows.Forms.ProgressBar();
+            this.lstPlaylist = new System.Windows.Forms.ListBox();
+            this.lsvCurrentSongview = new System.Windows.Forms.ListView();
+            this.btnPlayPause = new System.Windows.Forms.Button();
+            this.btnPrev = new System.Windows.Forms.Button();
+            this.btnNext = new System.Windows.Forms.Button();
+            this.btnStop = new System.Windows.Forms.Button();
+            this.auswahlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.playlistToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.leerenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.vlcalt)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -48,77 +52,21 @@
             // vlcalt
             // 
             this.vlcalt.Enabled = true;
-            this.vlcalt.Location = new System.Drawing.Point(378, 115);
+            this.vlcalt.Location = new System.Drawing.Point(1019, 636);
             this.vlcalt.Name = "vlcalt";
             this.vlcalt.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("vlcalt.OcxState")));
-            this.vlcalt.Size = new System.Drawing.Size(320, 240);
+            this.vlcalt.Size = new System.Drawing.Size(39, 30);
             this.vlcalt.TabIndex = 1;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(357, 269);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 13);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "label1";
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(328, 46);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(90, 33);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(178, 57);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(62, 22);
-            this.button2.TabIndex = 5;
-            this.button2.Text = "button2";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(12, 46);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 6;
-            this.button3.Text = "button3";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(97, 36);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 23);
-            this.button4.TabIndex = 7;
-            this.button4.Text = "button4";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Location = new System.Drawing.Point(12, 115);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(295, 70);
-            this.groupBox1.TabIndex = 8;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "groupBox1";
             // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.dateiToolStripMenuItem});
+            this.dateiToolStripMenuItem,
+            this.auswahlToolStripMenuItem,
+            this.playlistToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1071, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1092, 24);
             this.menuStrip1.TabIndex = 9;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -139,33 +87,137 @@
             // 
             // lsvSongpools
             // 
+            this.lsvSongpools.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.lsvSongpools.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1});
-            this.lsvSongpools.Location = new System.Drawing.Point(772, 95);
+            this.lsvSongpools.Location = new System.Drawing.Point(12, 27);
             this.lsvSongpools.Name = "lsvSongpools";
-            this.lsvSongpools.Size = new System.Drawing.Size(261, 401);
+            this.lsvSongpools.Size = new System.Drawing.Size(261, 293);
             this.lsvSongpools.TabIndex = 10;
             this.lsvSongpools.UseCompatibleStateImageBehavior = false;
             this.lsvSongpools.View = System.Windows.Forms.View.Details;
+            this.lsvSongpools.SelectedIndexChanged += new System.EventHandler(this.lsvSongpools_SelectedIndexChanged);
             // 
             // columnHeader1
             // 
             this.columnHeader1.Text = "Poolname";
             this.columnHeader1.Width = 257;
             // 
+            // prgSongposition
+            // 
+            this.prgSongposition.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.prgSongposition.Location = new System.Drawing.Point(176, 662);
+            this.prgSongposition.Maximum = 1000;
+            this.prgSongposition.Name = "prgSongposition";
+            this.prgSongposition.Size = new System.Drawing.Size(904, 25);
+            this.prgSongposition.Step = 1;
+            this.prgSongposition.TabIndex = 11;
+            // 
+            // lstPlaylist
+            // 
+            this.lstPlaylist.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lstPlaylist.FormattingEnabled = true;
+            this.lstPlaylist.Location = new System.Drawing.Point(881, 27);
+            this.lstPlaylist.Name = "lstPlaylist";
+            this.lstPlaylist.Size = new System.Drawing.Size(199, 628);
+            this.lstPlaylist.TabIndex = 12;
+            // 
+            // lsvCurrentSongview
+            // 
+            this.lsvCurrentSongview.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lsvCurrentSongview.FullRowSelect = true;
+            this.lsvCurrentSongview.Location = new System.Drawing.Point(12, 326);
+            this.lsvCurrentSongview.Name = "lsvCurrentSongview";
+            this.lsvCurrentSongview.Size = new System.Drawing.Size(863, 332);
+            this.lsvCurrentSongview.TabIndex = 13;
+            this.lsvCurrentSongview.UseCompatibleStateImageBehavior = false;
+            this.lsvCurrentSongview.View = System.Windows.Forms.View.Details;
+            this.lsvCurrentSongview.DoubleClick += new System.EventHandler(this.lsvCurrentSongview_DoubleClick);
+            // 
+            // btnPlayPause
+            // 
+            this.btnPlayPause.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnPlayPause.Location = new System.Drawing.Point(12, 662);
+            this.btnPlayPause.Name = "btnPlayPause";
+            this.btnPlayPause.Size = new System.Drawing.Size(35, 25);
+            this.btnPlayPause.TabIndex = 17;
+            this.btnPlayPause.Text = "Play/Pause";
+            this.btnPlayPause.UseVisualStyleBackColor = true;
+            this.btnPlayPause.Click += new System.EventHandler(this.btnPlayPause_Click);
+            // 
+            // btnPrev
+            // 
+            this.btnPrev.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnPrev.Location = new System.Drawing.Point(53, 662);
+            this.btnPrev.Name = "btnPrev";
+            this.btnPrev.Size = new System.Drawing.Size(35, 25);
+            this.btnPrev.TabIndex = 16;
+            this.btnPrev.Text = "Prev";
+            this.btnPrev.UseVisualStyleBackColor = true;
+            this.btnPrev.Click += new System.EventHandler(this.btnPrev_Click);
+            // 
+            // btnNext
+            // 
+            this.btnNext.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnNext.Location = new System.Drawing.Point(135, 662);
+            this.btnNext.Name = "btnNext";
+            this.btnNext.Size = new System.Drawing.Size(35, 25);
+            this.btnNext.TabIndex = 15;
+            this.btnNext.Text = "Next";
+            this.btnNext.UseVisualStyleBackColor = true;
+            this.btnNext.Click += new System.EventHandler(this.btnNext_Click);
+            // 
+            // btnStop
+            // 
+            this.btnStop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnStop.Location = new System.Drawing.Point(94, 662);
+            this.btnStop.Name = "btnStop";
+            this.btnStop.Size = new System.Drawing.Size(35, 25);
+            this.btnStop.TabIndex = 14;
+            this.btnStop.Text = "Stop";
+            this.btnStop.UseVisualStyleBackColor = true;
+            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
+            // 
+            // auswahlToolStripMenuItem
+            // 
+            this.auswahlToolStripMenuItem.Name = "auswahlToolStripMenuItem";
+            this.auswahlToolStripMenuItem.Size = new System.Drawing.Size(64, 20);
+            this.auswahlToolStripMenuItem.Text = "Auswahl";
+            // 
+            // playlistToolStripMenuItem
+            // 
+            this.playlistToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.leerenToolStripMenuItem});
+            this.playlistToolStripMenuItem.Name = "playlistToolStripMenuItem";
+            this.playlistToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
+            this.playlistToolStripMenuItem.Text = "Playlist";
+            // 
+            // leerenToolStripMenuItem
+            // 
+            this.leerenToolStripMenuItem.Name = "leerenToolStripMenuItem";
+            this.leerenToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.leerenToolStripMenuItem.Text = "Leeren";
+            this.leerenToolStripMenuItem.Click += new System.EventHandler(this.leerenToolStripMenuItem_Click);
+            // 
             // Mainform
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1071, 697);
+            this.ClientSize = new System.Drawing.Size(1092, 687);
+            this.Controls.Add(this.btnPlayPause);
+            this.Controls.Add(this.btnPrev);
+            this.Controls.Add(this.btnNext);
+            this.Controls.Add(this.btnStop);
+            this.Controls.Add(this.lsvCurrentSongview);
+            this.Controls.Add(this.lstPlaylist);
+            this.Controls.Add(this.prgSongposition);
             this.Controls.Add(this.lsvSongpools);
             this.Controls.Add(this.menuStrip1);
-            this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.vlcalt);
             this.Name = "Mainform";
             this.Text = "Form1";
@@ -181,17 +233,21 @@
         #endregion
 
         private AxAXVLC.AxVLCPlugin vlcalt;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem dateiToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem songsAusOrdnerHinzufügenToolStripMenuItem;
         private System.Windows.Forms.ListView lsvSongpools;
         private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.ProgressBar prgSongposition;
+        private System.Windows.Forms.ListBox lstPlaylist;
+        private System.Windows.Forms.ListView lsvCurrentSongview;
+        private System.Windows.Forms.Button btnPlayPause;
+        private System.Windows.Forms.Button btnPrev;
+        private System.Windows.Forms.Button btnNext;
+        private System.Windows.Forms.Button btnStop;
+        private System.Windows.Forms.ToolStripMenuItem auswahlToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem playlistToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem leerenToolStripMenuItem;
     }
 }
 

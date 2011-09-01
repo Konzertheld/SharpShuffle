@@ -18,21 +18,26 @@ namespace ThePlayer
         /// </summary>
         public static Config GlobalConfig;
 
+        public static Player ActivePlayer;
+
         /// <summary>
         /// Der Haupteinstiegspunkt für die Anwendung.
         /// </summary>
         [STAThread]
         static void Main()
         {
-            //TODO: Load instead of create config
-            GlobalConfig = Config.Load(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + System.Windows.Forms.Application.ProductName);
+            GlobalConfig = new Config();
+            GlobalConfig.Load(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + System.Windows.Forms.Application.ProductName);
             if (GlobalConfig == null)
                 GlobalConfig = new Config();
             if (!Directory.Exists(GlobalConfig.Appdatapath)) Directory.CreateDirectory(GlobalConfig.Appdatapath);
 
+            //TODO: Load instead of create new player
+            ActivePlayer = new Player();
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            
+
             Application.Run(new Mainform());
         }
     }
