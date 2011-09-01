@@ -98,25 +98,14 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <COMReference Include="AxAXVLC">
-      <Guid>{DF2BBE39-40A8-433B-A279-073F48DA94B6}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>aximp</WrapperTool>
-      <Isolated>False</Isolated>
-    </COMReference>
-    <COMReference Include="AXVLC">
-      <Guid>{DF2BBE39-40A8-433B-A279-073F48DA94B6}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
-  </ItemGroup>
-  <ItemGroup>
+    <ProjectReference Include="..\Declarations\Declarations.csproj">
+      <Project>{819C4BAB-8FD0-463F-BB5F-119731840390}</Project>
+      <Name>Declarations</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Implementation\Implementation.csproj">
+      <Project>{6BA02CCA-2E14-4A64-8AB6-594E600D80C9}</Project>
+      <Name>Implementation</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SharpFM\lastfm-sharp\lastfm-sharp.csproj">
       <Project>{91E7DBDB-431C-432F-8430-8A1E564B43DD}</Project>
       <Name>lastfm-sharp</Name>

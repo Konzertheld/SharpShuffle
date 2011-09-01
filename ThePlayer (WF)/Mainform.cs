@@ -31,7 +31,7 @@ namespace ThePlayer
             }
         }
 
-        void ActivePlayer_PositionChanged(int position)
+        void ActivePlayer_PositionChanged(double position)
         {
             this.Invoke((MethodInvoker)delegate
             {

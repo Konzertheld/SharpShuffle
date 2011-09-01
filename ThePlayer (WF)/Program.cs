@@ -39,10 +39,6 @@ namespace ThePlayer
                 ActivePlayer.Audiosources.Add(afp);
             }
 
-            AXVLC.VLCPlugin2Class vlc = new AXVLC.VLCPlugin2Class();
-            vlc.playlist.add(@"E:\Endsortierung\John Farnham - Youre the voice.mp3");
-            vlc.playlist.play();
-
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 

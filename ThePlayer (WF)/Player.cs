@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using AXVLC;
+using Declarations;
+using Declarations.Media;
+using Declarations.Players;
+using Implementation;
 
 namespace ThePlayer
 {
@@ -12,7 +15,8 @@ namespace ThePlayer
         public NothingToPlayException(string message) : base(message) { }
     }
 
-    delegate void PlayerPositionChangedHandler(int position);
+    delegate void PlayerPositionChangedHandler(double position);
+    delegate void PlaylistEndedHandler();
 
     [Serializable]
     class Player
@@ -37,11 +41,13 @@ namespace ThePlayer
         /// </summary>
         public List<Audiofilepool> Audiosources;
 
-        private VLCPlugin2Class vlc;
+        private IVideoPlayer vlc;
+        private IMediaPlayerFactory factory;
 
         public Song CurrentSong { get; private set; }
 
         public event PlayerPositionChangedHandler PositionChanged;
+        public event PlaylistEndedHandler PlaylistEnded;
 
         public bool isPlaying;
 
@@ -57,15 +63,28 @@ namespace ThePlayer
             LastPlayed = new Songpool();
             CurrentView = new Songpool();
             Audiosources = new List<Audiofilepool>();
-            vlc = new VLCPlugin2Class();
             isPlaying = false;
             playlistPosition = -1;
 
-            // Link re-implementations
-            vlc.MediaPlayerPositionChanged += new DVLCEvents_MediaPlayerPositionChangedEventHandler(vlc_MediaPlayerPositionChanged);
+            // VLC Initialization
+            factory = new MediaPlayerFactory();
+            vlc = factory.CreatePlayer<IVideoPlayer>();
+            vlc.Events.MediaEnded += new EventHandler(Events_MediaEnded);
+            vlc.Events.TimeChanged += new EventHandler<Declarations.Events.MediaPlayerTimeChanged>(Events_TimeChanged);
+            //vlc.Events.PlayerPositionChanged += new EventHandler<Declarations.Events.MediaPlayerPositionChanged>(Events_PlayerPositionChanged);
+        }
 
-            // Link events caught by Player class
-            vlc.MediaPlayerStopped += new DVLCEvents_MediaPlayerStoppedEventHandler(vlc_MediaPlayerStopped);
+        void Events_TimeChanged(object sender, Declarations.Events.MediaPlayerTimeChanged e)
+        {
+            PositionChanged(e.NewTime / vlc.Length);
+        }
+
+        void Events_MediaEnded(object sender, EventArgs e)
+        {
+            if (playlistPosition != -1)
+            {
+                PlaySong(GetNextSong());
+            }
         }
 
         private Song GetNextSong()
@@ -82,14 +101,15 @@ namespace ThePlayer
                 else
                     throw new NothingToPlayException("Der nächste Song sollte gespielt werden, aber es war keiner vorhanden.");
             }
-
-
-            return Playlist.getSongs()[Playlist.getSongs().FindIndex(delegate(Song song) { return song == CurrentSong; }) + 1];
-        }
-
-        void vlc_MediaPlayerStopped()
-        {
-            throw new NotImplementedException();
+            else if (playlistPosition < Playlist.getSongs().Count - 1)
+            {
+                playlistPosition++;
+                return Playlist.getSongs()[playlistPosition];
+            }
+            else
+            {
+                return null;
+            }
         }
 
         /// <summary>
@@ -105,29 +125,37 @@ namespace ThePlayer
         #region Playback control
         public void PlaySong(Song song)
         {
+            if (song == null)
+            {
+                if (PlaylistEnded != null) PlaylistEnded();
+                return;
+            }
             Stop();
-            vlc.playlist.items.clear();
             string temp = FindAudiofile(song);
             if (System.IO.File.Exists(temp))
-                vlc.playlist.add(temp);
+            {
+                IMedia media = factory.CreateMedia<IMedia>(temp);
+                vlc.Open(media);
+                vlc.Play();
+                isPlaying = true;
+            }
             else
                 throw new System.IO.FileNotFoundException("Der abzuspielende Song wurde nicht gefunden.", temp);
-            vlc.playlist.play();
-            isPlaying = true;
         }
 
         public void PlayPause()
         {
             //TODO: It is not always useful to just tell vlc to toggle pause.
-            vlc.playlist.togglePause();
+            if (vlc.IsPlaying) vlc.Pause();
+            else vlc.Play();
         }
 
         public void Stop()
         {
             try
             {
-                if (vlc.playlist.isPlaying)
-                    vlc.playlist.stop();
+                if (vlc.IsPlaying)
+                    vlc.Stop();
             }
             catch (Exception E) { }
             isPlaying = false;
@@ -138,6 +166,8 @@ namespace ThePlayer
             //TODO: Consider doing nothing or just moving the playlist pointer when playback is not running.
             PlaySong(GetNextSong());
         }
+
+        //TODO: Implement navigating backwards - PrevSong
         #endregion
 
         /// <summary>
@@ -157,10 +187,7 @@ namespace ThePlayer
         }
 
         #region Re-Implentations that do nothing
-        void vlc_MediaPlayerPositionChanged(int Position)
-        {
-            PositionChanged(Position);
-        }
+
         #endregion
     }
 }
