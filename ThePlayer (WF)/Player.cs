@@ -43,8 +43,10 @@ namespace ThePlayer
 
         private IVideoPlayer vlc;
         private IMediaPlayerFactory factory;
+        private bool currentSongScrobbled;
 
-        public Song CurrentSong { get; private set; }
+        private Song _currentSong;
+        public Song CurrentSong { get { return _currentSong; } private set { currentSongScrobbled = false; _currentSong = value; } }
 
         public event PlayerPositionChangedHandler PositionChanged;
         public event PlaylistEndedHandler PlaylistEnded;
@@ -71,12 +73,25 @@ namespace ThePlayer
             vlc = factory.CreatePlayer<IVideoPlayer>();
             vlc.Events.MediaEnded += new EventHandler(Events_MediaEnded);
             vlc.Events.TimeChanged += new EventHandler<Declarations.Events.MediaPlayerTimeChanged>(Events_TimeChanged);
-            //vlc.Events.PlayerPositionChanged += new EventHandler<Declarations.Events.MediaPlayerPositionChanged>(Events_PlayerPositionChanged);
+            vlc.Events.PlayerPlaying += new EventHandler(Events_PlayerPlaying);
+        }
+
+        void Events_PlayerPlaying(object sender, EventArgs e)
+        {
+            Scrobbel.Scrobbeln(CurrentSong.getInformation(META_IDENTIFIERS.Artist), CurrentSong.getInformation(META_IDENTIFIERS.Title), (int)(vlc.Length / 1000));
         }
 
         void Events_TimeChanged(object sender, Declarations.Events.MediaPlayerTimeChanged e)
         {
-            PositionChanged((double)e.NewTime / vlc.Length);
+            //TODO: Use PositionChanged instead?!
+            double pos = (double)e.NewTime / vlc.Length;
+            PositionChanged(pos);
+            //TODO: Make this configurable
+            if (pos > 0.8 && !currentSongScrobbled)
+            {
+                Scrobbel.Scrobbeln(CurrentSong.getInformation(META_IDENTIFIERS.Artist), CurrentSong.getInformation(META_IDENTIFIERS.Title), DateTime.Now.Subtract(new TimeSpan(1, 0, 0)), (int)(vlc.Length / 1000));
+                currentSongScrobbled = true;
+            }
         }
 
         void Events_MediaEnded(object sender, EventArgs e)
@@ -135,6 +150,7 @@ namespace ThePlayer
             if (System.IO.File.Exists(temp))
             {
                 IMedia media = factory.CreateMedia<IMedia>(temp);
+                CurrentSong = song;
                 vlc.Open(media);
                 vlc.Play();
                 isPlaying = true;
@@ -142,6 +158,7 @@ namespace ThePlayer
             else
             {
                 isPlaying = false;
+                //TODO: This exception does not fit. There is no file to find ergo no file to not find.
                 throw new System.IO.FileNotFoundException("Der abzuspielende Song wurde nicht gefunden.", temp);
             }
         }
@@ -189,6 +206,10 @@ namespace ThePlayer
         {
             isPlaying = false;
             if (PlaylistEnded != null) PlaylistEnded();
+        }
+
+        public void ScrobbelSong(Song song)
+        {
         }
     }
 }

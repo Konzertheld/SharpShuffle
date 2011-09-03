@@ -73,6 +73,7 @@ namespace ThePlayer
 
         private void lsvSongpools_SelectedIndexChanged(object sender, EventArgs e)
         {
+            //TODO: Error handling for empty pools
             Program.ActivePlayer.CurrentView = new Songpool();
             foreach (ListViewItem item in lsvSongpools.SelectedItems)
             {
@@ -117,6 +118,30 @@ namespace ThePlayer
         {
             Program.ActivePlayer.Playlist = new Songpool();
             lstPlaylist.Items.Clear();
+        }
+
+        private void autorisierenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("URL für Webautorisierung in die Zwischenablage kopieren?", Application.ProductName, MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
+            {
+                Scrobbel.LastFmAuthReady += new LastFmAuthReadyHandler(Scrobbel_LastFmAuthReady);
+                Scrobbel.AuthorizeCall();
+            }
+            else
+                MessageBox.Show("Autorisierung abgebrochen.");
+        }
+
+        void Scrobbel_LastFmAuthReady(string url, Lastfm.Session session)
+        {
+            Clipboard.SetText(url);
+            MessageBox.Show("OK klicken, wenn Webautorisierung fertig.");
+            Scrobbel.AuthorizeDo(session);
+        }
+
+        private void manuellScrobbelnToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmManualScrobbling f = new frmManualScrobbling();
+            f.Show();
         }
     }
 }

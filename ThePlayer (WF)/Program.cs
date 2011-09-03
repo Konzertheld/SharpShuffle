@@ -57,6 +57,7 @@ namespace ThePlayer
             if (!Directory.Exists(GlobalConfig.Appdatapath)) Directory.CreateDirectory(GlobalConfig.Appdatapath);
 
             //TODO: Load instead of create new player
+            //TODO: Add audio sources when created, not only at program start
             ActivePlayer = new Player();
             foreach (Audiofilepool afp in GlobalConfig.Audiofilepools.Values)
             {
