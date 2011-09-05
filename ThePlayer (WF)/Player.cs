@@ -37,6 +37,16 @@ namespace ThePlayer
         public Songpool CurrentView { get; set; }
 
         /// <summary>
+        /// Songs that have been played. Technically: Songs that matched the "mark the song as played" criterias.
+        /// </summary>
+        public Songpool PlayedHistory { get; set; }
+
+        /// <summary>
+        /// Similar to history and playlist, but includes skipped songs. Actually a sequencial list of all Songs that have been passed to PlaySong() and were found as an Audiofile.
+        /// </summary>
+        private Songpool totalHistory { get; set; }
+
+        /// <summary>
         /// Audiofilepools to use when looking for a file that matches a song.
         /// </summary>
         public List<Audiofilepool> Audiosources;
@@ -58,15 +68,21 @@ namespace ThePlayer
         /// </summary>
         private int playlistPosition;
 
+        private int historyPosition;
+
+        #region Constructors
         public Player()
         {
             // Initialization
             Playlist = new Songpool();
             LastPlayed = new Songpool();
             CurrentView = new Songpool();
+            PlayedHistory = new Songpool();
+            totalHistory = new Songpool();
             Audiosources = new List<Audiofilepool>();
             isPlaying = false;
             playlistPosition = -1;
+            historyPosition = -1;
 
             // VLC Initialization
             factory = new MediaPlayerFactory();
@@ -75,7 +91,9 @@ namespace ThePlayer
             vlc.Events.TimeChanged += new EventHandler<Declarations.Events.MediaPlayerTimeChanged>(Events_TimeChanged);
             vlc.Events.PlayerPlaying += new EventHandler(Events_PlayerPlaying);
         }
+        #endregion
 
+        #region Events
         void Events_PlayerPlaying(object sender, EventArgs e)
         {
             Scrobbel.Scrobbeln(CurrentSong.getInformation(META_IDENTIFIERS.Artist), CurrentSong.getInformation(META_IDENTIFIERS.Title), (int)(vlc.Length / 1000));
@@ -101,14 +119,22 @@ namespace ThePlayer
                 PlaySong(GetNextSong());
             }
         }
+        #endregion
 
+        #region Core
         private Song GetNextSong()
         {
+            if (historyPosition < totalHistory.getSongs().Count - 1)
+            { // User was navigating forward to songs that have already been played and was then navigated back
+                historyPosition++;
+                return totalHistory.getSongs()[historyPosition];
+            }
+
             //TODO: All randomization, not-playing songs that were already played etc goes here
             if (playlistPosition == -1)
-            {
+            { // Playlist mode is off
                 if (Playlist.getSongs().Count > 0)
-                {
+                { // Start playlist
                     //TODO: Randomization etc. when starting to play the playlist
                     playlistPosition = 0;
                     return Playlist.getSongs()[0];
@@ -117,27 +143,17 @@ namespace ThePlayer
                     throw new NothingToPlayException("Der nächste Song sollte gespielt werden, aber es war keiner vorhanden.");
             }
             else if (playlistPosition < Playlist.getSongs().Count - 1)
-            {
+            { // Playlist already playing, get the next song
                 playlistPosition++;
                 return Playlist.getSongs()[playlistPosition];
             }
             else
             {
+                //TODO: Return null here and handle playlist ended elsewhere? Hm.
                 return null;
             }
         }
 
-        /// <summary>
-        /// Start playing using the playlist.
-        /// </summary>
-        public void PlayPlaylist()
-        {
-            Stop();
-            playlistPosition = -1;
-            PlaySong(GetNextSong());
-        }
-
-        #region Playback control
         public void PlaySong(Song song)
         {
             if (song == null)
@@ -154,6 +170,8 @@ namespace ThePlayer
                 vlc.Open(media);
                 vlc.Play();
                 isPlaying = true;
+                totalHistory.AddSong(song);
+                historyPosition++;
             }
             else
             {
@@ -161,6 +179,18 @@ namespace ThePlayer
                 //TODO: This exception does not fit. There is no file to find ergo no file to not find.
                 throw new System.IO.FileNotFoundException("Der abzuspielende Song wurde nicht gefunden.", temp);
             }
+        }
+        #endregion
+
+        #region Playback control
+        /// <summary>
+        /// Start playing using the playlist.
+        /// </summary>
+        public void PlayPlaylist()
+        {
+            Stop();
+            playlistPosition = -1;
+            PlaySong(GetNextSong());
         }
 
         public void PlayPause()
@@ -183,9 +213,14 @@ namespace ThePlayer
             PlaySong(GetNextSong());
         }
 
-        //TODO: Implement navigating backwards - PrevSong
+        public void PrevSong()
+        {
+            historyPosition--;
+            PlaySong(totalHistory.getSongs()[historyPosition]);
+        }
         #endregion
 
+        #region Helper methods
         /// <summary>
         /// Search all the Audiofilepools for a song.
         /// </summary>
@@ -207,6 +242,7 @@ namespace ThePlayer
             isPlaying = false;
             if (PlaylistEnded != null) PlaylistEnded();
         }
+        #endregion
 
         public void ScrobbelSong(Song song)
         {

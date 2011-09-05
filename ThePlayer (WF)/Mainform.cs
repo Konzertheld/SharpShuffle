@@ -62,7 +62,7 @@ namespace ThePlayer
 
         private void btnPrev_Click(object sender, EventArgs e)
         {
-            //TODO: Implement previous.
+            Program.ActivePlayer.PrevSong();
         }
 
         private void songsAusOrdnerHinzufügenToolStripMenuItem_Click(object sender, EventArgs e)

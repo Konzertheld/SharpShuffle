@@ -20,6 +20,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Declarations", "Declaration
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibVlcWrapper", "LibVlcWrapper\LibVlcWrapper.csproj", "{57F08087-B175-4C96-BE36-83FBC4A21065}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lpfm.LastFmScrobbler", "lpfm_2d4836745364\LastFmScrobbler\Lpfm.LastFmScrobbler.csproj", "{BA7F7E8A-B089-4323-8C8D-F406E7AFCDBE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -106,6 +108,16 @@ Global
 		{57F08087-B175-4C96-BE36-83FBC4A21065}.Release|Mixed Platforms.Build.0 = Release|x86
 		{57F08087-B175-4C96-BE36-83FBC4A21065}.Release|x86.ActiveCfg = Release|x86
 		{57F08087-B175-4C96-BE36-83FBC4A21065}.Release|x86.Build.0 = Release|x86
+		{BA7F7E8A-B089-4323-8C8D-F406E7AFCDBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA7F7E8A-B089-4323-8C8D-F406E7AFCDBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA7F7E8A-B089-4323-8C8D-F406E7AFCDBE}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{BA7F7E8A-B089-4323-8C8D-F406E7AFCDBE}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{BA7F7E8A-B089-4323-8C8D-F406E7AFCDBE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BA7F7E8A-B089-4323-8C8D-F406E7AFCDBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA7F7E8A-B089-4323-8C8D-F406E7AFCDBE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA7F7E8A-B089-4323-8C8D-F406E7AFCDBE}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{BA7F7E8A-B089-4323-8C8D-F406E7AFCDBE}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{BA7F7E8A-B089-4323-8C8D-F406E7AFCDBE}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
