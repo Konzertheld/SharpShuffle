@@ -34,15 +34,26 @@ namespace ThePlayer
         /// </summary>
         public void ReadTags()
         {
-            //TODO: Include more tags
             //TODO: Include all artists, genres...
+            //TODO: Possibly include images
             TagLib.File f = TagLib.File.Create(this.Filepath);
-            if (f.Tag.Performers.Count() > 0)
-                Track.setInformation(META_IDENTIFIERS.Artist, f.Tag.Performers[0]);
-            Track.setInformation(META_IDENTIFIERS.Title, f.Tag.Title);
             Track.setInformation(META_IDENTIFIERS.Album, f.Tag.Album);
-            if (f.Tag.Genres.Count() > 0)
-                Track.setInformation(META_IDENTIFIERS.Genre, f.Tag.Genres[0]);
+            Track.setInformation(META_IDENTIFIERS.AlbumArtists, f.Tag.JoinedAlbumArtists);
+            Track.setInformation(META_IDENTIFIERS.AmazonID, f.Tag.AmazonId);
+            Track.setInformation(META_IDENTIFIERS.Artists, f.Tag.JoinedPerformers);
+            Track.setInformation(META_IDENTIFIERS.BPM, f.Tag.BeatsPerMinute.ToString());
+            Track.setInformation(META_IDENTIFIERS.Comment, f.Tag.Comment);
+            Track.setInformation(META_IDENTIFIERS.Composers, f.Tag.JoinedComposers);
+            Track.setInformation(META_IDENTIFIERS.Conductor, f.Tag.Conductor);
+            Track.setInformation(META_IDENTIFIERS.Copyright, f.Tag.Copyright);
+            Track.setInformation(META_IDENTIFIERS.Disc, f.Tag.Disc.ToString());
+            Track.setInformation(META_IDENTIFIERS.DiscCount, f.Tag.DiscCount.ToString());
+            Track.setInformation(META_IDENTIFIERS.Genres, f.Tag.JoinedGenres);
+            Track.setInformation(META_IDENTIFIERS.Lyrics, f.Tag.Lyrics);
+            Track.setInformation(META_IDENTIFIERS.Title, f.Tag.Title);
+            Track.setInformation(META_IDENTIFIERS.TrackCount, f.Tag.TrackCount.ToString());
+            Track.setInformation(META_IDENTIFIERS.TrackNr, f.Tag.Track.ToString());
+            Track.setInformation(META_IDENTIFIERS.Year, f.Tag.Year.ToString());                
         }
 
 

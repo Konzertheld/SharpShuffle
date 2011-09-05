@@ -24,10 +24,23 @@ namespace ThePlayer
 
     public enum META_IDENTIFIERS
     {
-        Artist,
+        Album,
+        AlbumArtists,
+        AmazonID,
+        Artists,
+        BPM,
+        Comment,
+        Composers,
+        Conductor,
+        Copyright,
+        Disc,
+        DiscCount,
+        Genres,
+        Lyrics,
         Title,
-        Genre,
-        Album
+        TrackNr,
+        TrackCount,
+        Year
     }
 
     static class Program
