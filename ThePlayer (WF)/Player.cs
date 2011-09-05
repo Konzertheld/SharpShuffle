@@ -134,7 +134,7 @@ namespace ThePlayer
                 logging = false;
                 return totalHistory.getSongs()[historyPosition];
             }
-            
+
             logging = true;
             //TODO: All randomization, not-playing songs that were already played etc goes here
             if (playlistPosition == -1)
@@ -198,11 +198,12 @@ namespace ThePlayer
         /// <summary>
         /// Start playing using the playlist.
         /// </summary>
-        public void PlayPlaylist()
+        public int PlayPlaylist()
         {
             Stop();
             playlistPosition = -1;
             PlaySong(GetNextSong());
+            return playlistPosition;
         }
 
         public void PlayPause()
@@ -219,24 +220,31 @@ namespace ThePlayer
             isPlaying = false;
         }
 
-        public void NextSong()
+        public int NextSong()
         {
             //TODO: Consider doing nothing or just moving the playlist pointer when playback is not running.
             PlaySong(GetNextSong());
+            return (logging) ? playlistPosition : positionInPlaylist(totalHistory.getSongs()[historyPosition]);
         }
 
-        public void PrevSong()
+        public int PrevSong()
         {
             if (historyPosition > 0 && historyPosition < totalHistory.getSongs().Count)
             {
                 historyPosition--;
                 logging = false;
                 PlaySong(totalHistory.getSongs()[historyPosition]);
+                return positionInPlaylist(totalHistory.getSongs()[historyPosition]);
             }
+            return positionInPlaylist(totalHistory.getSongs()[historyPosition]);
         }
         #endregion
 
         #region Helper methods
+        private int positionInPlaylist(Song needle)
+        {
+            return Playlist.getSongs().FindIndex(delegate(Song song) { return song == needle; });
+        }
         /// <summary>
         /// Search all the Audiofilepools for a song.
         /// </summary>

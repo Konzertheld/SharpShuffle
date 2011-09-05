@@ -34,19 +34,19 @@
             this.auswahlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.playlistToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.leerenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.lastfmToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.autorisierenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.scrobbelnAktivToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.manuellScrobbelnToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lsvSongpools = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.prgSongposition = new System.Windows.Forms.ProgressBar();
-            this.lstPlaylist = new System.Windows.Forms.ListBox();
             this.lsvCurrentSongview = new System.Windows.Forms.ListView();
             this.btnPlayPause = new System.Windows.Forms.Button();
             this.btnPrev = new System.Windows.Forms.Button();
             this.btnNext = new System.Windows.Forms.Button();
             this.btnStop = new System.Windows.Forms.Button();
-            this.lastfmToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.autorisierenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.scrobbelnAktivToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.manuellScrobbelnToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.lsvPlaylist = new System.Windows.Forms.ListView();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -99,6 +99,36 @@
             this.leerenToolStripMenuItem.Text = "Leeren";
             this.leerenToolStripMenuItem.Click += new System.EventHandler(this.leerenToolStripMenuItem_Click);
             // 
+            // lastfmToolStripMenuItem
+            // 
+            this.lastfmToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.autorisierenToolStripMenuItem,
+            this.scrobbelnAktivToolStripMenuItem,
+            this.manuellScrobbelnToolStripMenuItem});
+            this.lastfmToolStripMenuItem.Name = "lastfmToolStripMenuItem";
+            this.lastfmToolStripMenuItem.Size = new System.Drawing.Size(58, 20);
+            this.lastfmToolStripMenuItem.Text = "Last.fm";
+            // 
+            // autorisierenToolStripMenuItem
+            // 
+            this.autorisierenToolStripMenuItem.Name = "autorisierenToolStripMenuItem";
+            this.autorisierenToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.autorisierenToolStripMenuItem.Text = "Autorisieren";
+            this.autorisierenToolStripMenuItem.Click += new System.EventHandler(this.autorisierenToolStripMenuItem_Click);
+            // 
+            // scrobbelnAktivToolStripMenuItem
+            // 
+            this.scrobbelnAktivToolStripMenuItem.Name = "scrobbelnAktivToolStripMenuItem";
+            this.scrobbelnAktivToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.scrobbelnAktivToolStripMenuItem.Text = "Scrobbeln aktiv";
+            // 
+            // manuellScrobbelnToolStripMenuItem
+            // 
+            this.manuellScrobbelnToolStripMenuItem.Name = "manuellScrobbelnToolStripMenuItem";
+            this.manuellScrobbelnToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.manuellScrobbelnToolStripMenuItem.Text = "Manuell scrobbeln";
+            this.manuellScrobbelnToolStripMenuItem.Click += new System.EventHandler(this.manuellScrobbelnToolStripMenuItem_Click);
+            // 
             // lsvSongpools
             // 
             this.lsvSongpools.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
@@ -128,16 +158,6 @@
             this.prgSongposition.Size = new System.Drawing.Size(904, 25);
             this.prgSongposition.Step = 1;
             this.prgSongposition.TabIndex = 11;
-            // 
-            // lstPlaylist
-            // 
-            this.lstPlaylist.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.lstPlaylist.FormattingEnabled = true;
-            this.lstPlaylist.Location = new System.Drawing.Point(881, 27);
-            this.lstPlaylist.Name = "lstPlaylist";
-            this.lstPlaylist.Size = new System.Drawing.Size(199, 628);
-            this.lstPlaylist.TabIndex = 12;
             // 
             // lsvCurrentSongview
             // 
@@ -197,47 +217,26 @@
             this.btnStop.UseVisualStyleBackColor = true;
             this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
             // 
-            // lastfmToolStripMenuItem
+            // lsvPlaylist
             // 
-            this.lastfmToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.autorisierenToolStripMenuItem,
-            this.scrobbelnAktivToolStripMenuItem,
-            this.manuellScrobbelnToolStripMenuItem});
-            this.lastfmToolStripMenuItem.Name = "lastfmToolStripMenuItem";
-            this.lastfmToolStripMenuItem.Size = new System.Drawing.Size(58, 20);
-            this.lastfmToolStripMenuItem.Text = "Last.fm";
-            // 
-            // autorisierenToolStripMenuItem
-            // 
-            this.autorisierenToolStripMenuItem.Name = "autorisierenToolStripMenuItem";
-            this.autorisierenToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
-            this.autorisierenToolStripMenuItem.Text = "Autorisieren";
-            this.autorisierenToolStripMenuItem.Click += new System.EventHandler(this.autorisierenToolStripMenuItem_Click);
-            // 
-            // scrobbelnAktivToolStripMenuItem
-            // 
-            this.scrobbelnAktivToolStripMenuItem.Name = "scrobbelnAktivToolStripMenuItem";
-            this.scrobbelnAktivToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
-            this.scrobbelnAktivToolStripMenuItem.Text = "Scrobbeln aktiv";
-            // 
-            // manuellScrobbelnToolStripMenuItem
-            // 
-            this.manuellScrobbelnToolStripMenuItem.Name = "manuellScrobbelnToolStripMenuItem";
-            this.manuellScrobbelnToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
-            this.manuellScrobbelnToolStripMenuItem.Text = "Manuell scrobbeln";
-            this.manuellScrobbelnToolStripMenuItem.Click += new System.EventHandler(this.manuellScrobbelnToolStripMenuItem_Click);
+            this.lsvPlaylist.Location = new System.Drawing.Point(882, 27);
+            this.lsvPlaylist.Name = "lsvPlaylist";
+            this.lsvPlaylist.Size = new System.Drawing.Size(198, 630);
+            this.lsvPlaylist.TabIndex = 18;
+            this.lsvPlaylist.UseCompatibleStateImageBehavior = false;
+            this.lsvPlaylist.View = System.Windows.Forms.View.List;
             // 
             // Mainform
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1092, 687);
+            this.Controls.Add(this.lsvPlaylist);
             this.Controls.Add(this.btnPlayPause);
             this.Controls.Add(this.btnPrev);
             this.Controls.Add(this.btnNext);
             this.Controls.Add(this.btnStop);
             this.Controls.Add(this.lsvCurrentSongview);
-            this.Controls.Add(this.lstPlaylist);
             this.Controls.Add(this.prgSongposition);
             this.Controls.Add(this.lsvSongpools);
             this.Controls.Add(this.menuStrip1);
@@ -259,7 +258,6 @@
         private System.Windows.Forms.ListView lsvSongpools;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ProgressBar prgSongposition;
-        private System.Windows.Forms.ListBox lstPlaylist;
         private System.Windows.Forms.ListView lsvCurrentSongview;
         private System.Windows.Forms.Button btnPlayPause;
         private System.Windows.Forms.Button btnPrev;
@@ -272,6 +270,7 @@
         private System.Windows.Forms.ToolStripMenuItem autorisierenToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem scrobbelnAktivToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem manuellScrobbelnToolStripMenuItem;
+        private System.Windows.Forms.ListView lsvPlaylist;
     }
 }
 

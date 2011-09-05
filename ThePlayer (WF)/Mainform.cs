@@ -57,12 +57,14 @@ namespace ThePlayer
 
         private void btnNext_Click(object sender, EventArgs e)
         {
-            Program.ActivePlayer.NextSong();
+            clearPlaylistColor();
+            lsvPlaylist.Items[Program.ActivePlayer.NextSong()].ForeColor = Color.Red;
         }
 
         private void btnPrev_Click(object sender, EventArgs e)
         {
-            Program.ActivePlayer.PrevSong();
+            clearPlaylistColor();
+            lsvPlaylist.Items[Program.ActivePlayer.PrevSong()].ForeColor = Color.Red;
         }
 
         private void songsAusOrdnerHinzufügenToolStripMenuItem_Click(object sender, EventArgs e)
@@ -100,13 +102,17 @@ namespace ThePlayer
             {
                 AddSongToPlaylist(Program.ActivePlayer.CurrentView.getSongs()[i]);
             }
-            if (!Program.ActivePlayer.isPlaying) Program.ActivePlayer.PlayPlaylist();
+            if (!Program.ActivePlayer.isPlaying)
+            {
+                lsvPlaylist.Items[Program.ActivePlayer.PlayPlaylist()].ForeColor = Color.Red;
+            }
         }
 
         private void AddSongToPlaylist(Song song)
         {
-            Program.ActivePlayer.Playlist.AddSong(song);
-            lstPlaylist.Items.Add(song.ToString());
+            //TODO: Make duplicates available if the user wants it
+            if (Program.ActivePlayer.Playlist.AddSong(song))
+                lsvPlaylist.Items.Add(song.ToString());
         }
 
         private void PlayPlaylist()
@@ -117,7 +123,7 @@ namespace ThePlayer
         private void leerenToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Program.ActivePlayer.Playlist = new Songpool();
-            lstPlaylist.Items.Clear();
+            lsvPlaylist.Items.Clear();
         }
 
         private void autorisierenToolStripMenuItem_Click(object sender, EventArgs e)
@@ -142,6 +148,14 @@ namespace ThePlayer
         {
             frmManualScrobbling f = new frmManualScrobbling();
             f.Show();
+        }
+
+        private void clearPlaylistColor()
+        {
+            foreach (ListViewItem item in lsvPlaylist.Items)
+            {
+                item.ForeColor = Color.Black;
+            }
         }
     }
 }
