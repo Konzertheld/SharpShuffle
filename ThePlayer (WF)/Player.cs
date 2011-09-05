@@ -62,6 +62,10 @@ namespace ThePlayer
         public event PlaylistEndedHandler PlaylistEnded;
 
         public bool isPlaying;
+        /// <summary>
+        /// Helper variable for navigation. If we are navigating (prev and next) through songs that have already been played, they are not logged again.
+        /// </summary>
+        private bool logging;
 
         /// <summary>
         /// Null-based index of the current song in the playlist or -1 when the current song is not in the playlist.
@@ -96,7 +100,7 @@ namespace ThePlayer
         #region Events
         void Events_PlayerPlaying(object sender, EventArgs e)
         {
-            Scrobbel.Scrobbeln(CurrentSong.getInformation(META_IDENTIFIERS.Artist), CurrentSong.getInformation(META_IDENTIFIERS.Title), (int)(vlc.Length / 1000));
+            //Scrobbel.Scrobbeln(CurrentSong.getInformation(META_IDENTIFIERS.Artist), CurrentSong.getInformation(META_IDENTIFIERS.Title), (int)(vlc.Length / 1000));
         }
 
         void Events_TimeChanged(object sender, Declarations.Events.MediaPlayerTimeChanged e)
@@ -127,9 +131,11 @@ namespace ThePlayer
             if (historyPosition < totalHistory.getSongs().Count - 1)
             { // User was navigating forward to songs that have already been played and was then navigated back
                 historyPosition++;
+                logging = false;
                 return totalHistory.getSongs()[historyPosition];
             }
-
+            
+            logging = true;
             //TODO: All randomization, not-playing songs that were already played etc goes here
             if (playlistPosition == -1)
             { // Playlist mode is off
@@ -154,6 +160,10 @@ namespace ThePlayer
             }
         }
 
+        /// <summary>
+        /// Play a specific song.
+        /// </summary>
+        /// <param name="song">Guess what.</param>
         public void PlaySong(Song song)
         {
             if (song == null)
@@ -170,12 +180,14 @@ namespace ThePlayer
                 vlc.Open(media);
                 vlc.Play();
                 isPlaying = true;
-                totalHistory.AddSong(song);
-                historyPosition++;
+                if (logging)
+                {
+                    totalHistory.AddSong(song, true);
+                    historyPosition++;
+                }
             }
             else
             {
-                isPlaying = false;
                 //TODO: This exception does not fit. There is no file to find ergo no file to not find.
                 throw new System.IO.FileNotFoundException("Der abzuspielende Song wurde nicht gefunden.", temp);
             }
@@ -215,8 +227,12 @@ namespace ThePlayer
 
         public void PrevSong()
         {
-            historyPosition--;
-            PlaySong(totalHistory.getSongs()[historyPosition]);
+            if (historyPosition > 0 && historyPosition < totalHistory.getSongs().Count)
+            {
+                historyPosition--;
+                logging = false;
+                PlaySong(totalHistory.getSongs()[historyPosition]);
+            }
         }
         #endregion
 

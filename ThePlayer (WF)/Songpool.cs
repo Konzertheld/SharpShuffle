@@ -22,11 +22,21 @@ namespace ThePlayer
         #endregion
 
         /// <summary>
-        /// Add songs here to avoid duplicates.
+        /// Add song, avoid duplicates.
         /// </summary>
         /// <param name="song"></param>
         /// <returns></returns>
         public bool AddSong(Song song)
+        {
+            return AddSong(song, false);
+        }
+        /// <summary>
+        /// Add song, duplicates optional.
+        /// </summary>
+        /// <param name="song"></param>
+        /// <param name="allow_duplicates">Set to true if you want to insert the song even if it already exists in this pool.</param>
+        /// <returns></returns>
+        public bool AddSong(Song song, bool allow_duplicates)
         {
             if (!_songs.Contains(song)) _songs.Add(song);
             else return false;
