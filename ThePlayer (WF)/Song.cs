@@ -75,6 +75,20 @@ namespace ThePlayer
             //TODO: Let the user choose
             return string.Format("{0} - {1}", this.getInformation(META_IDENTIFIERS.Artists), this.getInformation(META_IDENTIFIERS.Title));
         }
+
+        public override bool Equals(object obj)
+        {
+            Song song = (Song)obj;
+            //TODO: When does a song match a song?
+            try
+            {
+                return (_allTheInformation[META_IDENTIFIERS.Artists] == song._allTheInformation[META_IDENTIFIERS.Artists] && _allTheInformation[META_IDENTIFIERS.Title] == song._allTheInformation[META_IDENTIFIERS.Title]);
+            }
+            catch (KeyNotFoundException E)
+            {
+                return false;
+            }
+        }
     }
 
     public class SongComparer : IComparer<Song>

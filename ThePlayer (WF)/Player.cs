@@ -205,7 +205,6 @@ namespace ThePlayer
         public int PlayPlaylist()
         {
             Stop();
-            playlistPosition = -1;
             PlaySong(GetNextSong());
             return playlistPosition;
         }

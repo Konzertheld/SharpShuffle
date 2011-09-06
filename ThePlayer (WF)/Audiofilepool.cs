@@ -42,7 +42,6 @@ namespace ThePlayer
         /// <returns></returns>
         public Audiofile findSong(Song song)
         {
-            //TODO: When does a file match a song?
             foreach (Audiofile audiofile in audiofiles)
             {
                 if (audiofile.Track.Equals(song))
@@ -99,18 +98,23 @@ namespace ThePlayer
         public static Audiofilepool Load(string path)
         {
             //TODO: Validation before loading
+            //TODO: Make it possible to not reload the pool on startup (tell the Constructor to not search the basepath and use the xml instead)
             XElement x = XElement.Load(path);
-            Audiofilepool afp = new Audiofilepool(x.Attribute("Basepath").Value, x.Attribute("Name").Value);
-
-            var load = from e in x.Elements()
-                       where e.Name == "Audiofile"
-                       select new { e };
-
-            foreach (var v in load)
+            Audiofilepool afp;
+            if (true)
+                afp = new Audiofilepool(x.Attribute("Basepath").Value, x.Attribute("Name").Value);
+            else
             {
-                afp.audiofiles.Add(new Audiofile(v.e.Attribute("Filepath").Value));
-            }
+                //afp = new Audiofilepool();
+                var load = from e in x.Elements()
+                           where e.Name == "Audiofile"
+                           select new { e };
 
+                foreach (var v in load)
+                {
+                    afp.audiofiles.Add(new Audiofile(v.e.Attribute("Filepath").Value));
+                }
+            }
             return afp;
         }
         #endregion
