@@ -27,11 +27,6 @@ namespace ThePlayer
         public Songpool Playlist { get; set; }
 
         /// <summary>
-        /// Songs last played
-        /// </summary>
-        public Songpool LastPlayed { get; set; }
-
-        /// <summary>
         /// Songs currently displayed based on the current selection
         /// </summary>
         public Songpool CurrentView { get; set; }
@@ -42,7 +37,7 @@ namespace ThePlayer
         public Songpool PlayedHistory { get; set; }
 
         /// <summary>
-        /// Similar to history and playlist, but includes skipped songs. Actually a sequencial list of all Songs that have been passed to PlaySong() and were found as an Audiofile.
+        /// Similar to history and playlist, but includes skipped songs. Technically a sequencial list of all Songs that have been passed to PlaySong() and were found as an Audiofile.
         /// </summary>
         private Songpool totalHistory { get; set; }
 
@@ -53,10 +48,10 @@ namespace ThePlayer
 
         private IVideoPlayer vlc;
         private IMediaPlayerFactory factory;
-        private bool currentSongScrobbled;
+        private bool currentSongLogged;
 
         private Song _currentSong;
-        public Song CurrentSong { get { return _currentSong; } private set { currentSongScrobbled = false; _currentSong = value; } }
+        public Song CurrentSong { get { return _currentSong; } private set { currentSongLogged = false; _currentSong = value; } }
 
         public event PlayerPositionChangedHandler PositionChanged;
         public event PlaylistEndedHandler PlaylistEnded;
@@ -79,7 +74,6 @@ namespace ThePlayer
         {
             // Initialization
             Playlist = new Songpool();
-            LastPlayed = new Songpool();
             CurrentView = new Songpool();
             PlayedHistory = new Songpool();
             totalHistory = new Songpool();
@@ -109,10 +103,10 @@ namespace ThePlayer
             double pos = (double)e.NewTime / vlc.Length;
             PositionChanged(pos);
             //TODO: Make this configurable
-            if (pos > 0.8 && !currentSongScrobbled)
+            if (pos > 0.8 && !currentSongLogged)
             {
                 Scrobbel.Scrobbeln(CurrentSong.getInformation(META_IDENTIFIERS.Artists), CurrentSong.getInformation(META_IDENTIFIERS.Title), DateTime.Now.Subtract(new TimeSpan(1, 0, 0)), (int)(vlc.Length / 1000));
-                currentSongScrobbled = true;
+                currentSongLogged = true;
             }
         }
 
