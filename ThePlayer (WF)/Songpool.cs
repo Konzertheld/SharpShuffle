@@ -52,6 +52,17 @@ namespace ThePlayer
         }
 
         /// <summary>
+        /// Removes all instances of a song in this pool using the same criteria as for avoiding duplicates when adding.
+        /// </summary>
+        /// <param name="song"></param>
+        /// <returns></returns>
+        public int RemoveSong(Song song)
+        {
+            return _songs.RemoveAll(delegate(Song test) { return test.Equals(song); });
+        }
+
+        #region Get Songs
+        /// <summary>
         /// Get a list of songs from this pool, not filtered, not ordered, ignoring the case. Just get it.
         /// </summary>
         /// <returns></returns>
@@ -60,7 +71,6 @@ namespace ThePlayer
             return _songs;
         }
 
-        #region Get Songs
         /// <summary>
         /// Get a list of songs from this pool, not ordered, ignoring the case.
         /// </summary>

@@ -9,6 +9,12 @@ using Implementation;
 
 namespace ThePlayer
 {
+    enum PLAYBACKMODE
+    {
+        Playlist,
+        History
+    }
+
     public class NothingToPlayException : Exception
     {
         public NothingToPlayException() : base() { }
@@ -24,18 +30,19 @@ namespace ThePlayer
         /// <summary>
         /// Songs to play
         /// </summary>
-        public Songpool Playlist { get; set; }
-
+        private Songpool _Playlist { get; set; }
+        /// <summary>
+        /// A copy of the playlist. Skipped and played songs are removed from this one.
+        /// </summary>
+        private Songpool internalPlaylist { get; set; }
         /// <summary>
         /// Songs currently displayed based on the current selection
         /// </summary>
         public Songpool CurrentView { get; set; }
-
         /// <summary>
         /// Songs that have been played. Technically: Songs that matched the "mark the song as played" criterias.
         /// </summary>
         public Songpool PlayedHistory { get; set; }
-
         /// <summary>
         /// Similar to history and playlist, but includes skipped songs. Technically a sequencial list of all Songs that have been passed to PlaySong() and were found as an Audiofile.
         /// </summary>
@@ -62,19 +69,19 @@ namespace ThePlayer
         /// <summary>
         /// Helper variable for navigation. If we are navigating (prev and next) through songs that have already been played, they are not logged again.
         /// </summary>
-        private bool logging;
+        private PLAYBACKMODE mode;
         /// <summary>
         /// Null-based index of the current song in the playlist or -1 when the current song is not in the playlist.
         /// </summary>
         private int playlistPosition;
-
         private int historyPosition;
 
         #region Constructors
         public Player()
         {
             // Initialization
-            Playlist = new Songpool();
+            _Playlist = new Songpool();
+            internalPlaylist = new Songpool();
             CurrentView = new Songpool();
             PlayedHistory = new Songpool();
             totalHistory = new Songpool();
@@ -82,6 +89,7 @@ namespace ThePlayer
             IsPlaying = false;
             playlistPosition = -1;
             historyPosition = -1;
+            PlayRandom = true;
 
             // VLC Initialization
             factory = new MediaPlayerFactory();
@@ -116,6 +124,8 @@ namespace ThePlayer
 
         void Events_MediaEnded(object sender, EventArgs e)
         {
+            // Don't call NextSong() here because NextSong might do nothing because playback is not running.
+            // If the playlist position is -1, we listened to a song not using the playlist (or the playlist is empty).
             if (playlistPosition != -1)
             {
                 PlaySong(GetNextSong());
@@ -126,36 +136,80 @@ namespace ThePlayer
         #region Core
         private Song GetNextSong()
         {
-            if (historyPosition < totalHistory.getSongs().Count - 1)
-            { // User was navigating forward to songs that have already been played and was then navigated back
-                historyPosition++;
-                logging = false;
-                return totalHistory.getSongs()[historyPosition];
-            }
+            Song result;
 
-            logging = true;
-            //TODO: All randomization, not-playing songs that were already played etc goes here
-            if (playlistPosition == -1)
-            { // Playlist mode is off
-                if (Playlist.getSongs().Count > 0)
-                { // Start playlist
-                    //TODO: Randomization etc. when starting to play the playlist
-                    playlistPosition = 0;
-                    return Playlist.getSongs()[0];
-                }
-                else
-                    throw new NothingToPlayException("Der nächste Song sollte gespielt werden, aber es war keiner vorhanden.");
-            }
-            else if (playlistPosition < Playlist.getSongs().Count - 1)
-            { // Playlist already playing, get the next song
-                playlistPosition++;
-                return Playlist.getSongs()[playlistPosition];
+            // What are we playing? Songs we already navigated to with Next and Prev? Then play all of them until there are no more before we do anything else.
+            if (historyPosition < totalHistory.getSongs().Count - 1)
+            {
+                //TODO: Optionally pass totalhistory songs to the filters
+                historyPosition++;
+                mode = PLAYBACKMODE.History;
+                result = totalHistory.getSongs()[historyPosition];
             }
             else
             {
-                //TODO: Return null here and handle playlist ended elsewhere? Hm.
-                return null;
+                // We are not playing songs from navigation so tell PlaySong() to log everything no matter what song we decide to play.
+                mode = PLAYBACKMODE.Playlist;
+
+                // If we ran out of songs and playlist-repeat is on, refill the internal playlist.
+                //TODO: Repeatmode
+                if (internalPlaylist.getSongs().Count == 0 && true)
+                    internalPlaylist = new Songpool(_Playlist.getSongs());
+
+                // What are we playing? Sequencial or random playlist?
+                if (PlayRandom)
+                {
+                    if (_Playlist.getSongs().Count > 0)
+                    {
+                        do
+                        {
+                            playlistPosition = new Random().Next(0, _Playlist.getSongs().Count);
+                            result = _Playlist.getSongs()[playlistPosition];
+                        } while (!AllowSong(result));
+                    }
+                    else
+                    {
+                        //TODO: Catch these exceptions where GetNextSong() is called
+                        throw new NothingToPlayException("Der nächste Song sollte gespielt werden, aber es war keiner vorhanden.");
+                    }
+                }
+                else
+                {
+                    // Sequential: Just get the pointer and if it is not at the end (or -1 when there are no songs), get the next song and increase the pointer.
+                    if (playlistPosition < _Playlist.getSongs().Count - 1)
+                    {
+                        if (_Playlist.getSongs().Count > 0)
+                        {
+                            playlistPosition++;
+                            result = _Playlist.getSongs()[playlistPosition];
+                        }
+                        else
+                            //TODO: Do we ever reach this?
+                            throw new NothingToPlayException("Der nächste Song sollte gespielt werden, aber es war keiner vorhanden.");
+                    }
+                    else
+                    {
+                        //TODO: Catch these exceptions where GetNextSong() is called
+                        throw new NothingToPlayException("Der nächste Song sollte gespielt werden, aber es war keiner vorhanden.");
+                    }
+                }
             }
+
+            return result;
+        }
+
+        private bool AllowSong(Song song)
+        {
+            //TODO: All song filtering goes here
+            bool result = true;
+
+            // Don't play songs that have already been played.
+            result = result && !(PlayedHistory.getSongs().Contains(song));
+
+            // Don't play songs that have been skipped before the entire playlist has been played or skipped.
+            result = result && internalPlaylist.getSongs().Contains(song);
+
+            return result;
         }
 
         /// <summary>
@@ -183,9 +237,10 @@ namespace ThePlayer
                 vlc.Open(media);
                 vlc.Play();
                 IsPlaying = true;
-                if (logging)
+                if (mode == PLAYBACKMODE.Playlist)
                 {
                     totalHistory.AddSong(song, true);
+                    internalPlaylist.RemoveSong(CurrentSong);
                     historyPosition++;
                 }
             }
@@ -224,8 +279,15 @@ namespace ThePlayer
         public int NextSong()
         {
             //TODO: Consider doing nothing or just moving the playlist pointer when playback is not running.
-            PlaySong(GetNextSong());
-            return (logging) ? playlistPosition : positionInPlaylist(totalHistory.getSongs()[historyPosition]);
+            try
+            {
+                PlaySong(GetNextSong());
+            }
+            catch (NothingToPlayException E)
+            {
+
+            }
+            return (mode == PLAYBACKMODE.Playlist) ? playlistPosition : positionInPlaylist(totalHistory.getSongs()[historyPosition]);
         }
 
         public int PrevSong()
@@ -233,7 +295,7 @@ namespace ThePlayer
             if (historyPosition > 0 && historyPosition < totalHistory.getSongs().Count)
             {
                 historyPosition--;
-                logging = false;
+                mode = PLAYBACKMODE.History;
                 PlaySong(totalHistory.getSongs()[historyPosition]);
                 return positionInPlaylist(totalHistory.getSongs()[historyPosition]);
             }
@@ -241,10 +303,25 @@ namespace ThePlayer
         }
         #endregion
 
+        #region Playlist control
+        public void ClearPlaylist()
+        {
+            _Playlist = new Songpool();
+            internalPlaylist = new Songpool();
+            playlistPosition = -1;
+        }
+
+        public bool AddSongToPlaylist(Song song)
+        {
+            internalPlaylist.AddSong(song);
+            return _Playlist.AddSong(song);
+        }
+        #endregion
+
         #region Helper methods
         private int positionInPlaylist(Song needle)
         {
-            return Playlist.getSongs().FindIndex(delegate(Song song) { return song == needle; });
+            return _Playlist.getSongs().FindIndex(delegate(Song song) { return song.Equals(needle); });
         }
         /// <summary>
         /// Search all the Audiofilepools for a song.

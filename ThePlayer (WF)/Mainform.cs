@@ -118,7 +118,7 @@ namespace ThePlayer
         private void AddSongToPlaylist(Song song)
         {
             //TODO: Make duplicates available if the user wants it
-            if (Program.ActivePlayer.Playlist.AddSong(song))
+            if (Program.ActivePlayer.AddSongToPlaylist(song))
                 lsvPlaylist.Items.Add(song.ToString());
         }
 
@@ -129,7 +129,7 @@ namespace ThePlayer
 
         private void leerenToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Program.ActivePlayer.Playlist = new Songpool();
+            Program.ActivePlayer.ClearPlaylist();
             lsvPlaylist.Items.Clear();
         }
 
