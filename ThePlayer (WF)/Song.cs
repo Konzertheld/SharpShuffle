@@ -9,6 +9,8 @@ namespace ThePlayer
     public class Song
     {
         private Dictionary<META_IDENTIFIERS, string> _allTheInformation;
+        public int PlayCount { get; set; }
+        public int SkipCount { get; set; }
 
         #region Static stuff
         //TODO: Übersetzungs-Dictionarys von allen Tagtypen zu meinen Fields bauen
