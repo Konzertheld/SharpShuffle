@@ -18,7 +18,7 @@ namespace ThePlayer
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            LoadSongpools();
+            LoadPools();
             Program.ActivePlayer.PositionChanged += new PlayerPositionChangedHandler(ActivePlayer_PositionChanged);
 
             // Load songview columns
@@ -36,12 +36,17 @@ namespace ThePlayer
             });
         }
 
-        private void LoadSongpools()
+        private void LoadPools()
         {
             lsvSongpools.Items.Clear();
-            foreach (KeyValuePair<string, Songpool> k in Program.GlobalConfig.Songpools)
+            foreach (String s in Program.Songpools.Keys)
             {
-                lsvSongpools.Items.Add(k.Key);
+                lsvSongpools.Items.Add(s);
+            }
+            Program.ActivePlayer.Audiosources.Clear();
+            foreach (Audiofilepool a in Program.Audiofilepools.Values)
+            {
+                Program.ActivePlayer.Audiosources.Add(a);
             }
         }
 
@@ -70,7 +75,9 @@ namespace ThePlayer
         private void songsAusOrdnerHinzufügenToolStripMenuItem_Click(object sender, EventArgs e)
         {
             new Audiofilepoolmanager().ShowDialog();
-            LoadSongpools();
+            Program.SaveAudiofilepools();
+            Program.SaveSongpools();
+            LoadPools();
         }
 
         private void lsvSongpools_SelectedIndexChanged(object sender, EventArgs e)
@@ -80,14 +87,14 @@ namespace ThePlayer
             foreach (ListViewItem item in lsvSongpools.SelectedItems)
             {
                 //TODO: Get lists for filters here (artists, genres...)
-                foreach (Song song in Program.GlobalConfig.Songpools[item.Text].getSongs(new List<META_IDENTIFIERS>(new META_IDENTIFIERS[2] { META_IDENTIFIERS.Artist, META_IDENTIFIERS.Title })))
+                foreach (Song song in Program.Songpools[item.Text].getSongs(new List<META_IDENTIFIERS>(new META_IDENTIFIERS[2] { META_IDENTIFIERS.Artists, META_IDENTIFIERS.Title })))
                 {
                     Program.ActivePlayer.CurrentView.AddSong(song);
                 }
             }
             lsvCurrentSongview.Items.Clear();
             //TODO: Seriously, sorting does not belong HERE and not hardcoded for sure.
-            foreach (Song song in Program.ActivePlayer.CurrentView.getSongs(new List<META_IDENTIFIERS>(new META_IDENTIFIERS[2] { META_IDENTIFIERS.Artist, META_IDENTIFIERS.Title })))
+            foreach (Song song in Program.ActivePlayer.CurrentView.getSongs(new List<META_IDENTIFIERS>(new META_IDENTIFIERS[2] { META_IDENTIFIERS.Artists, META_IDENTIFIERS.Title })))
             {
                 ListViewItem lvi = new ListViewItem(song.getInformation(Program.GlobalConfig.CurrentSongviewColumns[0]));
                 for (int i = 1; i < Program.GlobalConfig.CurrentSongviewColumns.Count; i++)

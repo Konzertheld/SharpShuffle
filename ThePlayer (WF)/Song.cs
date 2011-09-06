@@ -37,6 +37,11 @@ namespace ThePlayer
             _allTheInformation = new Dictionary<META_IDENTIFIERS, string>();
         }
 
+        #region Information access
+        public Dictionary<META_IDENTIFIERS, string> AllTheInformation()
+        {
+            return _allTheInformation;
+        }
 
         /// <summary>
         /// Get a stored information field (tag). Returns an empty string if the field is not set.
@@ -63,11 +68,12 @@ namespace ThePlayer
                 _allTheInformation.Add(identifier, value);
             return true;
         }
+        #endregion
 
         public override string ToString()
         {
             //TODO: Let the user choose
-            return string.Format("{0} - {1}", this.getInformation(META_IDENTIFIERS.Artist), this.getInformation(META_IDENTIFIERS.Title));
+            return string.Format("{0} - {1}", this.getInformation(META_IDENTIFIERS.Artists), this.getInformation(META_IDENTIFIERS.Title));
         }
     }
 
@@ -79,7 +85,7 @@ namespace ThePlayer
         public SongComparer()
         {
             _orderby = new List<META_IDENTIFIERS>();
-            _orderby.Add(META_IDENTIFIERS.Artist);
+            _orderby.Add(META_IDENTIFIERS.Artists);
         }
         public SongComparer(IEnumerable<META_IDENTIFIERS> orderby)
         {

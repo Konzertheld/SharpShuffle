@@ -26,7 +26,7 @@ namespace ThePlayer
         private void LoadPools()
         {
             lsvAudiofilepools.Items.Clear();
-            foreach (KeyValuePair<string, Audiofilepool> afp in Program.GlobalConfig.Audiofilepools)
+            foreach (KeyValuePair<string, Audiofilepool> afp in Program.Audiofilepools)
             {
                 lsvAudiofilepools.Items.Add(afp.Key).SubItems.Add(afp.Value.Basepath);
             }
@@ -43,10 +43,11 @@ namespace ThePlayer
             {
                 this.Cursor = Cursors.WaitCursor;
                 Application.DoEvents();
-                Audiofilepool afp = new Audiofilepool(fbd.SelectedPath);
-                Program.GlobalConfig.Audiofilepools.Add(Path.GetFileName(fbd.SelectedPath), afp);
+                //TODO: Let the user enter a name (for both audiofilepool and songpool)
+                Audiofilepool afp = new Audiofilepool(fbd.SelectedPath, Path.GetFileName(fbd.SelectedPath));
+                Program.Audiofilepools.Add(Path.GetFileName(fbd.SelectedPath), afp);
                 if (MessageBox.Show("Möchten Sie auch einen Songpool aus den Songs in diesem Ordner erstellen? Sie können das auch später noch machen. (Wenn Sie das erste Mal einen Ordner scannen, sollten Sie das jetzt tun.)", Application.ProductName, MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
-                    Program.GlobalConfig.Songpools.Add(Path.GetFileName(fbd.SelectedPath), afp.createSongpool());
+                    Program.Songpools.Add(Path.GetFileName(fbd.SelectedPath), afp.createSongpool());
                 LoadPools();
                 Program.GlobalConfig.Save();
                 this.Cursor = Cursors.Default;
@@ -61,7 +62,7 @@ namespace ThePlayer
             {
                 foreach (ListViewItem item in lsvAudiofilepools.SelectedItems)
                 {
-                    Program.GlobalConfig.Audiofilepools.Remove(item.Text);
+                    Program.Audiofilepools.Remove(item.Text);
                     item.Remove();
                 }
                 Program.GlobalConfig.Save();

@@ -111,7 +111,7 @@ namespace ThePlayer
             //TODO: Make this configurable
             if (pos > 0.8 && !currentSongScrobbled)
             {
-                Scrobbel.Scrobbeln(CurrentSong.getInformation(META_IDENTIFIERS.Artist), CurrentSong.getInformation(META_IDENTIFIERS.Title), DateTime.Now.Subtract(new TimeSpan(1, 0, 0)), (int)(vlc.Length / 1000));
+                Scrobbel.Scrobbeln(CurrentSong.getInformation(META_IDENTIFIERS.Artists), CurrentSong.getInformation(META_IDENTIFIERS.Title), DateTime.Now.Subtract(new TimeSpan(1, 0, 0)), (int)(vlc.Length / 1000));
                 currentSongScrobbled = true;
             }
         }
@@ -166,6 +166,7 @@ namespace ThePlayer
         /// <param name="song">Guess what.</param>
         public void PlaySong(Song song)
         {
+            //TODO: Better error messages
             if (song == null)
             {
                 raisePlaylistEnded();
@@ -173,7 +174,11 @@ namespace ThePlayer
             }
             Stop();
             string temp = FindAudiofile(song);
-            if (System.IO.File.Exists(temp))
+            if (temp == "")
+            {
+                throw new Exception("Zu diesem Song wurde kein Audiofile gefunden.");
+            }
+            else if (System.IO.File.Exists(temp))
             {
                 IMedia media = factory.CreateMedia<IMedia>(temp);
                 CurrentSong = song;
@@ -188,7 +193,6 @@ namespace ThePlayer
             }
             else
             {
-                //TODO: This exception does not fit. There is no file to find ergo no file to not find.
                 throw new System.IO.FileNotFoundException("Der abzuspielende Song wurde nicht gefunden.", temp);
             }
         }

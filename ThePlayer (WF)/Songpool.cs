@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml;
+using System.Xml.Linq;
 
 namespace ThePlayer
 {
@@ -9,6 +11,7 @@ namespace ThePlayer
     public class Songpool
     {
         private List<Song> _songs;
+        public string Name { get; set; }
 
         #region Konstruktoren
         public Songpool()
@@ -18,6 +21,11 @@ namespace ThePlayer
         public Songpool(IEnumerable<Song> songs)
         {
             _songs = new List<Song>(songs);
+        }
+        public Songpool(IEnumerable<Song> songs, string name)
+            : this(songs)
+        {
+            Name = name;
         }
         #endregion
 
@@ -52,6 +60,7 @@ namespace ThePlayer
             return _songs;
         }
 
+        #region Get Songs
         /// <summary>
         /// Get a list of songs from this pool, not ordered, ignoring the case.
         /// </summary>
@@ -139,6 +148,7 @@ namespace ThePlayer
                 return new List<Song>(results);
             }
         }
+        #endregion
 
         /// <summary>
         /// Get a list of artists, genres, whatever.
@@ -182,5 +192,48 @@ namespace ThePlayer
                     throw new Exception("Some crazy stuff happened.");
             }
         }
+
+        #region Save and load
+        public bool Save()
+        {
+            //TODO: Throw exception when pool has no name
+            XmlWriter xw = XmlWriter.Create(Program.GlobalConfig.Appdatapath + "\\songpools\\" + Name + ".xml", Program.GlobalConfig.XmlSettings);
+            xw.WriteStartDocument();
+            xw.WriteStartElement("Songpool");
+            xw.WriteAttributeString("Name", Name);
+            foreach (Song song in _songs)
+            {
+                xw.WriteStartElement("Song");
+                foreach (KeyValuePair<META_IDENTIFIERS, string> i in song.AllTheInformation())
+                {
+                    xw.WriteAttributeString(i.Key.ToString(), i.Value);
+                }
+                xw.WriteEndElement();
+            }
+            xw.WriteEndElement();
+            xw.WriteEndDocument();
+            xw.Close();
+            return true;
+        }
+
+        public static Songpool Load(string file)
+        {
+            Songpool result = new Songpool();
+            //TODO: Validation before loading
+            XElement x = XElement.Load(file);
+            result.Name = x.Attribute("Name").Value;
+
+            foreach (XElement song in x.Descendants("Song"))
+            {
+                Song songobject = new Song();
+                foreach (XAttribute meta in song.Attributes())
+                {
+                    songobject.setInformation((META_IDENTIFIERS)Enum.Parse(typeof(META_IDENTIFIERS), meta.Name.LocalName), meta.Value);
+                }
+            }
+
+            return result;
+        }
+        #endregion
     }
 }

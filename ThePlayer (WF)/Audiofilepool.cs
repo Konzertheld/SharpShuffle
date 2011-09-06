@@ -3,17 +3,22 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml;
+using System.Xml.Linq;
 
 namespace ThePlayer
 {
     [Serializable]
-    class Audiofilepool
+    public class Audiofilepool
     {
         public string Basepath { get; private set; }
+        public string Name { get; set; }
         private List<Audiofile> audiofiles;
 
-        public Audiofilepool(string path)
+        #region Constructors
+        public Audiofilepool(string path, string name)
         {
+            Name = name;
             audiofiles = new List<Audiofile>();
             //TODO: Make subdirs chosable
             Basepath = path;
@@ -27,7 +32,9 @@ namespace ThePlayer
                 }
             }
         }
+        #endregion
 
+        #region Main methods
         /// <summary>
         /// Find the first file that matches a song.
         /// </summary>
@@ -64,7 +71,48 @@ namespace ThePlayer
             {
                 songs.Add(audiofile.Track);
             }
-            return new Songpool(songs);
+            return new Songpool(songs, Name);
         }
+        #endregion
+
+        #region Save and load
+        public bool Save()
+        {
+            //TODO: Throw exception when pool has no name
+            XmlWriter xw = XmlWriter.Create(Program.GlobalConfig.Appdatapath + "\\audiofilepools\\" + Name + ".xml", Program.GlobalConfig.XmlSettings);
+            xw.WriteStartDocument();
+            xw.WriteStartElement("Audiofilepool");
+            xw.WriteAttributeString("Name", Name);
+            xw.WriteAttributeString("Basepath", Basepath);
+            foreach (Audiofile af in audiofiles)
+            {
+                xw.WriteStartElement("Audiofile");
+                xw.WriteAttributeString("Filepath", af.Filepath);
+                xw.WriteEndElement();
+            }
+            xw.WriteEndElement();
+            xw.WriteEndDocument();
+            xw.Close();
+            return true;
+        }
+
+        public static Audiofilepool Load(string path)
+        {
+            //TODO: Validation before loading
+            XElement x = XElement.Load(path);
+            Audiofilepool afp = new Audiofilepool(x.Attribute("Basepath").Value, x.Attribute("Name").Value);
+
+            var load = from e in x.Elements()
+                       where e.Name == "Audiofile"
+                       select new { e };
+
+            foreach (var v in load)
+            {
+                afp.audiofiles.Add(new Audiofile(v.e.Attribute("Filepath").Value));
+            }
+
+            return afp;
+        }
+        #endregion
     }
 }

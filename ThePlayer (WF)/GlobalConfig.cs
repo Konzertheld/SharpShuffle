@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Xml;
 
 namespace ThePlayer
 {
@@ -18,30 +19,26 @@ namespace ThePlayer
         public string Appdatapath { get; set; }
 
         /// <summary>
-        /// The user's songpools.
-        /// </summary>
-        public Dictionary<string, Songpool> Songpools;
-
-        /// <summary>
-        /// The user's audiofilepools.
-        /// </summary>
-        public Dictionary<string, Audiofilepool> Audiofilepools;
-
-        /// <summary>
         /// Folders in which the program should always look for audiofile instances of songs.
         /// </summary>
         private List<string> _sourceFolders;
 
         public List<META_IDENTIFIERS> CurrentSongviewColumns;
+
+        [NonSerialized]
+        public XmlWriterSettings XmlSettings;
         #endregion
 
         #region Constructor
         public Config()
         {
             Appdatapath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + System.Windows.Forms.Application.ProductName;
-            Songpools = new Dictionary<string, Songpool>();
-            Audiofilepools = new Dictionary<string, Audiofilepool>();
-            CurrentSongviewColumns = new List<META_IDENTIFIERS>(new META_IDENTIFIERS[4] { META_IDENTIFIERS.Artist, META_IDENTIFIERS.Title, META_IDENTIFIERS.Album, META_IDENTIFIERS.Genre });
+            CurrentSongviewColumns = new List<META_IDENTIFIERS>(new META_IDENTIFIERS[4] { META_IDENTIFIERS.Artists, META_IDENTIFIERS.Title, META_IDENTIFIERS.Album, META_IDENTIFIERS.Genres });
+
+            // Could also be static. Just to avoid duplicate code
+            XmlSettings = new XmlWriterSettings();
+            XmlSettings.Indent = true;
+            XmlSettings.IndentChars = "\t";
         }
         #endregion
 
@@ -86,9 +83,9 @@ namespace ThePlayer
                 Config c = (Config)bf.Deserialize(fs);
                 fs.Close();
                 if (c.Appdatapath != null) this.Appdatapath = c.Appdatapath;
-                if (c.Audiofilepools != null) this.Audiofilepools = c.Audiofilepools;
+
                 if (c.CurrentSongviewColumns != null) this.CurrentSongviewColumns = c.CurrentSongviewColumns;
-                if (c.Songpools != null) this.Songpools = c.Songpools;
+
                 if (c._sourceFolders != null) this._sourceFolders = c._sourceFolders;
                 return true;
             }
