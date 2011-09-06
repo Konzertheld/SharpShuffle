@@ -109,7 +109,7 @@ namespace ThePlayer
             {
                 AddSongToPlaylist(Program.ActivePlayer.CurrentView.getSongs()[i]);
             }
-            if (!Program.ActivePlayer.isPlaying)
+            if (!Program.ActivePlayer.IsPlaying)
             {
                 lsvPlaylist.Items[Program.ActivePlayer.PlayPlaylist()].ForeColor = Color.Red;
             }

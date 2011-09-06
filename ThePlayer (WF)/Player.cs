@@ -48,20 +48,21 @@ namespace ThePlayer
 
         private IVideoPlayer vlc;
         private IMediaPlayerFactory factory;
-        private bool currentSongLogged;
 
         private Song _currentSong;
         public Song CurrentSong { get { return _currentSong; } private set { currentSongLogged = false; _currentSong = value; } }
+        private bool currentSongLogged;
 
         public event PlayerPositionChangedHandler PositionChanged;
         public event PlaylistEndedHandler PlaylistEnded;
 
-        public bool isPlaying;
+        public bool IsPlaying { get; private set; }
+        public bool PlayRandom { get; set; }
+
         /// <summary>
         /// Helper variable for navigation. If we are navigating (prev and next) through songs that have already been played, they are not logged again.
         /// </summary>
         private bool logging;
-
         /// <summary>
         /// Null-based index of the current song in the playlist or -1 when the current song is not in the playlist.
         /// </summary>
@@ -78,7 +79,7 @@ namespace ThePlayer
             PlayedHistory = new Songpool();
             totalHistory = new Songpool();
             Audiosources = new List<Audiofilepool>();
-            isPlaying = false;
+            IsPlaying = false;
             playlistPosition = -1;
             historyPosition = -1;
 
@@ -97,6 +98,7 @@ namespace ThePlayer
             //Scrobbel.Scrobbeln(CurrentSong.getInformation(META_IDENTIFIERS.Artist), CurrentSong.getInformation(META_IDENTIFIERS.Title), (int)(vlc.Length / 1000));
         }
 
+        //TODO: Position in Sekunden und Prozent übergeben für Zeitanzeige in der UI
         void Events_TimeChanged(object sender, Declarations.Events.MediaPlayerTimeChanged e)
         {
             //TODO: Use PositionChanged instead?!
@@ -105,7 +107,9 @@ namespace ThePlayer
             //TODO: Make this configurable
             if (pos > 0.8 && !currentSongLogged)
             {
+                //TODO: Scrobbeln nur vormerken, erst bei Next oder Stop ausführen
                 Scrobbel.Scrobbeln(CurrentSong.getInformation(META_IDENTIFIERS.Artists), CurrentSong.getInformation(META_IDENTIFIERS.Title), DateTime.Now.Subtract(new TimeSpan(1, 0, 0)), (int)(vlc.Length / 1000));
+                PlayedHistory.AddSong(CurrentSong, true);
                 currentSongLogged = true;
             }
         }
@@ -178,7 +182,7 @@ namespace ThePlayer
                 CurrentSong = song;
                 vlc.Open(media);
                 vlc.Play();
-                isPlaying = true;
+                IsPlaying = true;
                 if (logging)
                 {
                     totalHistory.AddSong(song, true);
@@ -214,7 +218,7 @@ namespace ThePlayer
         {
             if (vlc.IsPlaying)
                 vlc.Stop();
-            isPlaying = false;
+            IsPlaying = false;
         }
 
         public int NextSong()
@@ -260,7 +264,7 @@ namespace ThePlayer
 
         private void raisePlaylistEnded()
         {
-            isPlaying = false;
+            IsPlaying = false;
             if (PlaylistEnded != null) PlaylistEnded();
         }
         #endregion
