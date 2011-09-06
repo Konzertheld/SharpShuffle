@@ -46,7 +46,7 @@ namespace ThePlayer
         /// <returns></returns>
         public bool AddSong(Song song, bool allow_duplicates)
         {
-            if (!_songs.Contains(song)) _songs.Add(song);
+            if (allow_duplicates || !_songs.Contains(song)) _songs.Add(song);
             else return false;
             return true;
         }
