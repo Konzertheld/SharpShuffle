@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.IO;
 
+
 namespace ThePlayer
 {
     //TODO: Find out if this can used like "is x element of ALLOWED_EXTENSIONS", if not, remove it

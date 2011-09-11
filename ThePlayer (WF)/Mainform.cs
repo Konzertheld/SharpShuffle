@@ -86,7 +86,7 @@ namespace ThePlayer
             Program.ActivePlayer.CurrentView = new Songpool();
             foreach (ListViewItem item in lsvSongpools.SelectedItems)
             {
-                //TODO: Get lists for filters here (artists, genres...)
+                //TODO: Get lists for filters here (artists, genres...) and let user decide how to order
                 foreach (Song song in Program.Songpools[item.Text].getSongs(new List<META_IDENTIFIERS>(new META_IDENTIFIERS[2] { META_IDENTIFIERS.Artists, META_IDENTIFIERS.Title })))
                 {
                     Program.ActivePlayer.CurrentView.AddSong(song);

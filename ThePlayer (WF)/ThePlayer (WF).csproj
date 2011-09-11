@@ -37,6 +37,12 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.SQLite">
+      <HintPath>3rdparty\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.SQLite.Linq">
+      <HintPath>3rdparty\System.Data.SQLite.Linq.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -56,6 +62,7 @@
       <DependentUpon>Audiofilepoolmanager.cs</DependentUpon>
     </Compile>
     <Compile Include="Compare.cs" />
+    <Compile Include="Database.cs" />
     <Compile Include="Mainform.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -123,6 +130,9 @@
       <Project>{A3FA28A7-D170-4066-A234-F5E5BD643BAE}</Project>
       <Name>TagLibSharp</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="3rdparty\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
