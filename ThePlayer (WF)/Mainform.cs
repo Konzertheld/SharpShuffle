@@ -22,9 +22,9 @@ namespace ThePlayer
             Program.ActivePlayer.PositionChanged += new PlayerPositionChangedHandler(ActivePlayer_PositionChanged);
 
             // Load songview columns
-            foreach (META_IDENTIFIERS col in Program.GlobalConfig.CurrentSongviewColumns)
+            foreach (string col in Program.GlobalConfig.CurrentSongviewColumns)
             {
-                lsvCurrentSongview.Columns.Add(col.ToString());
+                lsvCurrentSongview.Columns.Add(col);
             }
         }
 
@@ -75,8 +75,7 @@ namespace ThePlayer
         private void songsAusOrdnerHinzufügenToolStripMenuItem_Click(object sender, EventArgs e)
         {
             new Audiofilepoolmanager().ShowDialog();
-            Program.SaveAudiofilepools();
-            Program.SaveSongpools();
+            
             LoadPools();
         }
 
@@ -87,14 +86,14 @@ namespace ThePlayer
             foreach (ListViewItem item in lsvSongpools.SelectedItems)
             {
                 //TODO: Get lists for filters here (artists, genres...) and let user decide how to order
-                foreach (Song song in Program.Songpools[item.Text].getSongs(new List<META_IDENTIFIERS>(new META_IDENTIFIERS[2] { META_IDENTIFIERS.Artists, META_IDENTIFIERS.Title })))
+                foreach (Song song in Program.Songpools[item.Text].getSongs(new List<string>(new string[2] { Song.META_ARTISTS, Song.META_TITLE })))
                 {
                     Program.ActivePlayer.CurrentView.AddSong(song);
                 }
             }
             lsvCurrentSongview.Items.Clear();
             //TODO: Seriously, sorting does not belong HERE and not hardcoded for sure.
-            foreach (Song song in Program.ActivePlayer.CurrentView.getSongs(new List<META_IDENTIFIERS>(new META_IDENTIFIERS[2] { META_IDENTIFIERS.Artists, META_IDENTIFIERS.Title })))
+            foreach (Song song in Program.ActivePlayer.CurrentView.getSongs(new List<string>(new string[2] { Song.META_ARTISTS, Song.META_TITLE })))
             {
                 ListViewItem lvi = new ListViewItem(song.getInformation(Program.GlobalConfig.CurrentSongviewColumns[0]));
                 for (int i = 1; i < Program.GlobalConfig.CurrentSongviewColumns.Count; i++)

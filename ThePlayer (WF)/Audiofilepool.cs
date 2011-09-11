@@ -13,27 +13,29 @@ namespace ThePlayer
     {
         public string Basepath { get; private set; }
         public string Name { get; set; }
-        private List<Audiofile> audiofiles;
+        private List<string> audiofiles;
 
         #region Constructors
         public Audiofilepool(string path, string name)
         {
             Name = name;
-            audiofiles = new List<Audiofile>();
+            audiofiles = new List<string>();
             //TODO: Make subdirs chosable
             Basepath = path;
-            string[] files = (string[])Directory.GetFiles(path, "*", SearchOption.AllDirectories);
-
+            string[] files = Directory.GetFiles(path, "*", SearchOption.AllDirectories);
+            Program.ActiveDatabase.InsertAudiofilepool(name, path);
             foreach (string file in files)
             {
                 if (Program.ALLOWED_EXTENSIONS.Contains(Path.GetExtension(file).Substring(1)))
-                {
-                    audiofiles.Add(new Audiofile(file));
-                }
+                    audiofiles.Add(file);
             }
+
+            Program.ActiveDatabase.InsertAudiofiles(audiofiles, name);
+            
+
         }
         #endregion
-
+        /*
         #region Main methods
         /// <summary>
         /// Find the first file that matches a song.
@@ -48,13 +50,13 @@ namespace ThePlayer
                     return audiofile;
             }
             return null;
-        }
+        }*/
 
         /// <summary>
         /// Simply return the list of files in this pool.
         /// </summary>
         /// <returns></returns>
-        public List<Audiofile> getAudiofiles()
+        public List<string> getAudiofiles()
         {
             return audiofiles;
         }
@@ -66,13 +68,15 @@ namespace ThePlayer
         public Songpool createSongpool()
         {
             List<Song> songs = new List<Song>();
-            foreach (Audiofile audiofile in audiofiles)
+            foreach (string audiofile in audiofiles)
             {
-                songs.Add(audiofile.Track);
+                songs.Add(new Audiofile(audiofile).Track);
             }
+            Program.ActiveDatabase.InsertSongpool(Name);
+            Program.ActiveDatabase.InsertSongs(songs, Name);
             return new Songpool(songs, Name);
         }
-        #endregion
+        /*#endregion
 
         #region Save and load
         public bool Save()
@@ -117,6 +121,6 @@ namespace ThePlayer
             }
             return afp;
         }
-        #endregion
+        #endregion*/
     }
 }

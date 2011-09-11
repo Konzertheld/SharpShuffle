@@ -42,7 +42,6 @@ namespace ThePlayer
             if (Directory.Exists(fbd.SelectedPath))
             {
                 this.Cursor = Cursors.WaitCursor;
-                Application.DoEvents();
                 //TODO: Let the user enter a name (for both audiofilepool and songpool)
                 Audiofilepool afp = new Audiofilepool(fbd.SelectedPath, Path.GetFileName(fbd.SelectedPath));
                 Program.Audiofilepools.Add(Path.GetFileName(fbd.SelectedPath), afp);

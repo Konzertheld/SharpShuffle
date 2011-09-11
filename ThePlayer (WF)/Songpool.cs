@@ -87,14 +87,14 @@ namespace ThePlayer
         /// <returns></returns>
         public List<Song> getSongs(List<MP_Filter> filters, bool ignorecase)
         {
-            return getSongs(filters, _songs, new List<META_IDENTIFIERS>(), ignorecase);
+            return getSongs(filters, _songs, new List<string>(), ignorecase);
         }
         /// <summary>
         /// Get an ordered list of songs from this pool, not filtered, ignoring the case.
         /// </summary>
         /// <param name="orderby">A list of meta identifiers to order by (in the order of appearance).</param>
         /// <returns></returns>
-        public List<Song> getSongs(List<META_IDENTIFIERS> orderby)
+        public List<Song> getSongs(List<string> orderby)
         {
             return getSongs(orderby, true);
         }
@@ -103,7 +103,7 @@ namespace ThePlayer
         /// </summary>
         /// <param name="orderby">A list of meta identifiers to order by (in the order of appearance).</param>
         /// <returns></returns>
-        public List<Song> getSongs(List<META_IDENTIFIERS> orderby, bool ignorecase)
+        public List<Song> getSongs(List<string> orderby, bool ignorecase)
         {
             return getSongs(new List<MP_Filter>(), _songs, orderby, ignorecase);
         }
@@ -113,7 +113,7 @@ namespace ThePlayer
         /// <param name="filters">Filters to match.</param>
         /// <param name="orderby">A list of meta identifiers to order by (in the order of appearance).</param>
         /// <returns></returns>
-        public List<Song> getSongs(List<MP_Filter> filters, List<META_IDENTIFIERS> orderby)
+        public List<Song> getSongs(List<MP_Filter> filters, List<string> orderby)
         {
             return getSongs(filters, orderby, true);
         }
@@ -123,9 +123,9 @@ namespace ThePlayer
         /// <param name="filters">Filters to match.</param>
         /// <param name="orderby">A list of meta identifiers to order by (in the order of appearance).</param>
         /// <returns></returns>
-        public List<Song> getSongs(List<MP_Filter> filters, List<META_IDENTIFIERS> orderby, bool ignorecase)
+        public List<Song> getSongs(List<MP_Filter> filters, List<string> orderby, bool ignorecase)
         {
-            return getSongs(filters, _songs, new List<META_IDENTIFIERS>(), ignorecase);
+            return getSongs(filters, _songs, new List<string>(), ignorecase);
         }
         /// <summary>
         /// Get a list of songs.
@@ -134,7 +134,7 @@ namespace ThePlayer
         /// <param name="songs">Songs to search in.</param>
         /// <param name="orderby">A list of meta identifiers to order by (in the order of appearance).</param>
         /// <returns></returns>
-        public List<Song> getSongs(List<MP_Filter> filters, List<Song> songs, List<META_IDENTIFIERS> orderby, bool ignorecase)
+        public List<Song> getSongs(List<MP_Filter> filters, List<Song> songs, List<string> orderby, bool ignorecase)
         {
             if (filters.Count > 0)
             {
@@ -165,7 +165,7 @@ namespace ThePlayer
         /// </summary>
         /// <param name="identifier"></param>
         /// <returns></returns>
-        public List<string> getList(META_IDENTIFIERS identifier)
+        /*public List<string> getList(META_IDENTIFIERS identifier)
         {
             List<string> result = new List<string>();
             foreach (Song song in _songs)
@@ -175,7 +175,7 @@ namespace ThePlayer
             }
             result = result.OrderBy(song => song).ToList();
             return result;
-        }
+        }*/
 
 
 
@@ -214,9 +214,9 @@ namespace ThePlayer
             foreach (Song song in _songs)
             {
                 xw.WriteStartElement("Song");
-                foreach (KeyValuePair<META_IDENTIFIERS, string> i in song.AllTheInformation())
+                foreach (KeyValuePair<string, string> i in song.AllTheInformation())
                 {
-                    xw.WriteAttributeString(i.Key.ToString(), i.Value);
+                    xw.WriteAttributeString(i.Key, i.Value);
                 }
                 xw.WriteEndElement();
             }
@@ -238,7 +238,7 @@ namespace ThePlayer
                 Song songobject = new Song();
                 foreach (XAttribute meta in song.Attributes())
                 {
-                    songobject.setInformation((META_IDENTIFIERS)Enum.Parse(typeof(META_IDENTIFIERS), meta.Name.LocalName), meta.Value);
+                    songobject.setInformation(meta.Name.LocalName, meta.Value);
                 }
                 result.AddSong(songobject, true);
             }

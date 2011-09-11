@@ -23,27 +23,6 @@ namespace ThePlayer
         m4a
     }
 
-    public enum META_IDENTIFIERS : short
-    {
-        Album = 1,
-        AlbumArtists,
-        AmazonID,
-        Artists,
-        BPM,
-        Comment,
-        Composers,
-        Conductor,
-        Copyright,
-        Disc,
-        DiscCount,
-        Genres,
-        Lyrics,
-        Title,
-        TrackNr,
-        TrackCount,
-        Year
-    }
-
     static class Program
     {
 
@@ -69,17 +48,23 @@ namespace ThePlayer
 
         public static Player ActivePlayer;
 
+        public static Database ActiveDatabase;
+
         /// <summary>
         /// Der Haupteinstiegspunkt für die Anwendung.
         /// </summary>
         [STAThread]
         static void Main()
         {
+            
+
             // Load configuration
             GlobalConfig = new Config();
             GlobalConfig.Load(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + System.Windows.Forms.Application.ProductName);
             if (GlobalConfig == null)
                 GlobalConfig = new Config();
+
+            ActiveDatabase = new Database();
 
             // Create directories, they're needed for loading
             if (!Directory.Exists(GlobalConfig.Appdatapath)) Directory.CreateDirectory(GlobalConfig.Appdatapath);
@@ -88,17 +73,19 @@ namespace ThePlayer
 
             // Initialize and load stuff
             Songpools = new Dictionary<string, Songpool>();
-            LoadSongpools();
+            //LoadSongpools();
             Audiofilepools = new Dictionary<string, Audiofilepool>();
-            LoadAudiofilepools();
+            //LoadAudiofilepools();
 
             //TODO: Load instead of create new player
             //TODO: Add audio sources when created, not only at program start
             ActivePlayer = new Player();
-            foreach (Audiofilepool afp in Program.Audiofilepools.Values)
-            {
-                ActivePlayer.Audiosources.Add(afp);
-            }
+            //foreach (Audiofilepool afp in Program.Audiofilepools.Values)
+            //{
+            //    ActivePlayer.Audiosources.Add(afp);
+            //}
+
+            Application.ApplicationExit += new EventHandler(Application_ApplicationExit);
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
@@ -106,38 +93,9 @@ namespace ThePlayer
             Application.Run(new Mainform());
         }
 
-        public static void LoadSongpools()
+        static void Application_ApplicationExit(object sender, EventArgs e)
         {
-            foreach (string file in Directory.GetFiles(GlobalConfig.Appdatapath + "\\songpools"))
-            {
-                Songpool s = Songpool.Load(file);
-                Songpools.Add(s.Name, s);
-            }
-        }
-
-        public static void LoadAudiofilepools()
-        {
-            foreach (string file in Directory.GetFiles(GlobalConfig.Appdatapath + "\\audiofilepools"))
-            {
-                Audiofilepool a = Audiofilepool.Load(file);
-                Audiofilepools.Add(a.Name, a);
-            }
-        }
-
-        public static bool SaveSongpools()
-        {
-            bool result = true;
-            foreach (Songpool s in Songpools.Values) 
-                result = result && s.Save();
-            return result;
-        }
-
-        public static bool SaveAudiofilepools()
-        {
-            bool result = true;
-            foreach (Audiofilepool a in Audiofilepools.Values)
-                result = result && a.Save();
-            return result;
+            ActiveDatabase.CloseDB();
         }
     }
 }

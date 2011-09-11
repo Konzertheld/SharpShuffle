@@ -18,7 +18,7 @@ namespace ThePlayer
     /// </summary>
     public class MP_Filter
     {
-        public MP_Filter(META_IDENTIFIERS key, MP_COMPARETYPE comparetype, string value)
+        public MP_Filter(string key, MP_COMPARETYPE comparetype, string value)
         {
             //TODO: Nicht irgendeinen Mist abfragen lassen
             Key = key;
@@ -26,7 +26,7 @@ namespace ThePlayer
             Value = value;
         }
 
-        public META_IDENTIFIERS Key { get; private set; }
+        public string Key { get; private set; }
         public MP_COMPARETYPE Comparetype { get; private set; }
         public string Value { get; private set; }
     }

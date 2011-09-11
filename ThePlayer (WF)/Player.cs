@@ -116,7 +116,7 @@ namespace ThePlayer
             if (pos > 0.8 && !currentSongLogged)
             {
                 //TODO: Scrobbeln nur vormerken, erst bei Next oder Stop ausführen
-                Scrobbel.Scrobbeln(CurrentSong.getInformation(META_IDENTIFIERS.Artists), CurrentSong.getInformation(META_IDENTIFIERS.Title), DateTime.Now.Subtract(new TimeSpan(1, 0, 0)), (int)(vlc.Length / 1000));
+                Scrobbel.Scrobbeln(CurrentSong.getInformation(Song.META_ARTISTS), CurrentSong.getInformation(Song.META_TITLE), DateTime.Now.Subtract(new TimeSpan(1, 0, 0)), (int)(vlc.Length / 1000));
                 PlayedHistory.AddSong(CurrentSong, true);
                 currentSongLogged = true;
             }
@@ -333,8 +333,8 @@ namespace ThePlayer
             Audiofile temp;
             foreach (Audiofilepool afp in Audiosources)
             {
-                temp = afp.findSong(song);
-                if (temp != null) return temp.Filepath;
+                //temp = afp.findSong(song);
+                //if (temp != null) return temp.Filepath;
             }
             return "";
         }

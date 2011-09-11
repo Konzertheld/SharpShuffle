@@ -23,7 +23,7 @@ namespace ThePlayer
         /// </summary>
         private List<string> _sourceFolders;
 
-        public List<META_IDENTIFIERS> CurrentSongviewColumns;
+        public List<string> CurrentSongviewColumns;
 
         [NonSerialized]
         public XmlWriterSettings XmlSettings;
@@ -33,7 +33,7 @@ namespace ThePlayer
         public Config()
         {
             Appdatapath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + System.Windows.Forms.Application.ProductName;
-            CurrentSongviewColumns = new List<META_IDENTIFIERS>(new META_IDENTIFIERS[4] { META_IDENTIFIERS.Artists, META_IDENTIFIERS.Title, META_IDENTIFIERS.Album, META_IDENTIFIERS.Genres });
+            CurrentSongviewColumns = new List<string>(new string[5] { Song.META_ARTISTS, Song.META_TITLE, Song.META_ALBUM, Song.META_GENRES, Song.META_PLAYCOUNT });
 
             // Could also be static. Just to avoid duplicate code
             XmlSettings = new XmlWriterSettings();

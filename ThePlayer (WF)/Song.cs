@@ -8,43 +8,58 @@ namespace ThePlayer
     [Serializable]
     public class Song
     {
-        private Dictionary<META_IDENTIFIERS, string> _allTheInformation;
-        public uint PlayCount { get; set; }
-        public uint SkipCount { get; set; }
-        public short Rating { get; set; }
+        private Dictionary<string, string> _allTheInformation;
 
-        #region Static stuff
-        //TODO: Übersetzungs-Dictionarys von allen Tagtypen zu meinen Fields bauen
-        private static Dictionary<string, string> _id3Fields = new Dictionary<string, string> { { "COMM", "Comment" }, { "PCNT", "Tag-Playcount" }, { "POPM", "Tag-Rating" }, { "RVAD", "Tag-Volume" }, { "TALB", "Album" }, { "TBPM", "BPM" }, { "TCOM", "Composer" }, { "TCON", "Genre" }, { "TDAT", "Date" }, { "TENC", "Encoder" }, { "TIT1", "Contentgroup" }, { "TIT2", "Title" }, { "TIT3", "Subtitle" }, { "TLAN", "Language" }, { "TLEN", "Tag-Length" }, { "TPE1", "Artist" }, { "TPE2", "Artist2" }, { "TPE3", "Artist3" }, { "TPE4", "ModifiedBy" }, { "TPUB", "Publisher" }, { "TRCK", "TrackNr" }, { "TRDA", "Recording date" }, { "TYER", "Year" }, { "TXXX", "User defined" }, { "USER", "License" }, { "WCOP", "Copyright" } };
-
-        private static Dictionary<string, string> _asfFields = new Dictionary<string, string> { { "Title", "Title" }, { "WM/AlbumArtist", "Artist" }, { "WM/AlbumTitle", "Album" }, { "WM/TrackNumber", "TrackNr" } };
-
-        private static Dictionary<string, string> _oggFields = new Dictionary<string, string> { { "artist", "Artist" }, { "title", "Title" }, { "album", "Album" }, { "genre", "Genre" }, { "date", "Date" }, { "version", "Version" }, { "performer", "Performer" }, { "tracknumber", "TrackNr" }, { "comment", "Comment" }, { "copyright", "Copyright" }, { "license", "License" } };
-
-        /// <summary>
-        /// Return the human readable name for an information field.
-        /// </summary>
-        /// <param name="alias"></param>
-        /// <returns></returns>
-        public static string getField(string alias)
-        {
-            if (_id3Fields.ContainsKey(alias)) return _id3Fields[alias];
-            else if (_asfFields.ContainsKey(alias)) return _asfFields[alias];
-            else if (_oggFields.ContainsKey(alias)) return _oggFields[alias];
-            else return "Undefined";
-        }
+        #region Constants
+        public const string META_ALBUM = "Album";
+        public const string META_ALBUMARTISTS = "AlbumArtists";
+        public const string META_AMAZON = "AmazonID";
+        public const string META_ARTISTS = "Artists";
+        public const string META_COMMENT = "Comment";
+        public const string META_COMPOSERS = "Composers";
+        public const string META_CONDUCTOR = "Conductor";
+        public const string META_COPYRIGHT = "Copyright";
+        public const string META_BPM = "BPM";
+        public const string META_DISC = "Disc";
+        public const string META_DISCCOUNT = "DiscCount";
+        public const string META_GENRES = "Genres";
+        public const string META_LYRICS = "Lyrics";
+        public const string META_TITLE = "Title";
+        public const string META_TRACK = "TrackNr";
+        public const string META_TRACKCOUNT = "TrackCount";
+        public const string META_YEAR = "Year";
+        public const string META_PLAYCOUNT = "playCount";
+        public const string META_SKIPCOUNT = "skipCount";
+        public const string META_RATING = "rating";
         #endregion
 
         public Song()
         {
-            _allTheInformation = new Dictionary<META_IDENTIFIERS, string>();
-            PlayCount = 0;
-            SkipCount = 0;
-            Rating = -1;
+            _allTheInformation = new Dictionary<string, string>(20);
+            _allTheInformation["Album"] = "";
+            _allTheInformation["AlbumArtists"] = "";
+            _allTheInformation["AmazonID"] = "";
+            _allTheInformation["Artists"] = "";
+            _allTheInformation["Comment"] = "";
+            _allTheInformation["Composers"] = "";
+            _allTheInformation["Conductor"] = "";
+            _allTheInformation["Copyright"] = "";
+            _allTheInformation["BPM"] = "";
+            _allTheInformation["Disc"] = "";
+            _allTheInformation["DiscCount"] = "";
+            _allTheInformation["Genres"] = "";
+            _allTheInformation["Lyrics"] = "";
+            _allTheInformation["Title"] = "";
+            _allTheInformation["TrackNr"] = "";
+            _allTheInformation["TrackCount"] = "";
+            _allTheInformation["Year"] = "";
+            _allTheInformation["playCount"] = "0";
+            _allTheInformation["skipCount"] = "0";
+            _allTheInformation["rating"] = "-1";
         }
 
         #region Information access
-        public Dictionary<META_IDENTIFIERS, string> AllTheInformation()
+        public Dictionary<string, string> AllTheInformation()
         {
             return _allTheInformation;
         }
@@ -54,7 +69,7 @@ namespace ThePlayer
         /// </summary>
         /// <param name="identifier"></param>
         /// <returns></returns>
-        public string getInformation(META_IDENTIFIERS identifier)
+        public string getInformation(string identifier)
         {
             if (_allTheInformation.ContainsKey(identifier)) return _allTheInformation[identifier];
             else return "";
@@ -66,7 +81,7 @@ namespace ThePlayer
         /// <param name="identifier"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public bool setInformation(META_IDENTIFIERS identifier, string value)
+        public bool setInformation(string identifier, string value)
         {
             if (_allTheInformation.ContainsKey(identifier))
                 _allTheInformation[identifier] = value;
@@ -79,7 +94,7 @@ namespace ThePlayer
         public override string ToString()
         {
             //TODO: Let the user choose
-            return string.Format("{0} - {1}", this.getInformation(META_IDENTIFIERS.Artists), this.getInformation(META_IDENTIFIERS.Title));
+            return string.Format("{0} - {1}", this.getInformation(META_ARTISTS), this.getInformation(META_TITLE));
         }
 
         public override bool Equals(object obj)
@@ -88,7 +103,7 @@ namespace ThePlayer
             //TODO: When does a song match a song?
             try
             {
-                return (_allTheInformation[META_IDENTIFIERS.Artists] == song._allTheInformation[META_IDENTIFIERS.Artists] && _allTheInformation[META_IDENTIFIERS.Title] == song._allTheInformation[META_IDENTIFIERS.Title]);
+                return (_allTheInformation[META_ARTISTS] == song._allTheInformation[META_ARTISTS] && _allTheInformation[META_TITLE] == song._allTheInformation[META_TITLE]);
             }
             catch (KeyNotFoundException E)
             {
@@ -99,20 +114,20 @@ namespace ThePlayer
 
     public class SongComparer : IComparer<Song>
     {
-        private List<META_IDENTIFIERS> _orderby;
+        private List<string> _orderby;
         private bool _ignorecase;
 
         public SongComparer()
         {
-            _orderby = new List<META_IDENTIFIERS>();
-            _orderby.Add(META_IDENTIFIERS.Artists);
+            _orderby = new List<string>();
+            _orderby.Add(Song.META_ARTISTS);
         }
-        public SongComparer(IEnumerable<META_IDENTIFIERS> orderby)
+        public SongComparer(IEnumerable<string> orderby)
         {
-            _orderby = new List<META_IDENTIFIERS>(orderby);
+            _orderby = new List<string>(orderby);
             _ignorecase = true;
         }
-        public SongComparer(IEnumerable<META_IDENTIFIERS> orderby, bool ignorecase)
+        public SongComparer(IEnumerable<string> orderby, bool ignorecase)
             : this(orderby)
         {
             this._ignorecase = ignorecase;
@@ -121,7 +136,7 @@ namespace ThePlayer
 
         public int Compare(Song a, Song b)
         {
-            foreach (META_IDENTIFIERS identifier in _orderby)
+            foreach (string identifier in _orderby)
             {
                 int test = String.Compare(a.getInformation(identifier), b.getInformation(identifier), _ignorecase);
                 if (test != 0)
