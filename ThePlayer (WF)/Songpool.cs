@@ -240,7 +240,7 @@ namespace ThePlayer
                 {
                     songobject.setInformation((META_IDENTIFIERS)Enum.Parse(typeof(META_IDENTIFIERS), meta.Name.LocalName), meta.Value);
                 }
-                result.AddSong(songobject);
+                result.AddSong(songobject, true);
             }
 
             return result;
