@@ -19,6 +19,11 @@ namespace ThePlayer
         public string Appdatapath { get; set; }
 
         /// <summary>
+        /// List of fields that must match to define two songs as equal.
+        /// </summary>
+        public List<string> ComparisonFields;
+
+        /// <summary>
         /// Folders in which the program should always look for audiofile instances of songs.
         /// </summary>
         private List<string> _sourceFolders;
@@ -33,6 +38,7 @@ namespace ThePlayer
         public Config()
         {
             Appdatapath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + System.Windows.Forms.Application.ProductName;
+            ComparisonFields = new List<string>(new string[2] { Song.META_ARTISTS, Song.META_TITLE });
             CurrentSongviewColumns = new List<string>(new string[5] { Song.META_ARTISTS, Song.META_TITLE, Song.META_ALBUM, Song.META_GENRES, Song.META_PLAYCOUNT });
 
             // Could also be static. Just to avoid duplicate code

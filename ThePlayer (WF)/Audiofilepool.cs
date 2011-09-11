@@ -13,26 +13,21 @@ namespace ThePlayer
     {
         public string Basepath { get; private set; }
         public string Name { get; set; }
-        private List<string> audiofiles;
+        private List<Audiofile> audiofiles;
 
         #region Constructors
         public Audiofilepool(string path, string name)
         {
             Name = name;
-            audiofiles = new List<string>();
             //TODO: Make subdirs chosable
             Basepath = path;
+            audiofiles = new List<Audiofile>();
             string[] files = Directory.GetFiles(path, "*", SearchOption.AllDirectories);
-            Program.ActiveDatabase.InsertAudiofilepool(name, path);
             foreach (string file in files)
             {
                 if (Program.ALLOWED_EXTENSIONS.Contains(Path.GetExtension(file).Substring(1)))
-                    audiofiles.Add(file);
+                    audiofiles.Add(new Audiofile(file));
             }
-
-            Program.ActiveDatabase.InsertAudiofiles(audiofiles, name);
-            
-
         }
         #endregion
         /*
@@ -56,7 +51,7 @@ namespace ThePlayer
         /// Simply return the list of files in this pool.
         /// </summary>
         /// <returns></returns>
-        public List<string> getAudiofiles()
+        public List<Audiofile> getAudiofiles()
         {
             return audiofiles;
         }
@@ -68,35 +63,24 @@ namespace ThePlayer
         public Songpool createSongpool()
         {
             List<Song> songs = new List<Song>();
-            foreach (string audiofile in audiofiles)
+            foreach (Audiofile audiofile in audiofiles)
             {
-                songs.Add(new Audiofile(audiofile).Track);
+                songs.Add(audiofile.Track);
             }
-            Program.ActiveDatabase.InsertSongpool(Name);
-            Program.ActiveDatabase.InsertSongs(songs, Name);
+            //Program.ActiveDatabase.InsertSongpool(Name);
+            //Program.ActiveDatabase.InsertSongs(songs, Name);
             return new Songpool(songs, Name);
         }
-        /*#endregion
+        
 
         #region Save and load
-        public bool Save()
+        public void Save()
         {
-            //TODO: Throw exception when pool has no name
-            XmlWriter xw = XmlWriter.Create(Program.GlobalConfig.Appdatapath + "\\audiofilepools\\" + Name + ".xml", Program.GlobalConfig.XmlSettings);
-            xw.WriteStartDocument();
-            xw.WriteStartElement("Audiofilepool");
-            xw.WriteAttributeString("Name", Name);
-            xw.WriteAttributeString("Basepath", Basepath);
-            foreach (Audiofile af in audiofiles)
-            {
-                xw.WriteStartElement("Audiofile");
-                xw.WriteAttributeString("Filepath", af.Filepath);
-                xw.WriteEndElement();
-            }
-            xw.WriteEndElement();
-            xw.WriteEndDocument();
-            xw.Close();
-            return true;
+            Program.ActiveDatabase.InsertMeta(createSongpool().getSongs());
+            foreach (Audiofile file in audiofiles)
+                file.Track.LoadID();
+            Program.ActiveDatabase.InsertAudiofilepool(Name, Basepath);
+            Program.ActiveDatabase.InsertAudiofiles(audiofiles, Name);
         }
 
         public static Audiofilepool Load(string path)

@@ -45,6 +45,7 @@ namespace ThePlayer
                 //TODO: Let the user enter a name (for both audiofilepool and songpool)
                 Audiofilepool afp = new Audiofilepool(fbd.SelectedPath, Path.GetFileName(fbd.SelectedPath));
                 Program.Audiofilepools.Add(Path.GetFileName(fbd.SelectedPath), afp);
+                afp.Save();
                 if (MessageBox.Show("Möchten Sie auch einen Songpool aus den Songs in diesem Ordner erstellen? Sie können das auch später noch machen. (Wenn Sie das erste Mal einen Ordner scannen, sollten Sie das jetzt tun.)", Application.ProductName, MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
                     Program.Songpools.Add(Path.GetFileName(fbd.SelectedPath), afp.createSongpool());
                 LoadPools();

@@ -9,6 +9,7 @@ namespace ThePlayer
     public class Song
     {
         private Dictionary<string, string> _allTheInformation;
+        public int id { get; private set; }
 
         #region Constants
         public const string META_ALBUM = "Album";
@@ -36,6 +37,7 @@ namespace ThePlayer
         public Song()
         {
             _allTheInformation = new Dictionary<string, string>(20);
+            //TODO: Test if this is necessary for the DB query
             _allTheInformation["Album"] = "";
             _allTheInformation["AlbumArtists"] = "";
             _allTheInformation["AmazonID"] = "";
@@ -90,6 +92,12 @@ namespace ThePlayer
             return true;
         }
         #endregion
+
+        public int LoadID()
+        {
+            id = Program.ActiveDatabase.GetSongID(this);
+            return id;
+        }
 
         public override string ToString()
         {

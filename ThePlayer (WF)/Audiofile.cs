@@ -7,7 +7,7 @@ namespace ThePlayer
     public class Audiofile
     {
         public String Filepath { get; private set; }
-        public Song Track { get; set; }
+        public Song Track;
 
         /// <summary>
         /// Creates a new instance of Audiofile based on an existing file.
@@ -33,13 +33,13 @@ namespace ThePlayer
         }
 
         /// <summary>
-        /// Read the tags from the file and save them in the Song object. Useful when creating a new pool of songs.
+        /// Read the tags from a file and save them in the Song object. Useful when creating a new pool of songs.
         /// </summary>
         public void ReadTags()
         {
             //TODO: What to do when joined strings shall be written?
             //TODO: Possibly include images
-            TagLib.File f = TagLib.File.Create(this.Filepath);
+            TagLib.File f = TagLib.File.Create(Filepath);
             if (f.Tag.Album != null && f.Tag.Album != "") Track.setInformation(Song.META_ALBUM, f.Tag.Album);
             if (f.Tag.JoinedAlbumArtists != null && f.Tag.JoinedAlbumArtists != "") Track.setInformation(Song.META_ALBUMARTISTS, f.Tag.JoinedAlbumArtists);
             if (f.Tag.AmazonId != null && f.Tag.AmazonId != "") Track.setInformation(Song.META_AMAZON, f.Tag.AmazonId);

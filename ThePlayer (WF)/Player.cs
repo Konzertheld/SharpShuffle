@@ -330,13 +330,9 @@ namespace ThePlayer
         /// <returns></returns>
         private string FindAudiofile(Song song)
         {
-            Audiofile temp;
-            foreach (Audiofilepool afp in Audiosources)
-            {
-                //temp = afp.findSong(song);
-                //if (temp != null) return temp.Filepath;
-            }
-            return "";
+            //TODO: Haha, here is a lot of work to do.
+            return Program.ActiveDatabase.GetFileForSong(song);
+            
         }
 
         private void raisePlaylistEnded()
