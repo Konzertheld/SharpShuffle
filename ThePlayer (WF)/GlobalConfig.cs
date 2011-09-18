@@ -11,8 +11,6 @@ namespace ThePlayer
     [Serializable]
     class Config
     {
-        //TODO: Split them up into config settings like song data, view settings...
-        #region Attributes
         /// <summary>
         /// The path to the directory where all the data is stored (pools, settings etc).
         /// </summary>
@@ -24,17 +22,12 @@ namespace ThePlayer
         public List<string> ComparisonFields;
 
         /// <summary>
-        /// Folders in which the program should always look for audiofile instances of songs.
+        /// Global settings for writing xml files
         /// </summary>
-        private List<string> _sourceFolders;
-
-        public List<string> CurrentSongviewColumns;
-
-        [NonSerialized]
         public XmlWriterSettings XmlSettings;
-        #endregion
 
-        #region Constructor
+        public List<string> CurrentSongviewColumns { get; set; }
+
         public Config()
         {
             this.Appdatapath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + System.Windows.Forms.Application.ProductName;
@@ -46,22 +39,7 @@ namespace ThePlayer
             XmlSettings.Indent = true;
             XmlSettings.IndentChars = "\t";
         }
-        #endregion
 
-        #region Methods
-        public void AddSourceFolder(string path)
-        {
-            path = path.ToLower();
-            if (System.IO.Directory.Exists(path) && !_sourceFolders.Contains(path)) _sourceFolders.Add(path);
-        }
-        public void RemoveSourceFolder(string path)
-        {
-            path = path.ToLower();
-            if (_sourceFolders.Contains(path)) _sourceFolders.Remove(path);
-        }
-        #endregion
-
-        #region Load and save
         /// <summary>
         /// Save the configuration into the Appdatapath.
         /// </summary>
@@ -99,11 +77,10 @@ namespace ThePlayer
 
                 if (c.CurrentSongviewColumns != null) this.CurrentSongviewColumns = c.CurrentSongviewColumns;
 
-                if (c._sourceFolders != null) this._sourceFolders = c._sourceFolders;
+                
                 return true;
             }
             else return false;
         }
-        #endregion
     }
 }
