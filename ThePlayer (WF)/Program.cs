@@ -7,24 +7,12 @@ using System.IO;
 
 namespace ThePlayer
 {
-    //TODO: Find out if this can used like "is x element of ALLOWED_EXTENSIONS", if not, remove it
-    public enum ALLOWED_EXTENSIONS
-    {
-        aac,
-        aif,
-        aiff,
-        ape,
-        asf,
-        mp3,
-        ogg,
-        wma,
-        wav,
-        flac,
-        m4a
-    }
-
     static class Program
     {
+        /// <summary>
+        /// File types handled by this application. In fact, all TagLib# is able to handle.
+        /// </summary>
+        public static string[] ALLOWED_EXTENSIONS = { "aac", "aif", "aiff", "ape", "asf", "mp3", "ogg", "wma", "wav", "flac", "m4a" };
 
         /// <summary>
         /// The user's songpools.
@@ -35,11 +23,6 @@ namespace ThePlayer
         /// The user's audiofilepools.
         /// </summary>
         public static Dictionary<string, Audiofilepool> Audiofilepools;
-
-        /// <summary>
-        /// File types handled by this application. In fact, all TagLib# is able to handle.
-        /// </summary>
-        public static string[] ALLOWED_EXTENSIONS = { "aac", "aif", "aiff", "ape", "asf", "mp3", "ogg", "wma", "wav", "flac", "m4a" };
 
         /// <summary>
         /// The global application configuration. Contains all the settings.
@@ -56,8 +39,6 @@ namespace ThePlayer
         [STAThread]
         static void Main()
         {
-            
-
             // Load configuration
             GlobalConfig = new Config();
             GlobalConfig.Load(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + System.Windows.Forms.Application.ProductName);

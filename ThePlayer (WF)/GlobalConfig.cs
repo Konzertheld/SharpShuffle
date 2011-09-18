@@ -16,7 +16,7 @@ namespace ThePlayer
         /// <summary>
         /// The path to the directory where all the data is stored (pools, settings etc).
         /// </summary>
-        public string Appdatapath { get; set; }
+        public string Appdatapath { get; private set; }
 
         /// <summary>
         /// List of fields that must match to define two songs as equal.
@@ -37,7 +37,7 @@ namespace ThePlayer
         #region Constructor
         public Config()
         {
-            Appdatapath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + System.Windows.Forms.Application.ProductName;
+            this.Appdatapath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + System.Windows.Forms.Application.ProductName;
             ComparisonFields = new List<string>(new string[2] { Song.META_ARTISTS, Song.META_TITLE });
             CurrentSongviewColumns = new List<string>(new string[5] { Song.META_ARTISTS, Song.META_TITLE, Song.META_ALBUM, Song.META_GENRES, Song.META_PLAYCOUNT });
 
@@ -76,16 +76,23 @@ namespace ThePlayer
         }
 
         /// <summary>
-        /// Loads a configuration. Returns null when the file does not exist.
+        /// Load the configuration from the default path.
         /// </summary>
-        /// <param name="Appdatapath">Path where all the data, including the config, is stored.</param>
         /// <returns></returns>
-        public bool Load(string Appdatapath)
+        public bool Load()
+        {
+            return Load(this.Appdatapath + "\\config.conf");
+        }
+        /// <summary>
+        /// Loads a configuration. Returns false when the file does not exist.
+        /// </summary>
+        /// <returns></returns>
+        public bool Load(string path)
         {
             BinaryFormatter bf = new BinaryFormatter();
-            if (File.Exists(Appdatapath + "\\config.conf"))
+            if (File.Exists(path))
             {
-                FileStream fs = new FileStream(Appdatapath + "\\config.conf", FileMode.Open);
+                FileStream fs = new FileStream(path, FileMode.Open);
                 Config c = (Config)bf.Deserialize(fs);
                 fs.Close();
                 if (c.Appdatapath != null) this.Appdatapath = c.Appdatapath;
