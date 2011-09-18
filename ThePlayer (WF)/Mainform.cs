@@ -22,7 +22,7 @@ namespace ThePlayer
             Program.ActivePlayer.PositionChanged += new PlayerPositionChangedHandler(ActivePlayer_PositionChanged);
 
             // Load songview columns
-            foreach (string col in Program.GlobalConfig.CurrentSongviewColumns)
+            foreach (string col in Program.ActivePlayer.UI.Columns)
             {
                 lsvCurrentSongview.Columns.Add(col);
             }
@@ -81,32 +81,25 @@ namespace ThePlayer
 
         private void lsvSongpools_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //TODO: Error handling for empty pools
-            Program.ActivePlayer.CurrentView = new Songpool();
-            foreach (ListViewItem item in lsvSongpools.SelectedItems)
-            {
-                //TODO: Get lists for filters here (artists, genres...) and let user decide how to order
-                foreach (Song song in Program.Songpools[item.Text].getSongs(new List<string>(new string[2] { Song.META_ARTISTS, Song.META_TITLE })))
-                {
-                    Program.ActivePlayer.CurrentView.AddSong(song);
-                }
-            }
+            //TODO: Get lists for subfilters here (artists, genres...) so the following is based on them and not directly on the pools
+
+            // Refresh songs based on selected pools
+            string[] indices = new string[lsvSongpools.SelectedItems.Count];
+            for (int i = 0; i < lsvSongpools.SelectedItems.Count; i++)
+                indices[i] = lsvSongpools.SelectedItems[i].Text;
+            Program.ActivePlayer.UI.ChangePools(indices);
+            
+            // Display the refreshed songlist
             lsvCurrentSongview.Items.Clear();
-            //TODO: Seriously, sorting does not belong HERE and not hardcoded for sure.
-            foreach (Song song in Program.ActivePlayer.CurrentView.getSongs(new List<string>(new string[2] { Song.META_ARTISTS, Song.META_TITLE })))
-            {
-                ListViewItem lvi = new ListViewItem(song.getInformation(Program.GlobalConfig.CurrentSongviewColumns[0]));
-                for (int i = 1; i < Program.GlobalConfig.CurrentSongviewColumns.Count; i++)
-                    lvi.SubItems.Add(song.getInformation(Program.GlobalConfig.CurrentSongviewColumns[i]));
-                lsvCurrentSongview.Items.Add(lvi);
-            }
+            foreach (string[] song in Program.ActivePlayer.UI.ViewSongs())
+                lsvCurrentSongview.Items.Add(new ListViewItem(song));
         }
 
         private void lsvCurrentSongview_DoubleClick(object sender, EventArgs e)
         {
             foreach (int i in lsvCurrentSongview.SelectedIndices)
             {
-                AddSongToPlaylist(Program.ActivePlayer.CurrentView.getSongs()[i]);
+                //AddSongToPlaylist(Program.ActivePlayer.CurrentView.getSongs()[i]);
             }
             if (!Program.ActivePlayer.IsPlaying)
             {

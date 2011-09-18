@@ -27,6 +27,7 @@ namespace ThePlayer
     [Serializable]
     class Player
     {
+        #region Attributes
         /// <summary>
         /// Songs to play
         /// </summary>
@@ -36,10 +37,6 @@ namespace ThePlayer
         /// </summary>
         private Songpool internalPlaylist { get; set; }
         /// <summary>
-        /// Songs currently displayed based on the current selection
-        /// </summary>
-        public Songpool CurrentView { get; set; }
-        /// <summary>
         /// Songs that have been played. Technically: Songs that matched the "mark the song as played" criterias.
         /// </summary>
         public Songpool PlayedHistory { get; set; }
@@ -47,6 +44,8 @@ namespace ThePlayer
         /// Similar to history and playlist, but includes skipped songs. Technically a sequencial list of all Songs that have been passed to PlaySong() and were found as an Audiofile.
         /// </summary>
         private Songpool totalHistory { get; set; }
+
+        public PlayerView UI;
 
         /// <summary>
         /// Audiofilepools to use when looking for a file that matches a song.
@@ -75,6 +74,7 @@ namespace ThePlayer
         /// </summary>
         private int playlistPosition;
         private int historyPosition;
+        #endregion
 
         #region Constructors
         public Player()
@@ -82,7 +82,7 @@ namespace ThePlayer
             // Initialization
             _Playlist = new Songpool();
             internalPlaylist = new Songpool();
-            CurrentView = new Songpool();
+            UI = new PlayerView();
             PlayedHistory = new Songpool();
             totalHistory = new Songpool();
             Audiosources = new List<Audiofilepool>();
@@ -344,6 +344,44 @@ namespace ThePlayer
 
         public void ScrobbelSong(Song song)
         {
+        }
+    }
+
+    public class PlayerView
+    {
+        public List<string> Columns;
+        public List<string> Sorting;
+        private Songpool view;
+
+        public PlayerView()
+        {
+            //TODO: Implement user sorting
+            //TODO: Implement user columns
+            Columns = new List<string>(new string[5] { Song.META_ARTISTS, Song.META_TITLE, Song.META_ALBUM, Song.META_GENRES, Song.META_PLAYCOUNT });
+            Sorting = new List<string>(new string[3] { Song.META_ARTISTS, Song.META_ALBUM, Song.META_TRACK});
+        }
+
+        public void ChangePools(string[] indices)
+        {
+            view = new Songpool();
+            foreach (string s in indices)
+            {
+                foreach (Song song in Program.Songpools[s].getSongs(Sorting))
+                    view.AddSong(song);
+            }
+        }
+        
+        public List<string[]> ViewSongs()
+        {
+            List<string[]> result = new List<string[]>();
+            foreach (Song song in view.getSongs(Sorting))
+            {
+                string[] s = new string[Columns.Count];
+                for (int i = 0; i < Columns.Count; i++)
+                    s[i] = song.getInformation(Columns[i]);
+                result.Add(s);
+            }
+            return result;
         }
     }
 }

@@ -26,13 +26,10 @@ namespace ThePlayer
         /// </summary>
         public XmlWriterSettings XmlSettings;
 
-        public List<string> CurrentSongviewColumns { get; set; }
-
         public Config()
         {
             this.Appdatapath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + System.Windows.Forms.Application.ProductName;
             ComparisonFields = new List<string>(new string[2] { Song.META_ARTISTS, Song.META_TITLE });
-            CurrentSongviewColumns = new List<string>(new string[5] { Song.META_ARTISTS, Song.META_TITLE, Song.META_ALBUM, Song.META_GENRES, Song.META_PLAYCOUNT });
 
             // Could also be static. Just to avoid duplicate code
             XmlSettings = new XmlWriterSettings();
@@ -48,7 +45,7 @@ namespace ThePlayer
         {
             BinaryFormatter bf = new BinaryFormatter();
             FileStream fs = new FileStream(Appdatapath + "\\config.conf", FileMode.Create);
-            bf.Serialize(fs, this);
+            //bf.Serialize(fs, this);
             fs.Close();
             return true;
         }
@@ -74,9 +71,6 @@ namespace ThePlayer
                 Config c = (Config)bf.Deserialize(fs);
                 fs.Close();
                 if (c.Appdatapath != null) this.Appdatapath = c.Appdatapath;
-
-                if (c.CurrentSongviewColumns != null) this.CurrentSongviewColumns = c.CurrentSongviewColumns;
-
                 
                 return true;
             }
