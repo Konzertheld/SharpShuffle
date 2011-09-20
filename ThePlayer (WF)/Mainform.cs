@@ -25,12 +25,25 @@ namespace ThePlayer
             LoadPools();
             Program.ActivePlayer.PositionChanged += new PlayerPositionChangedHandler(ActivePlayer_PositionChanged);
             Program.ActivePlayer.PlaylistChanged += new PlaylistChangedHandler(ActivePlayer_PlaylistChanged);
+            Program.ActivePlayer.SongChanged += new SongChangedHandler(ActivePlayer_SongChanged);
 
             // Load songview columns
             foreach (string col in Program.ActivePlayerUI.Columns)
             {
                 lsvCurrentSongview.Columns.Add(col);
             }
+        }
+
+        void ActivePlayer_SongChanged(Song song)
+        {
+            this.Invoke((MethodInvoker)delegate
+            {
+                foreach (ListViewItem item in lsvPlaylist.Items)
+                {
+                    item.ForeColor = Color.Black;
+                }
+                lsvPlaylist.Items[Program.ActivePlayer.FindSongInPlaylist(song)].ForeColor = Color.IndianRed;
+            });
         }
 
         void ActivePlayer_PlaylistChanged(string[] newList)
@@ -133,14 +146,6 @@ namespace ThePlayer
                 lsvCurrentSongview.Items.Add(new ListViewItem(song));
         }
 
-        private void clearPlaylistColor()
-        {
-            foreach (ListViewItem item in lsvPlaylist.Items)
-            {
-                item.ForeColor = Color.Black;
-            }
-        }
-
         private void lsvCurrentSongview_DoubleClick(object sender, EventArgs e)
         {
             SongTrigger();
@@ -159,11 +164,11 @@ namespace ThePlayer
                 //TODO: Make the keys configurable
                 //TODO: Add both in combination with Alt, ignoring the don't-play-this-song-limits for the selection
                 if ((Control.ModifierKeys & Keys.Shift) != Keys.None)
-                { //TODO: Play song immediately. This is quite crappy with PlayNow() and totalHistory. Find a better way.
+                { //TODO: Play song immediately.
 
                 }
                 else if ((Control.ModifierKeys & Keys.Control) != Keys.None)
-                { //TODO: Play this song next even if random is active. Use totalHistory here?
+                { //TODO: Play this song next even if random is active = Queue. Maybe replace with multiple playlists.
 
                 }
                 else

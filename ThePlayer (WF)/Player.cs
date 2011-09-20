@@ -38,6 +38,7 @@ namespace ThePlayer
     public delegate void PlayerPositionChangedHandler(double position);
     public delegate void PlaylistEndedHandler();
     public delegate void PlaylistChangedHandler(string[] newList);
+    public delegate void SongChangedHandler(Song song);
 
     public class PlayerView
     {
@@ -110,10 +111,11 @@ namespace ThePlayer
         private IMediaPlayerFactory factory;
 
         private Song _currentSong;
-        public Song CurrentSong { get { return _currentSong; } private set { currentSongLogged = false; _currentSong = value; } }
+        public Song CurrentSong { get { return _currentSong; } private set { currentSongLogged = false; _currentSong = value; if (SongChanged != null) SongChanged(_currentSong); } }
         private bool currentSongLogged;
 
         public bool PlayRandom { get; set; }
+        public bool ExcludeSkipped { get; set; }
 
         //TODO: Maybe raise an event for changed states. Maybe not, as we always stop when the next song is played. Which might also be suboptimal.
         /// <summary>
@@ -144,12 +146,13 @@ namespace ThePlayer
         public event PlayerPositionChangedHandler PositionChanged;
         public event PlaylistEndedHandler PlaylistEnded;
         public event PlaylistChangedHandler PlaylistChanged;
+        public event SongChangedHandler SongChanged;
         #endregion
 
         #region Constructors
         public Player()
         {
-            // Initialization
+            // Initialization (TODO: Make all the stuff configurable, of course)
             _Playlist = new Songpool();
             usedPlaylist = new Songpool();
             PlayedHistory = new Songpool();
@@ -161,6 +164,7 @@ namespace ThePlayer
             playlistPosition = -1;
             historyPosition = -1;
             PlayRandom = true;
+            ExcludeSkipped = true;
 
             // VLC Initialization
             factory = new MediaPlayerFactory();
@@ -195,6 +199,8 @@ namespace ThePlayer
 
         void Events_MediaEnded(object sender, EventArgs e)
         {
+            // The song has played to end, ban it from the current playlist at least until all the songs were skipped or played
+            usedPlaylist.RemoveSong(CurrentSong);
             // Don't call NextSong() here because NextSong might do nothing because playback is not running.
             // If the playlist position is -1, we listened to a song not using the playlist (or the playlist is empty).
             if (playlistPosition != -1)
@@ -296,6 +302,9 @@ namespace ThePlayer
 
         private void PlaySong(Song song)
         {
+            // As soon as we are trying to play any song we are moving forward again.
+            playbackDirection = TP_PLAYBACKDIRECTION.Forward;
+
             string temp = FindAudiofile(song);
             if (temp == "")
             {
@@ -304,9 +313,6 @@ namespace ThePlayer
             else if (System.IO.File.Exists(temp))
             {
                 Stop();
-
-                // As soon as we are playing any song we are moving forward again.
-                playbackDirection = TP_PLAYBACKDIRECTION.Forward;
 
                 // This is the point where the song is actually played for real.
                 IMedia media = factory.CreateMedia<IMedia>(temp);
@@ -347,8 +353,13 @@ namespace ThePlayer
             }
             else
             {
-                vlc.Play();
-                PlaybackState = TP_PLAYBACKSTATE.Playing;
+                if (PlaybackState == TP_PLAYBACKSTATE.Paused)
+                {
+                    vlc.Play();
+                    PlaybackState = TP_PLAYBACKSTATE.Playing;
+                }
+                else if (CurrentSong != null)
+                    PlaySong(CurrentSong);
             }
         }
 
@@ -366,7 +377,9 @@ namespace ThePlayer
         {
             if (vlc.IsPlaying)
             {
-                // Playback is running, play the next song
+                if (ExcludeSkipped)
+                    usedPlaylist.RemoveSong(CurrentSong);
+                // Playback is running, skip to the next song
                 try
                 {
                     PlaySong(GetNextSong());
@@ -408,9 +421,12 @@ namespace ThePlayer
 
         public bool AddSongToPlaylist(Song song)
         {
+            //TODO: And more settings... allow adding duplicates to the current playlist?
             usedPlaylist.AddSong(song);
-            PlaylistChanged(usedPlaylist.ToArray());
-            return _Playlist.AddSong(song);
+            bool result = _Playlist.AddSong(song);
+            if(result)
+                PlaylistChanged(_Playlist.ToArray());
+            return result;
         }
         #endregion
 
@@ -425,6 +441,11 @@ namespace ThePlayer
             //TODO: Haha, here is a lot of work to do.
             return Program.ActiveDatabase.GetFileForSong(song);
 
+        }
+
+        public int FindSongInPlaylist(Song song)
+        {
+            return _Playlist.getSongs().FindIndex(delegate(Song needle) { return needle.Equals(song); });
         }
         #endregion
 
