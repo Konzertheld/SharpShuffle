@@ -172,6 +172,7 @@
             this.lsvCurrentSongview.UseCompatibleStateImageBehavior = false;
             this.lsvCurrentSongview.View = System.Windows.Forms.View.Details;
             this.lsvCurrentSongview.DoubleClick += new System.EventHandler(this.lsvCurrentSongview_DoubleClick);
+            this.lsvCurrentSongview.KeyUp += new System.Windows.Forms.KeyEventHandler(this.lsvCurrentSongview_KeyUp);
             // 
             // btnPlayPause
             // 

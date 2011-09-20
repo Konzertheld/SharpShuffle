@@ -30,6 +30,7 @@ namespace ThePlayer
         public static Config GlobalConfig;
 
         public static Player ActivePlayer;
+        public static PlayerView ActivePlayerUI;
 
         public static Database ActiveDatabase;
 
@@ -62,6 +63,7 @@ namespace ThePlayer
             //TODO: Load instead of create new player
             //TODO: Add audio sources when created, not only at program start
             ActivePlayer = new Player();
+            ActivePlayerUI = new PlayerView();
             //foreach (Audiofilepool afp in Program.Audiofilepools.Values)
             //{
             //    ActivePlayer.Audiosources.Add(afp);

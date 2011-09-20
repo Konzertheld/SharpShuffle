@@ -160,6 +160,14 @@ namespace ThePlayer
         }
         #endregion
 
+        public string[] ToArray()
+        {
+            string[] result = new string[_songs.Count];
+            for (int i = 0; i < _songs.Count; i++)
+                result[i] = _songs[i].ToString();
+            return result;
+        }
+
         /// <summary>
         /// Get a list of artists, genres, whatever.
         /// </summary>
