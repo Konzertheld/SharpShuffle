@@ -64,7 +64,7 @@ namespace ThePlayer
         private void LoadPools()
         {
             lsvSongpools.Items.Clear();
-            foreach (String s in Program.Songpools.Keys)
+            foreach (String s in Program.ActiveDatabase.LoadSongpools())
                 lsvSongpools.Items.Add(s);
         }
 

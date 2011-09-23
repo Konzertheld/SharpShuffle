@@ -26,9 +26,12 @@ namespace ThePlayer
         private void LoadWatchedFolders()
         {
             lsvAudiofilepools.Items.Clear();
-
+            foreach (string folder in Program.GlobalConfig.WatchedFolders())
+                lsvAudiofilepools.Items.Add(folder);
             if (lsvAudiofilepools.Items.Count > 0)
                 this.lblHint.Visible = false;
+            else
+                this.lblHint.Visible = true;
         }
 
         private void ordnerHinzufügenToolStripMenuItem_Click(object sender, EventArgs e)
@@ -42,12 +45,16 @@ namespace ThePlayer
                 bool linkfiles = (MessageBox.Show("Dateien mit Metadaten verknüpfen (empfohlen)?", Application.ProductName, MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes);
                 bool makepool = (savemeta) ? (MessageBox.Show("Einen Songpool aus den Metadaten erstellen?", Application.ProductName, MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes) : false;
                 if (savemeta || linkfiles)
+                {
                     Audiofolder.ProcessFolder(fbd.SelectedPath, savemeta, linkfiles, makepool);
+                    Program.GlobalConfig.AddWatchedFolder(fbd.SelectedPath);
+                }
                 else
                     MessageBox.Show("Es wurde nichts getan!");
             }
             else
                 MessageBox.Show("Folder does not exist!", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            LoadWatchedFolders();
         }
 
         private void markierteOrdnerAusDerBibliothekLöschenToolStripMenuItem_Click(object sender, EventArgs e)

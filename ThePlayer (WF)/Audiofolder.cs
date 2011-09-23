@@ -65,7 +65,7 @@ namespace ThePlayer
                 List<Audiofile> audiofiles = new List<Audiofile>();
                 for (int i = 0; i < files.Count; i++)
                     audiofiles.Add(new Audiofile(-1, files[i], ids[i]));
-                Program.ActiveDatabase.InsertAudiofiles(audiofiles);
+                Program.ActiveDatabase.ManageAudiofiles(audiofiles);
             }
 
             if (makepool)

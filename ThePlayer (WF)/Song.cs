@@ -93,12 +93,6 @@ namespace ThePlayer
         }
         #endregion
 
-        public int LoadID()
-        {
-            id = Program.ActiveDatabase.GetSongID(this);
-            return id;
-        }
-
         public override string ToString()
         {
             //TODO: Let the user choose

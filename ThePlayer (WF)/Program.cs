@@ -13,11 +13,6 @@ namespace ThePlayer
         /// File types handled by this application. In fact, all TagLib# is able to handle.
         /// </summary>
         public static string[] ALLOWED_EXTENSIONS = { "aac", "aif", "aiff", "ape", "asf", "mp3", "ogg", "wma", "wav", "flac", "m4a" };
-
-        /// <summary>
-        /// The user's songpools.
-        /// </summary>
-        public static Dictionary<string, Songpool> Songpools;
         
         /// <summary>
         /// The global application configuration. Contains all the settings.
@@ -45,12 +40,6 @@ namespace ThePlayer
 
             // Create directories, they're needed for loading
             if (!Directory.Exists(GlobalConfig.Appdatapath)) Directory.CreateDirectory(GlobalConfig.Appdatapath);
-
-            // Initialize and load stuff
-            Songpools = new Dictionary<string, Songpool>();
-            //LoadSongpools();
-            
-            
 
             //TODO: Load instead of create new player
             //TODO: Add audio sources when created, not only at program start

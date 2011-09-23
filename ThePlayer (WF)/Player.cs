@@ -59,8 +59,8 @@ namespace ThePlayer
             view = new Songpool();
             foreach (string s in indices)
             {
-                foreach (Song song in Program.Songpools[s].getSongs(Sorting))
-                    view.AddSong(song);
+                //foreach (Song song in Program.Songpools[s].getSongs(Sorting))
+                    //view.AddSong(song);
             }
         }
 

@@ -12,7 +12,7 @@ namespace ThePlayer
     class Config
     {
         /// <summary>
-        /// The path to the directory where all the data is stored (pools, settings etc).
+        /// The path to the directory where all the data is stored (pools, settings etc). Should usually not be changed. Is automatically set to Windows' user roaming folder.
         /// </summary>
         public string Appdatapath { get; private set; }
 
@@ -22,14 +22,20 @@ namespace ThePlayer
         public List<string> ComparisonFields;
 
         /// <summary>
+        /// Folders that are watched for new audiofiles.
+        /// </summary>
+        private List<string> _WatchedFolders;
+
+        /// <summary>
         /// Global settings for writing xml files
         /// </summary>
         public XmlWriterSettings XmlSettings;
 
         public Config()
         {
-            this.Appdatapath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + System.Windows.Forms.Application.ProductName;
+            Appdatapath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + System.Windows.Forms.Application.ProductName;
             ComparisonFields = new List<string>(new string[2] { Song.META_ARTISTS, Song.META_TITLE });
+            _WatchedFolders = new List<string>();
 
             // Could also be static. Just to avoid duplicate code
             XmlSettings = new XmlWriterSettings();
@@ -37,6 +43,18 @@ namespace ThePlayer
             XmlSettings.IndentChars = "\t";
         }
 
+        public List<string> WatchedFolders()
+        {
+            return _WatchedFolders;
+        }
+
+        public void AddWatchedFolder(string path)
+        {
+            if (!_WatchedFolders.Contains(path))
+                _WatchedFolders.Add(path);
+        }
+
+        #region Save and load
         /// <summary>
         /// Save the configuration into the Appdatapath.
         /// </summary>
@@ -71,10 +89,11 @@ namespace ThePlayer
                 Config c = (Config)bf.Deserialize(fs);
                 fs.Close();
                 if (c.Appdatapath != null) this.Appdatapath = c.Appdatapath;
-                
+
                 return true;
             }
             else return false;
         }
+        #endregion
     }
 }

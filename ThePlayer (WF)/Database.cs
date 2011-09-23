@@ -135,37 +135,74 @@ namespace ThePlayer
         /// <param name="pool_id"></param>
         public void PutSongsInPools(int[] song_ids, int pool_id)
         {
-            SQLiteCommand c = new SQLiteCommand(connection);
             SQLiteTransaction sqt = connection.BeginTransaction();
-            c.CommandText = "INSERT INTO Poolsongs (idSong, idPool) VALUES (?, ?)";
-            c.Parameters.Add("idSong");
-            c.Parameters.Add(new SQLiteParameter("idPool", pool_id));
+            SQLiteCommand sqcCheck = new SQLiteCommand(connection);
+            sqcCheck.CommandText = "SELECT id FROM Poolsongs WHERE idSong=? AND idPool=?";
+            sqcCheck.Parameters.Add(new SQLiteParameter("idSong"));
+            sqcCheck.Parameters.Add(new SQLiteParameter("idPool", pool_id));
+            SQLiteCommand sqcInsert = new SQLiteCommand(connection);
+            sqcInsert.CommandText = "INSERT INTO Poolsongs (idSong, idPool) VALUES (?, ?)";
+            sqcInsert.Parameters.Add(new SQLiteParameter("idSong"));
+            sqcInsert.Parameters.Add(new SQLiteParameter("idPool", pool_id));
             for (int i = 0; i < song_ids.Count(); i++)
             {
-                c.Parameters["idSong"].Value = song_ids[i];
-                c.ExecuteNonQuery();
+                sqcCheck.Parameters["idSong"].Value = song_ids[i];
+                if (sqcCheck.ExecuteScalar() == null)
+                {
+                    sqcInsert.Parameters["idSong"].Value = song_ids[i];
+                    sqcInsert.ExecuteNonQuery();
+                }
             }
             sqt.Commit();
         }
 
+        public List<string> LoadSongpools()
+        {
+            List<string> result = new List<string>();
+            SQLiteCommand sqc = new SQLiteCommand(connection);
+            sqc.CommandText = "SELECT Name FROM Songpools";
+            SQLiteDataReader sqr = sqc.ExecuteReader();
+            while (sqr.Read())
+                result.Add(sqr.GetString(0));
+            return result;
+        }
+
         /// <summary>
-        /// Insert audiofiles into the database. Make sure idMeta is set to avoid putting strange stuff into your database.
+        /// Insert audiofiles into the database. Make sure idMeta is set to avoid putting strange stuff into your database. If the given path is existing, it is updated with the given idMeta.
         /// </summary>
         /// <param name="files"></param>
-        public void InsertAudiofiles(IEnumerable<Audiofile> files)
+        public void ManageAudiofiles(IEnumerable<Audiofile> files)
         {
-            SQLiteCommand c = new SQLiteCommand(connection);
-            SQLiteTransaction trans = connection.BeginTransaction();
-            c.CommandText = "INSERT INTO audiofiles (Path, idMeta) VALUES (?, ?)";
-            c.Parameters.Add(new SQLiteParameter("Path"));
-            c.Parameters.Add(new SQLiteParameter("idMeta"));
+            SQLiteTransaction sqt = connection.BeginTransaction();
+            SQLiteCommand sqcCheck = new SQLiteCommand(connection);
+            sqcCheck.CommandText = "SELECT id FROM audiofiles WHERE Path=?";
+            sqcCheck.Parameters.Add(new SQLiteParameter("Path"));
+            SQLiteCommand sqcInsert = new SQLiteCommand(connection);
+            sqcInsert.CommandText = "INSERT INTO audiofiles (Path, idMeta) VALUES (?, ?)";
+            sqcInsert.Parameters.Add(new SQLiteParameter("Path"));
+            sqcInsert.Parameters.Add(new SQLiteParameter("idMeta"));
+            SQLiteCommand sqcUpdate = new SQLiteCommand(connection);
+            sqcUpdate.CommandText = "UPDATE audiofiles SET idMeta=? WHERE Path=?";
+            sqcUpdate.Parameters.Add(new SQLiteParameter("idMeta"));
+            sqcUpdate.Parameters.Add(new SQLiteParameter("Path"));
             foreach (Audiofile file in files)
             {
-                c.Parameters["Path"].Value = file.Path;
-                c.Parameters["idMeta"].Value = file.idMeta;
-                c.ExecuteNonQuery();
+                sqcCheck.Parameters["Path"].Value = file.Path;
+                if (sqcCheck.ExecuteScalar() == null)
+                {
+                    sqcInsert.Parameters["Path"].Value = file.Path;
+                    sqcInsert.Parameters["idMeta"].Value = file.idMeta;
+                    sqcInsert.ExecuteNonQuery();
+                }
+                else
+                {
+                    sqcUpdate.Parameters["idMeta"].Value = file.idMeta;
+                    sqcUpdate.Parameters["Path"].Value = file.Path;
+                    sqcUpdate.ExecuteNonQuery();
+                }
+
             }
-            trans.Commit();
+            sqt.Commit();
         }
 
 
