@@ -16,15 +16,7 @@ namespace ThePlayer
             connection.Open();
         }
 
-        public void ClearDB()
-        {
-            SQLiteCommand c = new SQLiteCommand(connection);
-            c.CommandText = "DELETE FROM Songs";
-            // etc
-            c.CommandText = "VACUUM";
-            c.ExecuteNonQuery();
-        }
-
+        #region Insert and Check
         /// <summary>
         /// Returns a songpool's id. Inserts the songpool before if necessary.
         /// </summary>
@@ -161,40 +153,6 @@ namespace ThePlayer
             sqt.Commit();
         }
 
-        public List<string> LoadSongpools()
-        {
-            List<string> result = new List<string>();
-            SQLiteCommand sqc = new SQLiteCommand(connection);
-            sqc.CommandText = "SELECT Name FROM Songpools";
-            SQLiteDataReader sqr = sqc.ExecuteReader();
-            while (sqr.Read())
-                result.Add(sqr.GetString(0));
-            return result;
-        }
-
-        public List<Song> LoadSongs(string poolname, IEnumerable<string> order_by)
-        {
-            return LoadSongs(ManageSongpool(poolname), order_by);
-        }
-        public List<Song> LoadSongs(int id_pool, IEnumerable<string> order_by)
-        {
-            //TODO: Load all fields
-            List<Song> result = new List<Song>();
-            SQLiteCommand sqc = new SQLiteCommand(connection);
-            sqc.CommandText = "SELECT Artists, Title FROM Songs WHERE id IN (SELECT idSong FROM Poolsongs WHERE idPool=?)";
-            if (order_by.Count() > 0) sqc.CommandText += " ORDER BY " + String.Join(", ", order_by);
-            sqc.Parameters.Add(new SQLiteParameter("idPool", id_pool));
-            SQLiteDataReader sqr = sqc.ExecuteReader();
-            while (sqr.Read())
-            {
-                Song tempsong = new Song();
-                for (int i = 0; i < sqr.FieldCount; i++)
-                    tempsong.setInformation(sqr.GetName(i), sqr.GetString(i));
-                result.Add(tempsong);
-            }
-            return result;
-        }
-
         /// <summary>
         /// Insert audiofiles into the database. Make sure idMeta is set to avoid putting strange stuff into your database. If the given path is existing, it is updated with the given idMeta.
         /// </summary>
@@ -232,7 +190,42 @@ namespace ThePlayer
             }
             sqt.Commit();
         }
+        #endregion
 
+        #region Load data
+        public List<string> LoadSongpools()
+        {
+            List<string> result = new List<string>();
+            SQLiteCommand sqc = new SQLiteCommand(connection);
+            sqc.CommandText = "SELECT Name FROM Songpools";
+            SQLiteDataReader sqr = sqc.ExecuteReader();
+            while (sqr.Read())
+                result.Add(sqr.GetString(0));
+            return result;
+        }
+
+        public List<Song> LoadSongs(string poolname, IEnumerable<string> order_by)
+        {
+            return LoadSongs(ManageSongpool(poolname), order_by);
+        }
+        public List<Song> LoadSongs(int id_pool, IEnumerable<string> order_by)
+        {
+            //TODO: Load all fields
+            List<Song> result = new List<Song>();
+            SQLiteCommand sqc = new SQLiteCommand(connection);
+            sqc.CommandText = "SELECT Artists, Title FROM Songs WHERE id IN (SELECT idSong FROM Poolsongs WHERE idPool=?)";
+            if (order_by.Count() > 0) sqc.CommandText += " ORDER BY " + String.Join(", ", order_by);
+            sqc.Parameters.Add(new SQLiteParameter("idPool", id_pool));
+            SQLiteDataReader sqr = sqc.ExecuteReader();
+            while (sqr.Read())
+            {
+                Song tempsong = new Song();
+                for (int i = 0; i < sqr.FieldCount; i++)
+                    tempsong.setInformation(sqr.GetName(i), sqr.GetString(i));
+                result.Add(tempsong);
+            }
+            return result;
+        }
 
         public string GetFileForSong(Song song)
         {
@@ -251,10 +244,22 @@ namespace ThePlayer
             else
                 return (string)result;
         }
+        #endregion
 
+        #region DB functions
         public void CloseDB()
         {
             connection.Close();
         }
+
+        public void ClearDB()
+        {
+            SQLiteCommand c = new SQLiteCommand(connection);
+            c.CommandText = "DELETE FROM Songs";
+            // etc
+            c.CommandText = "VACUUM";
+            c.ExecuteNonQuery();
+        }
+        #endregion
     }
 }
