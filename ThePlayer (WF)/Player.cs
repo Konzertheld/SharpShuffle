@@ -205,7 +205,9 @@ namespace ThePlayer
             // If the playlist position is -1, we listened to a song not using the playlist (or the playlist is empty).
             if (playlistPosition != -1)
             {
-                PlaySong(GetNextSong());
+                Song s = GetNextSong();
+                if (s != null)
+                    PlaySong(s);
             }
         }
         #endregion
@@ -250,18 +252,34 @@ namespace ThePlayer
                 {
                     // If there are any songs left to play from the playlist get a random one that matches our criteria
                     // We use the usedPlaylist above to check if something is available to avoid random loops
-                    // To get the correct position, we use the real playlist below. Might be suboptimal.
+                    // To get the correct position, we use the real playlist below. Might be suboptimal (when the playlist
+                    // is very long) because it takes time.
+                    // Before we start, make a boolean in which we mark the songs we already tried. That reduces the 
+                    // randoms we have to make and it ensures we won't end up with an infinite loop (when no song matches criteria).
+                    bool[] safety = new bool[_Playlist.getSongs().Count];
                     do
                     {
-                        playlistPosition = new Random().Next(0, _Playlist.getSongs().Count);
+                        do
+                        {
+                            playlistPosition = new Random().Next(0, _Playlist.getSongs().Count);
+                        } while (safety[playlistPosition]);
                         CurrentSong = _Playlist.getSongs()[playlistPosition];
-                    } while (!AllowSong(CurrentSong));
-                    return CurrentSong;
+                        safety[playlistPosition] = true;
+                    } while (!AllowSong(CurrentSong) && safety.Contains(false));
+                    if (!AllowSong(CurrentSong))
+                    {
+                        if (PlaylistEnded != null)
+                            PlaylistEnded();
+                        return null;
+                    }
+                    else
+                        return CurrentSong;
                 }
                 else
                 {
-                    //TODO: Catch these exceptions where GetNextSong() is called
-                    throw new NothingToPlayException("Der nächste Song sollte gespielt werden, aber es war keiner vorhanden.");
+                    if (PlaylistEnded != null)
+                        PlaylistEnded();
+                    return null;
                 }
             }
             else

@@ -232,19 +232,19 @@ namespace ThePlayer
         public string GetFileForSong(Song song)
         {
             //TODO: Don't simply take all audiofiles. The user might not want that.
-            /*int meta_id = GetSongID(song);
+            List<Song> templist = new List<Song>();
+            templist.Add(song);
+            int meta_id = ManageSongs(templist, false)[0];
             SQLiteCommand c = new SQLiteCommand(connection);
-            c.CommandText = "SELECT path FROM audiofiles WHERE meta_id = ?";
+            c.CommandText = "SELECT Path FROM Audiofiles WHERE idMeta=?";
             SQLiteParameter p1 = new SQLiteParameter();
             p1.Value = meta_id;
             c.Parameters.Add(p1);
-            SQLiteDataReader r = c.ExecuteReader();
-            while (r.Read())
-            {
-                //TODO: Take care of multiple matches
-                return r.GetString(r.GetOrdinal("path"));
-            }*/
-            return null;
+            object result = c.ExecuteScalar();
+            if (result == null)
+                return null;
+            else
+                return (string)result;
         }
 
         public void CloseDB()

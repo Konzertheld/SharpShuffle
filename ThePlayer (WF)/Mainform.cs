@@ -26,6 +26,7 @@ namespace ThePlayer
             Program.ActivePlayer.PositionChanged += new PlayerPositionChangedHandler(ActivePlayer_PositionChanged);
             Program.ActivePlayer.PlaylistChanged += new PlaylistChangedHandler(ActivePlayer_PlaylistChanged);
             Program.ActivePlayer.SongChanged += new SongChangedHandler(ActivePlayer_SongChanged);
+            Program.ActivePlayer.PlaylistEnded += new PlaylistEndedHandler(ActivePlayer_PlaylistEnded);
 
             // Load songview columns
             foreach (string col in Program.ActivePlayerUI.Columns)
@@ -34,14 +35,20 @@ namespace ThePlayer
             }
         }
 
+        void ActivePlayer_PlaylistEnded()
+        {
+            this.Invoke((MethodInvoker)delegate
+            {
+                prgSongposition.Value = 0;
+                ClearPlaylistMarker();
+            });
+        }
+
         void ActivePlayer_SongChanged(Song song)
         {
             this.Invoke((MethodInvoker)delegate
             {
-                foreach (ListViewItem item in lsvPlaylist.Items)
-                {
-                    item.ForeColor = Color.Black;
-                }
+                ClearPlaylistMarker();
                 lsvPlaylist.Items[Program.ActivePlayer.FindSongInPlaylist(song)].ForeColor = Color.IndianRed;
             });
         }
@@ -59,6 +66,14 @@ namespace ThePlayer
             {
                 prgSongposition.Value = (position > 1) ? 1000 : (int)Math.Ceiling(position * 1000.0);
             });
+        }
+
+        private void ClearPlaylistMarker()
+        {
+            foreach (ListViewItem item in lsvPlaylist.Items)
+            {
+                item.ForeColor = Color.Black;
+            }
         }
 
         private void LoadPools()
