@@ -133,6 +133,7 @@ namespace ThePlayer
         private void lsvSongpools_SelectedIndexChanged(object sender, EventArgs e)
         {
             //TODO: Get lists for subfilters here (artists, genres...) so the following is based on them and not directly on the pools
+            if (lsvSongpools.SelectedItems.Count == 0) return;
 
             // Refresh songs based on selected pools
             string[] indices = new string[lsvSongpools.SelectedItems.Count];

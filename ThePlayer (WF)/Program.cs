@@ -34,9 +34,8 @@ namespace ThePlayer
             GlobalConfig = new Config();
             //GlobalConfig.Load();
 
-            File.Copy(GlobalConfig.Appdatapath + "\\emptydatabase.db", GlobalConfig.Appdatapath + "\\database.db", true);
+            //File.Copy(GlobalConfig.Appdatapath + "\\emptydatabase.db", GlobalConfig.Appdatapath + "\\database.db", true);
             ActiveDatabase = new Database();
-            //ActiveDatabase.ClearDB();
 
             // Create directories, they're needed for loading
             if (!Directory.Exists(GlobalConfig.Appdatapath)) Directory.CreateDirectory(GlobalConfig.Appdatapath);
@@ -51,10 +50,8 @@ namespace ThePlayer
             //}
 
             Application.ApplicationExit += new EventHandler(Application_ApplicationExit);
-
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-
             Application.Run(new Mainform());
         }
 

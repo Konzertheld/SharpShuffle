@@ -84,13 +84,13 @@ namespace ThePlayer
 
             int i = 0;
 
-            sqcCheck.CommandText = "SELECT id FROM Songs WHERE Artist=? AND Title=?";
-            sqcCheck.Parameters.Add(new SQLiteParameter("Artist"));
+            sqcCheck.CommandText = "SELECT id FROM Songs WHERE Artists=? AND Title=?";
+            sqcCheck.Parameters.Add(new SQLiteParameter("Artists"));
             sqcCheck.Parameters.Add(new SQLiteParameter("Title"));
             if (insert)
             {
-                sqcInsert.CommandText = "INSERT INTO Songs (Artist, Title) VALUES (?, ?)";
-                sqcInsert.Parameters.Add(new SQLiteParameter("Artist"));
+                sqcInsert.CommandText = "INSERT INTO Songs (Artists, Title) VALUES (?, ?)";
+                sqcInsert.Parameters.Add(new SQLiteParameter("Artists"));
                 sqcInsert.Parameters.Add(new SQLiteParameter("Title"));
                 sqcInsert.Parameters.Add(new SQLiteParameter("Album"));
             }
@@ -99,20 +99,20 @@ namespace ThePlayer
             {
                 object id;
                 // Song schon eingetragen?
-                sqcCheck.Parameters["Artist"].Value = song.getInformation(Song.META_ARTISTS);
+                sqcCheck.Parameters["Artists"].Value = song.getInformation(Song.META_ARTISTS);
                 sqcCheck.Parameters["Title"].Value = song.getInformation(Song.META_TITLE);
                 id = sqcCheck.ExecuteScalar();
 
                 if (id == null && insert)
                 {
                     // Nein, also eintragen (falls angegeben)
-                    sqcInsert.Parameters["Artist"].Value = song.getInformation(Song.META_ARTISTS);
+                    sqcInsert.Parameters["Artists"].Value = song.getInformation(Song.META_ARTISTS);
                     sqcInsert.Parameters["Title"].Value = song.getInformation(Song.META_TITLE);
                     //sqcInsert.Parameters["Album"].Value = song.getInformation(Song.META_ALBUM);
                     sqcInsert.ExecuteNonQuery();
 
                     // Und jetzt die ID holen (TODO: Iih. Das muss anders gehen.)
-                    sqcCheck.Parameters["Artist"].Value = song.getInformation(Song.META_ARTISTS);
+                    sqcCheck.Parameters["Artists"].Value = song.getInformation(Song.META_ARTISTS);
                     sqcCheck.Parameters["Title"].Value = song.getInformation(Song.META_TITLE);
                     id = sqcCheck.ExecuteScalar();
                 }
@@ -164,6 +164,29 @@ namespace ThePlayer
             SQLiteDataReader sqr = sqc.ExecuteReader();
             while (sqr.Read())
                 result.Add(sqr.GetString(0));
+            return result;
+        }
+
+        public List<Song> LoadSongs(string poolname, IEnumerable<string> order_by)
+        {
+            return LoadSongs(ManageSongpool(poolname), order_by);
+        }
+        public List<Song> LoadSongs(int id_pool, IEnumerable<string> order_by)
+        {
+            //TODO: Load all fields
+            List<Song> result = new List<Song>();
+            SQLiteCommand sqc = new SQLiteCommand(connection);
+            sqc.CommandText = "SELECT Artists, Title FROM Songs WHERE id IN (SELECT idSong FROM Poolsongs WHERE idPool=?)";
+            if (order_by.Count() > 0) sqc.CommandText += " ORDER BY " + String.Join(", ", order_by);
+            sqc.Parameters.Add(new SQLiteParameter("idPool", id_pool));
+            SQLiteDataReader sqr = sqc.ExecuteReader();
+            while (sqr.Read())
+            {
+                Song tempsong = new Song();
+                for (int i = 0; i < sqr.FieldCount; i++)
+                    tempsong.setInformation(sqr.GetName(i), sqr.GetString(i));
+                result.Add(tempsong);
+            }
             return result;
         }
 

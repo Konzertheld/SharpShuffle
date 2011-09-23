@@ -59,8 +59,8 @@ namespace ThePlayer
             view = new Songpool();
             foreach (string s in indices)
             {
-                //foreach (Song song in Program.Songpools[s].getSongs(Sorting))
-                    //view.AddSong(song);
+                foreach (Song song in Program.ActiveDatabase.LoadSongs(s, new string[1] { "Artists" }))
+                    view.AddSong(song);
             }
         }
 
@@ -424,7 +424,7 @@ namespace ThePlayer
             //TODO: And more settings... allow adding duplicates to the current playlist?
             usedPlaylist.AddSong(song);
             bool result = _Playlist.AddSong(song);
-            if(result)
+            if (result)
                 PlaylistChanged(_Playlist.ToArray());
             return result;
         }
