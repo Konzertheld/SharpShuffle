@@ -19,41 +19,29 @@ namespace ThePlayer
         public void ClearDB()
         {
             SQLiteCommand c = new SQLiteCommand(connection);
-            c.CommandText = "DELETE FROM Albums";
-            c.ExecuteNonQuery();
-            c.CommandText = "DELETE FROM Artists";
-            c.ExecuteNonQuery();
-            c.CommandText = "DELETE FROM Genres";
-            c.ExecuteNonQuery();
-            c.CommandText = "DELETE FROM Tracks";
-            c.ExecuteNonQuery();
             c.CommandText = "DELETE FROM Songs";
-            c.ExecuteNonQuery();
-            c.CommandText = "DELETE FROM Audiofiles";
-            c.ExecuteNonQuery();
-            c.CommandText = "DELETE FROM Audiofilepools";
-            c.ExecuteNonQuery();
-            c.CommandText = "DELETE FROM Songpools";
-            c.ExecuteNonQuery();
-            c.CommandText = "DELETE FROM Poolsongs";
-            c.ExecuteNonQuery();
-            c.CommandText = "DELETE FROM Meta";
-            c.ExecuteNonQuery();
+            // etc
             c.CommandText = "VACUUM";
             c.ExecuteNonQuery();
         }
 
-        public int InsertSongpool(string name)
+        /// <summary>
+        /// Returns a songpool's id. Inserts the songpool before if necessary.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public int ManageSongpool(string name)
         {
             SQLiteCommand c = new SQLiteCommand(connection);
             c.CommandText = "SELECT id FROM Songpools WHERE name=?";
             c.Parameters.Add(new SQLiteParameter("name", name));
-            if (c.ExecuteReader().HasRows)
-                return -1;
-            c.Parameters.Clear();
+            object id = c.ExecuteScalar();
+            if (id != null)
+                return Convert.ToInt32(id);
+
             c.CommandText = "INSERT INTO songpools (name) VALUES (?)";
-            c.Parameters.Add(new SQLiteParameter("name", name));
-            return c.ExecuteNonQuery();
+            c.ExecuteNonQuery();
+            return ManageSongpool(name);
         }
 
         /// <summary>
@@ -95,7 +83,7 @@ namespace ThePlayer
              */
 
             int i = 0;
-            
+
             sqcCheck.CommandText = "SELECT id FROM Songs WHERE Artist=? AND Title=?";
             sqcCheck.Parameters.Add(new SQLiteParameter("Artist"));
             sqcCheck.Parameters.Add(new SQLiteParameter("Title"));
@@ -140,19 +128,30 @@ namespace ThePlayer
             return iResult;
         }
 
-        public int InsertAudiofilepool(string name, string path)
+        /// <summary>
+        /// Connect songs with a pool.
+        /// </summary>
+        /// <param name="song_ids"></param>
+        /// <param name="pool_id"></param>
+        public void PutSongsInPools(int[] song_ids, int pool_id)
         {
-            //TODO: Check for valid names
             SQLiteCommand c = new SQLiteCommand(connection);
-            c.CommandText = "INSERT INTO audiofilepools (name, path) VALUES (?, ?)";
-            SQLiteParameter p1 = new SQLiteParameter();
-            SQLiteParameter p2 = new SQLiteParameter();
-            p1.Value = name;
-            p2.Value = path;
-            c.Parameters.AddRange(new SQLiteParameter[2] { p1, p2 });
-            return c.ExecuteNonQuery();
+            SQLiteTransaction sqt = connection.BeginTransaction();
+            c.CommandText = "INSERT INTO Poolsongs (idSong, idPool) VALUES (?, ?)";
+            c.Parameters.Add("idSong");
+            c.Parameters.Add(new SQLiteParameter("idPool", pool_id));
+            for (int i = 0; i < song_ids.Count(); i++)
+            {
+                c.Parameters["idSong"].Value = song_ids[i];
+                c.ExecuteNonQuery();
+            }
+            sqt.Commit();
         }
 
+        /// <summary>
+        /// Insert audiofiles into the database. Make sure idMeta is set to avoid putting strange stuff into your database.
+        /// </summary>
+        /// <param name="files"></param>
         public void InsertAudiofiles(IEnumerable<Audiofile> files)
         {
             SQLiteCommand c = new SQLiteCommand(connection);
@@ -170,41 +169,10 @@ namespace ThePlayer
         }
 
 
-
-        /// <summary>
-        /// Get a song's database id.
-        /// </summary>
-        /// <param name="song"></param>
-        /// <returns></returns>
-        public int GetSongID(Song song)
-        {
-            SQLiteCommand c = new SQLiteCommand(connection);
-            int songid = -1;
-
-            List<string> wheres = new List<string>();
-            foreach (string s in Program.GlobalConfig.ComparisonFields)
-            {
-                wheres.Add(s + " = ?");
-                SQLiteParameter p = new SQLiteParameter();
-                p.Value = song.AllTheInformation()[s];
-                c.Parameters.Add(p);
-            }
-
-            c.CommandText = "SELECT id FROM filemeta WHERE " + String.Join(" AND ", wheres);
-            SQLiteDataReader r = c.ExecuteReader();
-            while (r.Read())
-            {
-                songid = r.GetInt32(r.GetOrdinal("id"));
-            }
-            r.Close();
-
-            return songid;
-        }
-
         public string GetFileForSong(Song song)
         {
             //TODO: Don't simply take all audiofiles. The user might not want that.
-            int meta_id = GetSongID(song);
+            /*int meta_id = GetSongID(song);
             SQLiteCommand c = new SQLiteCommand(connection);
             c.CommandText = "SELECT path FROM audiofiles WHERE meta_id = ?";
             SQLiteParameter p1 = new SQLiteParameter();
@@ -215,13 +183,8 @@ namespace ThePlayer
             {
                 //TODO: Take care of multiple matches
                 return r.GetString(r.GetOrdinal("path"));
-            }
+            }*/
             return null;
-        }
-
-        public List<Audiofilepool> LoadAudiofilepools()
-        {
-            return new List<Audiofilepool>();
         }
 
         public void CloseDB()

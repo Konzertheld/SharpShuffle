@@ -74,8 +74,8 @@
             // songsAusOrdnerHinzufügenToolStripMenuItem
             // 
             this.songsAusOrdnerHinzufügenToolStripMenuItem.Name = "songsAusOrdnerHinzufügenToolStripMenuItem";
-            this.songsAusOrdnerHinzufügenToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
-            this.songsAusOrdnerHinzufügenToolStripMenuItem.Text = "Ordner hinzufügen";
+            this.songsAusOrdnerHinzufügenToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
+            this.songsAusOrdnerHinzufügenToolStripMenuItem.Text = "Überwachte Ordner verwalten";
             this.songsAusOrdnerHinzufügenToolStripMenuItem.Click += new System.EventHandler(this.songsAusOrdnerHinzufügenToolStripMenuItem_Click);
             // 
             // auswahlToolStripMenuItem
