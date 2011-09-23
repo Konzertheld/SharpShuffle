@@ -128,12 +128,16 @@ namespace ThePlayer
             return iResult;
         }
 
+        public void PutSongsInPools(int[] song_ids, int pool_id)
+        {
+            PutSongsInPools(song_ids, pool_id, false);
+        }
         /// <summary>
         /// Connect songs with a pool.
         /// </summary>
         /// <param name="song_ids"></param>
         /// <param name="pool_id"></param>
-        public void PutSongsInPools(int[] song_ids, int pool_id)
+        public void PutSongsInPools(int[] song_ids, int pool_id, bool allow_duplicates)
         {
             SQLiteTransaction sqt = connection.BeginTransaction();
             SQLiteCommand sqcCheck = new SQLiteCommand(connection);
@@ -146,8 +150,9 @@ namespace ThePlayer
             sqcInsert.Parameters.Add(new SQLiteParameter("idPool", pool_id));
             for (int i = 0; i < song_ids.Count(); i++)
             {
-                sqcCheck.Parameters["idSong"].Value = song_ids[i];
-                if (sqcCheck.ExecuteScalar() == null)
+                if (!allow_duplicates)
+                    sqcCheck.Parameters["idSong"].Value = song_ids[i];
+                if (allow_duplicates || sqcCheck.ExecuteScalar() == null)
                 {
                     sqcInsert.Parameters["idSong"].Value = song_ids[i];
                     sqcInsert.ExecuteNonQuery();
