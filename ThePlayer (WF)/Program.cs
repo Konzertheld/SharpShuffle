@@ -18,12 +18,7 @@ namespace ThePlayer
         /// The user's songpools.
         /// </summary>
         public static Dictionary<string, Songpool> Songpools;
-
-        /// <summary>
-        /// The user's audiofilepools.
-        /// </summary>
-        public static Dictionary<string, Audiofilepool> Audiofilepools;
-
+        
         /// <summary>
         /// The global application configuration. Contains all the settings.
         /// </summary>
@@ -42,23 +37,20 @@ namespace ThePlayer
         {
             // Load configuration
             GlobalConfig = new Config();
-            GlobalConfig.Load(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + System.Windows.Forms.Application.ProductName);
-            if (GlobalConfig == null)
-                GlobalConfig = new Config();
+            //GlobalConfig.Load();
 
+            File.Copy(GlobalConfig.Appdatapath + "\\emptydatabase.db", GlobalConfig.Appdatapath + "\\database.db", true);
             ActiveDatabase = new Database();
-            ActiveDatabase.ClearDB();
+            //ActiveDatabase.ClearDB();
 
             // Create directories, they're needed for loading
             if (!Directory.Exists(GlobalConfig.Appdatapath)) Directory.CreateDirectory(GlobalConfig.Appdatapath);
-            if (!Directory.Exists(GlobalConfig.Appdatapath + "\\songpools")) Directory.CreateDirectory(GlobalConfig.Appdatapath + "\\songpools");
-            if (!Directory.Exists(GlobalConfig.Appdatapath + "\\audiofilepools")) Directory.CreateDirectory(GlobalConfig.Appdatapath + "\\audiofilepools");
 
             // Initialize and load stuff
             Songpools = new Dictionary<string, Songpool>();
             //LoadSongpools();
-            Audiofilepools = new Dictionary<string, Audiofilepool>();
-            //LoadAudiofilepools();
+            
+            
 
             //TODO: Load instead of create new player
             //TODO: Add audio sources when created, not only at program start

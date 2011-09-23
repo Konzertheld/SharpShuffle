@@ -26,9 +26,9 @@ namespace ThePlayer
         private void LoadPools()
         {
             lsvAudiofilepools.Items.Clear();
-            foreach (KeyValuePair<string, Audiofilepool> afp in Program.Audiofilepools)
+            foreach (Audiofilepool afp in Program.ActiveDatabase.LoadAudiofilepools())
             {
-                lsvAudiofilepools.Items.Add(afp.Key).SubItems.Add(afp.Value.Basepath);
+                lsvAudiofilepools.Items.Add(afp.Name).SubItems.Add(afp.Basepath);
             }
             if (lsvAudiofilepools.Items.Count > 0)
                 this.lblHint.Visible = false;
@@ -43,13 +43,27 @@ namespace ThePlayer
             {
                 this.Cursor = Cursors.WaitCursor;
                 //TODO: Let the user enter a name (for both audiofilepool and songpool)
-                Audiofilepool afp = new Audiofilepool(fbd.SelectedPath, Path.GetFileName(fbd.SelectedPath));
-                Program.Audiofilepools.Add(Path.GetFileName(fbd.SelectedPath), afp);
-                afp.Save();
-                if (MessageBox.Show("Möchten Sie auch einen Songpool aus den Songs in diesem Ordner erstellen? Sie können das auch später noch machen. (Wenn Sie das erste Mal einen Ordner scannen, sollten Sie das jetzt tun.)", Application.ProductName, MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
-                    Program.Songpools.Add(Path.GetFileName(fbd.SelectedPath), afp.createSongpool());
-                LoadPools();
-                Program.GlobalConfig.Save();
+                string poolname = Path.GetFileName(fbd.SelectedPath);
+                //TODO: Maybe make this different (without Messageboxes)
+                bool savemeta = (MessageBox.Show("Metadaten aus den Dateien auslesen und in die Datenbank schreiben? Bisher nicht erfasste Songs werden sonst ignoriert.", Application.ProductName, MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes);
+                bool linkfiles = (MessageBox.Show("Dateien auch mit den Metadaten verknüpfen (empfohlen)?", Application.ProductName, MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes);
+
+                Dictionary<string, Song> read = Audiofolder.Read(fbd.SelectedPath);
+                List<Song> songs = new List<Song>(read.Values);
+                List<string> files = new List<string>(read.Keys);
+                int[] ids = null;
+
+                ids = Program.ActiveDatabase.ManageSongs(songs, savemeta);
+                if (linkfiles)
+                {
+                    List<Audiofile> audiofiles = new List<Audiofile>();
+                    for (int i = 0; i < files.Count; i++)
+                        audiofiles.Add(new Audiofile(-1, files[i], ids[i]));
+                    Program.ActiveDatabase.InsertAudiofiles(audiofiles);
+                }
+
+                //LoadPools();
+                //Program.GlobalConfig.Save();
                 this.Cursor = Cursors.Default;
             }
             else
@@ -62,7 +76,7 @@ namespace ThePlayer
             {
                 foreach (ListViewItem item in lsvAudiofilepools.SelectedItems)
                 {
-                    Program.Audiofilepools.Remove(item.Text);
+                    //Program.Audiofilepools.Remove(item.Text);
                     item.Remove();
                 }
                 Program.GlobalConfig.Save();

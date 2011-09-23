@@ -19,13 +19,25 @@ namespace ThePlayer
         public void ClearDB()
         {
             SQLiteCommand c = new SQLiteCommand(connection);
-            c.CommandText = "DELETE FROM songs";
+            c.CommandText = "DELETE FROM Albums";
             c.ExecuteNonQuery();
-            c.CommandText = "DELETE FROM audiofiles";
+            c.CommandText = "DELETE FROM Artists";
             c.ExecuteNonQuery();
-            c.CommandText = "DELETE FROM audiofilepools";
+            c.CommandText = "DELETE FROM Genres";
             c.ExecuteNonQuery();
-            c.CommandText = "DELETE FROM songpools";
+            c.CommandText = "DELETE FROM Tracks";
+            c.ExecuteNonQuery();
+            c.CommandText = "DELETE FROM Songs";
+            c.ExecuteNonQuery();
+            c.CommandText = "DELETE FROM Audiofiles";
+            c.ExecuteNonQuery();
+            c.CommandText = "DELETE FROM Audiofilepools";
+            c.ExecuteNonQuery();
+            c.CommandText = "DELETE FROM Songpools";
+            c.ExecuteNonQuery();
+            c.CommandText = "DELETE FROM Poolsongs";
+            c.ExecuteNonQuery();
+            c.CommandText = "DELETE FROM Meta";
             c.ExecuteNonQuery();
             c.CommandText = "VACUUM";
             c.ExecuteNonQuery();
@@ -33,55 +45,99 @@ namespace ThePlayer
 
         public int InsertSongpool(string name)
         {
-            //TODO: Check for invalid names (invalid chars for db) & activate duplicate check
             SQLiteCommand c = new SQLiteCommand(connection);
-            //c.CommandText = "SELECT id FROM songpools WHERE name='" + name + "'";
-            //if (c.ExecuteReader().HasRows)
-            //return -1;
-            c.CommandText = "INSERT INTO songpools (name) VALUES ('" + name + "')";
+            c.CommandText = "SELECT id FROM Songpools WHERE name=?";
+            c.Parameters.Add(new SQLiteParameter("name", name));
+            if (c.ExecuteReader().HasRows)
+                return -1;
+            c.Parameters.Clear();
+            c.CommandText = "INSERT INTO songpools (name) VALUES (?)";
+            c.Parameters.Add(new SQLiteParameter("name", name));
             return c.ExecuteNonQuery();
         }
 
-        public void InsertSongs(IEnumerable<Song> songs, string poolname)
+        /// <summary>
+        /// Returns the ids for the given songs. Inserts them before when not found.
+        /// </summary>
+        /// <param name="songs"></param>
+        /// <returns></returns>
+        public int[] ManageSongs(IEnumerable<Song> songs)
         {
-            SQLiteCommand c = new SQLiteCommand(connection);
+            return ManageSongs(songs, true);
+        }
+        /// <summary>
+        /// Returns the ids for the given songs. Optionally inserts them when not found.
+        /// </summary>
+        /// <param name="songs"></param>
+        /// <param name="insert"></param>
+        /// <returns></returns>
+        public int[] ManageSongs(IEnumerable<Song> songs, bool insert)
+        {
+            // Array anlegen für die IDs der angelegten / gefundenen Datensätze.
+            int[] iResult = new int[songs.Count()];
 
-            // Get pool id
-            c.CommandText = "SELECT id FROM songpools WHERE name='" + poolname + "'";
-            SQLiteDataReader r = c.ExecuteReader();
-            int poolnr = -1;
-            while (r.Read())
+            SQLiteTransaction sqt = connection.BeginTransaction();
+            SQLiteCommand sqcCheck = new SQLiteCommand(connection);
+            SQLiteCommand sqcInsert = new SQLiteCommand(connection);
+            /*
+            // Prepare statements
+            string[] parameters = new string[21] { "Album", "AlbumArtists", "AmazonID", "Artists", "Comment", "Composers", "Conductor", "Copyright", "BPM", "Disc", "DiscCount", "Genres", "Lyrics", "Title", "TrackNr", "TrackCount", "Year", "playCount", "skipCount", "rating", "pool" };
+            c.CommandText = "INSERT INTO songs (" + String.Join(", ", parameters) + ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            Dictionary<string, SQLiteParameter> parameterobjects = new Dictionary<string, SQLiteParameter>(21);
+            for (int i = 0; i < 21; i++)
             {
-                poolnr = r.GetInt32(r.GetOrdinal("id"));
+                parameterobjects.Add(parameters[i], new SQLiteParameter());
+                c.Parameters.Add(parameterobjects[parameters[i]]);
             }
-            r.Close();
+            parameterobjects["pool"].Value = poolnr;
 
-            if (poolnr != -1)
+            // Insert songs
+             */
+
+            int i = 0;
+            
+            sqcCheck.CommandText = "SELECT id FROM Songs WHERE Artist=? AND Title=?";
+            sqcCheck.Parameters.Add(new SQLiteParameter("Artist"));
+            sqcCheck.Parameters.Add(new SQLiteParameter("Title"));
+            if (insert)
             {
-                SQLiteTransaction trans = connection.BeginTransaction();
-
-                // Prepare statements
-                string[] parameters = new string[21] { "Album", "AlbumArtists", "AmazonID", "Artists", "Comment", "Composers", "Conductor", "Copyright", "BPM", "Disc", "DiscCount", "Genres", "Lyrics", "Title", "TrackNr", "TrackCount", "Year", "playCount", "skipCount", "rating", "pool" };
-                c.CommandText = "INSERT INTO songs (" + String.Join(", ", parameters) + ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                Dictionary<string, SQLiteParameter> parameterobjects = new Dictionary<string, SQLiteParameter>(21);
-                for (int i = 0; i < 21; i++)
-                {
-                    parameterobjects.Add(parameters[i], new SQLiteParameter());
-                    c.Parameters.Add(parameterobjects[parameters[i]]);
-                }
-                parameterobjects["pool"].Value = poolnr;
-
-                // Insert songs
-                foreach (Song song in songs)
-                {
-                    foreach (KeyValuePair<string, string> k in song.AllTheInformation())
-                        parameterobjects[k.Key].Value = k.Value;
-                    c.ExecuteNonQuery();
-                }
-                trans.Commit();
+                sqcInsert.CommandText = "INSERT INTO Songs (Artist, Title) VALUES (?, ?)";
+                sqcInsert.Parameters.Add(new SQLiteParameter("Artist"));
+                sqcInsert.Parameters.Add(new SQLiteParameter("Title"));
+                sqcInsert.Parameters.Add(new SQLiteParameter("Album"));
             }
 
-            //TODO: Throw error for not existing pools
+            foreach (Song song in songs)
+            {
+                object id;
+                // Song schon eingetragen?
+                sqcCheck.Parameters["Artist"].Value = song.getInformation(Song.META_ARTISTS);
+                sqcCheck.Parameters["Title"].Value = song.getInformation(Song.META_TITLE);
+                id = sqcCheck.ExecuteScalar();
+
+                if (id == null && insert)
+                {
+                    // Nein, also eintragen (falls angegeben)
+                    sqcInsert.Parameters["Artist"].Value = song.getInformation(Song.META_ARTISTS);
+                    sqcInsert.Parameters["Title"].Value = song.getInformation(Song.META_TITLE);
+                    //sqcInsert.Parameters["Album"].Value = song.getInformation(Song.META_ALBUM);
+                    sqcInsert.ExecuteNonQuery();
+
+                    // Und jetzt die ID holen (TODO: Iih. Das muss anders gehen.)
+                    sqcCheck.Parameters["Artist"].Value = song.getInformation(Song.META_ARTISTS);
+                    sqcCheck.Parameters["Title"].Value = song.getInformation(Song.META_TITLE);
+                    id = sqcCheck.ExecuteScalar();
+                }
+                else if (id == null)
+                    id = -1;
+
+                // ID eintragen (entweder von existierendem Datensatz oder von neu eingefügtem)
+                iResult[i] = Convert.ToInt32(id);
+                i++;
+            }
+
+            sqt.Commit();
+            return iResult;
         }
 
         public int InsertAudiofilepool(string name, string path)
@@ -97,68 +153,23 @@ namespace ThePlayer
             return c.ExecuteNonQuery();
         }
 
-        public void InsertAudiofiles(IEnumerable<Audiofile> files, string poolname)
-        {
-            SQLiteCommand c = new SQLiteCommand(connection);
-
-            // Get pool id
-            int poolid = -1;
-            c.CommandText = "SELECT id FROM audiofilepools WHERE name='" + poolname + "'";
-            SQLiteDataReader r = c.ExecuteReader();
-            while (r.Read())
-            {
-                poolid = r.GetInt32(r.GetOrdinal("id"));
-            }
-            r.Close();
-
-            if (poolid != -1)
-            { // Insert the files
-                SQLiteTransaction trans = connection.BeginTransaction();
-                c.CommandText = "INSERT INTO audiofiles (path, pool, meta_id) VALUES (?, ?, ?)";
-                SQLiteParameter p1 = new SQLiteParameter();
-                SQLiteParameter p2 = new SQLiteParameter();
-                SQLiteParameter p3 = new SQLiteParameter();
-                c.Parameters.Add(p1);
-                c.Parameters.Add(p2);
-                c.Parameters.Add(p3);
-                p2.Value = poolid;
-                foreach (Audiofile file in files)
-                {
-                    p1.Value = file.Filepath;
-                    p3.Value = file.Track.id;
-                    c.ExecuteNonQuery();
-                }
-                trans.Commit();
-            }
-
-            //TODO: Throw error if pool does not exist
-        }
-
-        public void InsertMeta(IEnumerable<Song> songs)
+        public void InsertAudiofiles(IEnumerable<Audiofile> files)
         {
             SQLiteCommand c = new SQLiteCommand(connection);
             SQLiteTransaction trans = connection.BeginTransaction();
-
-            // Prepare statements
-            string[] parameters = new string[17] { "Album", "AlbumArtists", "AmazonID", "Artists", "Comment", "Composers", "Conductor", "Copyright", "BPM", "Disc", "DiscCount", "Genres", "Lyrics", "Title", "TrackNr", "TrackCount", "Year" };
-            c.CommandText = "INSERT INTO filemeta (" + String.Join(", ", parameters) + ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            Dictionary<string, SQLiteParameter> parameterobjects = new Dictionary<string, SQLiteParameter>(21);
-            for (int i = 0; i < 17; i++)
+            c.CommandText = "INSERT INTO audiofiles (Path, idMeta) VALUES (?, ?)";
+            c.Parameters.Add(new SQLiteParameter("Path"));
+            c.Parameters.Add(new SQLiteParameter("idMeta"));
+            foreach (Audiofile file in files)
             {
-                parameterobjects.Add(parameters[i], new SQLiteParameter());
-                c.Parameters.Add(parameterobjects[parameters[i]]);
-            }
-
-            // Insert meta
-            foreach (Song song in songs)
-            {
-                foreach (KeyValuePair<string, string> k in song.AllTheInformation())
-                    if(parameterobjects.Keys.Contains(k.Key)) parameterobjects[k.Key].Value = k.Value;
+                c.Parameters["Path"].Value = file.Path;
+                c.Parameters["idMeta"].Value = file.idMeta;
                 c.ExecuteNonQuery();
             }
             trans.Commit();
-            //TODO: Throw error for not existing pools
         }
+
+
 
         /// <summary>
         /// Get a song's database id.
@@ -206,6 +217,11 @@ namespace ThePlayer
                 return r.GetString(r.GetOrdinal("path"));
             }
             return null;
+        }
+
+        public List<Audiofilepool> LoadAudiofilepools()
+        {
+            return new List<Audiofilepool>();
         }
 
         public void CloseDB()
