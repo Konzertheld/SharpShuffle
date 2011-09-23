@@ -204,6 +204,14 @@ namespace ThePlayer
             return result;
         }
 
+        public List<Song> LoadSongs(string poolname)
+        {
+            return LoadSongs(poolname, new List<string>());
+        }
+        public List<Song> LoadSongs(int id_pool)
+        {
+            return LoadSongs(id_pool, new List<string>());
+        }
         public List<Song> LoadSongs(string poolname, IEnumerable<string> order_by)
         {
             return LoadSongs(ManageSongpool(poolname), order_by);
