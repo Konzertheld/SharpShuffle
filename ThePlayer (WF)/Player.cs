@@ -59,7 +59,7 @@ namespace ThePlayer
         {
             view.Clear();
             foreach (string s in indices)
-                view.AddSongs(Program.ActiveDatabase.LoadSongs(s, new string[1] { "Artists" }));
+                view.AddSongs(Program.ActiveDatabase.LoadSongs(s, Sorting));
         }
 
         public List<string[]> ViewSongs()
@@ -346,7 +346,7 @@ namespace ThePlayer
                 // If we are not already navigating, log the song to the navigation history so it is available in case the user starts skipping
                 if (playbackMode == TP_PLAYBACKMODE.Playlist)
                 {
-                    totalHistory.AddSongs(song,true);
+                    totalHistory.AddSongs(song, true);
                     historyPosition++;
                 }
             }
