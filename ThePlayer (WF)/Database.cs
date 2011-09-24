@@ -74,7 +74,7 @@ namespace ThePlayer
         {
             // Alben laden bzw. anlegen
             SQLiteTransaction sqt = connection.BeginTransaction();
-            songs = LinkSongsWithAlbums(songs);
+            if(insert) songs = LinkSongsWithAlbums(songs);
 
             // Array anlegen für die IDs der angelegten / gefundenen Datensätze.
             int[] iResult = new int[songs.Count()];
