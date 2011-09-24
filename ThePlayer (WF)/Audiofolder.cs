@@ -50,9 +50,6 @@ namespace ThePlayer
         {
             //TODO: Let the user enter a name (for both audiofilepool and songpool)
             string poolname = Path.GetFileName(path);
-            //TODO: Maybe make this different (without Messageboxes)
-
-            //TODO: Make it possible to add the songs to an existing pool
 
             Dictionary<string, Song> read = Audiofolder.Read(path);
             List<Song> songs = new List<Song>(read.Values);
@@ -68,8 +65,11 @@ namespace ThePlayer
                 Program.ActiveDatabase.ManageAudiofiles(audiofiles);
             }
 
-            if (makepool)
-                Program.ActiveDatabase.PutSongsInPools(ids, Program.ActiveDatabase.ManageSongpool(poolname));
+            // Create a songpool and add the songs / add the songs to the existing songpool. Make sure the meta was saved before.
+            if (makepool && savemeta)
+            {
+                Songpool newpool = new Songpool(songs, poolname);
+            }
         }
     }
 }

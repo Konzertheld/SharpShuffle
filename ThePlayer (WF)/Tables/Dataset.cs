@@ -8,7 +8,7 @@ namespace ThePlayer
     public abstract class Dataset
     {
         protected Dictionary<string, string> _allTheInformation;
-        public int id { get; private set; }
+        public int id;
 
         public Dictionary<string, string> AllTheInformation()
         {

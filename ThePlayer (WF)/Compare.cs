@@ -5,29 +5,27 @@ using System.Text;
 
 namespace ThePlayer
 {
-    public enum MP_COMPARETYPE
-    {
-        equal,
-        similar,
-        startswith,
-        endswith
-    }
-
     /// <summary>
     /// Filter class to create filter lists for filtering with AND.
     /// </summary>
     public class MP_Filter
     {
-        public MP_Filter(string key, MP_COMPARETYPE comparetype, string value)
+        public const string MP_EQUAL = "=";
+        public const string MP_LOWER = "<";
+        public const string MP_HIGHER = ">";
+
+        public MP_Filter(string key, string comparetype, string value, bool not_flag)
         {
             //TODO: Nicht irgendeinen Mist abfragen lassen
             Key = key;
             Comparetype = comparetype;
             Value = value;
+            Not_Flag = not_flag;
         }
 
         public string Key { get; private set; }
-        public MP_COMPARETYPE Comparetype { get; private set; }
+        public string Comparetype { get; private set; }
         public string Value { get; private set; }
+        public bool Not_Flag { get; private set; }
     }
 }

@@ -8,7 +8,6 @@ using System.Xml;
 
 namespace ThePlayer
 {
-    [Serializable]
     class Config
     {
         /// <summary>
@@ -61,11 +60,7 @@ namespace ThePlayer
         /// <returns>True when everything is ok or throws an error.</returns>
         public bool Save()
         {
-            BinaryFormatter bf = new BinaryFormatter();
-            FileStream fs = new FileStream(Appdatapath + "\\config.conf", FileMode.Create);
-            //bf.Serialize(fs, this);
-            fs.Close();
-            return true;
+            return false;
         }
 
         /// <summary>
@@ -82,17 +77,7 @@ namespace ThePlayer
         /// <returns></returns>
         public bool Load(string path)
         {
-            BinaryFormatter bf = new BinaryFormatter();
-            if (File.Exists(path))
-            {
-                FileStream fs = new FileStream(path, FileMode.Open);
-                Config c = (Config)bf.Deserialize(fs);
-                fs.Close();
-                if (c.Appdatapath != null) this.Appdatapath = c.Appdatapath;
-
-                return true;
-            }
-            else return false;
+            return false;
         }
         #endregion
     }

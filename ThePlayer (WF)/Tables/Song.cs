@@ -16,6 +16,7 @@ namespace ThePlayer
         public const string META_CONDUCTOR = "Conductor";
         public const string META_COPYRIGHT = "Copyright";
         public const string META_BPM = "BPM";
+        public const string META_VERSION = "Version";
         public const string META_GENRES = "Genres";
         public const string META_LYRICS = "Lyrics";
         public const string META_TITLE = "Title";
@@ -39,6 +40,7 @@ namespace ThePlayer
             _allTheInformation[META_CONDUCTOR] = "";
             _allTheInformation[META_COPYRIGHT] = "";
             _allTheInformation[META_BPM] = "";
+            _allTheInformation[META_VERSION] = "Version";
             _allTheInformation[META_GENRES] = "";
             _allTheInformation[META_LYRICS] = "";
             _allTheInformation[META_TITLE] = "";
@@ -74,7 +76,7 @@ namespace ThePlayer
                 Track.Album = new CAlbum();
                 Track.Album.setInformation(CAlbum.META_NAME, f.Tag.Album);
                 if (f.Tag.Year != 0) Track.Album.setInformation(CAlbum.META_YEAR, f.Tag.Year.ToString());
-                if (f.Tag.JoinedAlbumArtists != null && f.Tag.JoinedAlbumArtists != "") Track.Album.setInformation(CAlbum.META_ARTISTS, f.Tag.JoinedAlbumArtists);
+                if (f.Tag.JoinedAlbumArtists != null && f.Tag.JoinedAlbumArtists != "") Track.Album.setInformation(CAlbum.META_ALBUMARTISTS, f.Tag.JoinedAlbumArtists);
             }
 
             return Track;

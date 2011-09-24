@@ -56,11 +56,11 @@ namespace ThePlayer
 
         public void ChangePools(string[] indices)
         {
-            view = new Songpool();
+            view = new Songpool("_VIEW_");
             foreach (string s in indices)
             {
                 foreach (Song song in Program.ActiveDatabase.LoadSongs(s, new string[1] { "Artists" }))
-                    view.AddSong(song);
+                    view.AddSongs(song);
             }
         }
 
@@ -85,7 +85,7 @@ namespace ThePlayer
 
     public class Player
     {
-        #region Attributes
+        #region Songlists
         /// <summary>
         /// Songs to play
         /// </summary>
@@ -101,15 +101,14 @@ namespace ThePlayer
         /// <summary>
         /// Similar to history and playlist, but includes skipped songs. Technically a sequencial list of all Songs that have been passed to PlaySong() and were found as an Audiofile.
         /// </summary>
-        private List<Song> totalHistory { get; set; }
+        private Songpool totalHistory { get; set; }
         /// <summary>
         /// Song queue - use to determine the songs to be played next. Has priority.
         /// </summary>
         public List<Song> Queue;
+        #endregion
 
-        private IVideoPlayer vlc;
-        private IMediaPlayerFactory factory;
-
+        #region Settings and Information
         private Song _currentSong;
         public Song CurrentSong { get { return _currentSong; } private set { currentSongLogged = false; _currentSong = value; if (SongChanged != null) SongChanged(_currentSong); } }
         private bool currentSongLogged;
@@ -142,6 +141,11 @@ namespace ThePlayer
         /// The currently used playlist's index.
         /// </summary>
         private int playlistNumber;
+        #endregion
+
+        #region Events and VLC
+        private IVideoPlayer vlc;
+        private IMediaPlayerFactory factory;
 
         public event PlayerPositionChangedHandler PositionChanged;
         public event PlaylistEndedHandler PlaylistEnded;
@@ -153,10 +157,10 @@ namespace ThePlayer
         public Player()
         {
             // Initialization (TODO: Make all the stuff configurable, of course)
-            _Playlist = new Songpool();
-            usedPlaylist = new Songpool();
-            PlayedHistory = new Songpool();
-            totalHistory = new List<Song>();
+            _Playlist = new Songpool("_PLAYLIST_");
+            usedPlaylist = new Songpool("_USEDPLAYLIST_");
+            PlayedHistory = new Songpool("_PLAYEDHISTORY_");
+            totalHistory = new Songpool("_NAVIGATIONHISTORY_");
             Queue = new List<Song>();
             PlaybackState = TP_PLAYBACKSTATE.Stopped;
             playbackMode = TP_PLAYBACKMODE.Playlist;
@@ -192,7 +196,7 @@ namespace ThePlayer
             {
                 //TODO: Scrobbeln nur vormerken, erst bei Next oder Stop ausführen
                 Scrobbel.Scrobbeln(CurrentSong.getInformation(Song.META_ARTISTS), CurrentSong.getInformation(Song.META_TITLE), DateTime.Now.Subtract(new TimeSpan(1, 0, 0)), (int)(vlc.Length / 1000));
-                PlayedHistory.AddSong(CurrentSong, true);
+                PlayedHistory.AddSongs(CurrentSong, true);
                 currentSongLogged = true;
             }
         }
@@ -200,7 +204,7 @@ namespace ThePlayer
         void Events_MediaEnded(object sender, EventArgs e)
         {
             // The song has played to end, ban it from the current playlist at least until all the songs were skipped or played
-            usedPlaylist.RemoveSong(CurrentSong);
+            usedPlaylist.RemoveSongs(CurrentSong);
             // Don't call NextSong() here because NextSong might do nothing because playback is not running.
             // If the playlist position is -1, we listened to a song not using the playlist (or the playlist is empty).
             if (playlistPosition != -1)
@@ -229,11 +233,11 @@ namespace ThePlayer
             // They also skip the filter because if they had not passed the filter they would not be here. Also it would be confusing if navigating back would
             // lack already played songs.
             // The highest element in totalHistory is usually the song that currently plays. If we navigate, the pointer is moved.
-            if (historyPosition < totalHistory.Count - 1)
+            if (historyPosition < totalHistory.getSongs().Count - 1)
             {
                 historyPosition++;
                 playbackMode = TP_PLAYBACKMODE.History;
-                CurrentSong = totalHistory[historyPosition];
+                CurrentSong = totalHistory.getSongByPosition(historyPosition);
                 return CurrentSong;
             }
 
@@ -243,7 +247,10 @@ namespace ThePlayer
             // If we ran out of songs and playlist-repeat is on, refill the internal playlist.
             //TODO: Repeatmodes
             if (usedPlaylist.getSongs().Count == 0 && true)
-                usedPlaylist = new Songpool(_Playlist.getSongs());
+            {
+                usedPlaylist.Clear();
+                usedPlaylist.AddSongs(_Playlist.getSongs());
+            }
 
             // What are we playing? Sequencial or random playlist?
             if (PlayRandom)
@@ -341,7 +348,7 @@ namespace ThePlayer
                 // If we are not already navigating, log the song to the navigation history so it is available in case the user starts skipping
                 if (playbackMode == TP_PLAYBACKMODE.Playlist)
                 {
-                    totalHistory.Add(song);
+                    totalHistory.AddSongs(song,true);
                     historyPosition++;
                 }
             }
@@ -396,7 +403,7 @@ namespace ThePlayer
             if (vlc.IsPlaying)
             {
                 if (ExcludeSkipped)
-                    usedPlaylist.RemoveSong(CurrentSong);
+                    usedPlaylist.RemoveSongs(CurrentSong);
                 // Playback is running, skip to the next song
                 try
                 {
@@ -431,20 +438,17 @@ namespace ThePlayer
         #region Playlist control
         public void ClearPlaylist()
         {
-            _Playlist = new Songpool();
-            usedPlaylist = new Songpool();
+            _Playlist.Clear();
+            usedPlaylist.Clear();
             playlistPosition = -1;
             PlaylistChanged(new string[0]);
         }
 
-        public bool AddSongToPlaylist(Song song)
+        public void AddSongToPlaylist(Song song)
         {
-            //TODO: And more settings... allow adding duplicates to the current playlist?
-            usedPlaylist.AddSong(song);
-            bool result = _Playlist.AddSong(song);
-            if (result)
-                PlaylistChanged(_Playlist.ToArray());
-            return result;
+            usedPlaylist.AddSongs(song, true);
+            _Playlist.AddSongs(song, true);
+            PlaylistChanged(_Playlist.ToArray());
         }
         #endregion
 
@@ -470,5 +474,12 @@ namespace ThePlayer
         public void ScrobbelSong(Song song)
         {
         }
+
+        #region Load and save
+        public void Save()
+        {
+            // The pools are saved automatically. Save the rest here.
+        }
+        #endregion
     }
 }
