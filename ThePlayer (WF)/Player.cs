@@ -52,11 +52,12 @@ namespace ThePlayer
             //TODO: Implement user columns
             Columns = new List<string>(new string[5] { Song.META_ARTISTS, Song.META_TITLE, Song.META_ALBUM, Song.META_GENRES, Song.META_PLAYCOUNT });
             Sorting = new List<string>(new string[3] { Song.META_ARTISTS, Song.META_ALBUM, Song.META_TRACK });
+            view = new Songpool("_VIEW_");
         }
 
         public void ChangePools(string[] indices)
         {
-            view = new Songpool("_VIEW_");
+            view.Clear();
             foreach (string s in indices)
             {
                 foreach (Song song in Program.ActiveDatabase.LoadSongs(s, new string[1] { "Artists" }))
