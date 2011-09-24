@@ -73,52 +73,42 @@ namespace ThePlayer
         public int[] ManageSongs(IEnumerable<Song> songs, bool insert)
         {
             // Alben laden bzw. anlegen
+            SQLiteTransaction sqt = connection.BeginTransaction();
             songs = LinkSongsWithAlbums(songs);
 
             // Array anlegen für die IDs der angelegten / gefundenen Datensätze.
             int[] iResult = new int[songs.Count()];
 
-            SQLiteTransaction sqt = connection.BeginTransaction();
             SQLiteCommand sqcCheck = new SQLiteCommand(connection);
+            //TODO: 1. More and chosable criteria. 2. Do this with LoadSongs().
+            sqcCheck.CommandText = "SELECT id FROM Songs WHERE Artists=:Artists AND Title=:Title";
+            sqcCheck.Parameters.Add(new SQLiteParameter("Artists"));
+            sqcCheck.Parameters.Add(new SQLiteParameter("Title"));
+
             SQLiteCommand sqcInsert = new SQLiteCommand(connection);
             int i = 0;
 
-            //TODO: 1. More and chosable criteria. 2. Do this with LoadSongs().
-            sqcCheck.CommandText = "SELECT id FROM Songs WHERE Artists=? AND Title=?";
-            sqcCheck.Parameters.Add(new SQLiteParameter("Artists"));
-            sqcCheck.Parameters.Add(new SQLiteParameter("Title"));
             if (insert)
             {
-                sqcInsert.CommandText = "INSERT INTO Songs (Artists, Title, Genre, idAlbum, TrackNr, Copyright, Conductor, Composer, Comment, AmazonID, Lyrics, BPM, Version, playCount, skipCount, rating) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                sqcInsert.Parameters.Add(new SQLiteParameter("Artists"));
-                sqcInsert.Parameters.Add(new SQLiteParameter("Title"));
-                sqcInsert.Parameters.Add(new SQLiteParameter("Genre"));
-                sqcInsert.Parameters.Add(new SQLiteParameter("idAlbum"));
-                sqcInsert.Parameters.Add(new SQLiteParameter("TrackNr"));
-                sqcInsert.Parameters.Add(new SQLiteParameter("Copyright"));
-                sqcInsert.Parameters.Add(new SQLiteParameter("Conductor"));
-                sqcInsert.Parameters.Add(new SQLiteParameter("Composer"));
-                sqcInsert.Parameters.Add(new SQLiteParameter("Comment"));
-                sqcInsert.Parameters.Add(new SQLiteParameter("AmazonID"));
-                sqcInsert.Parameters.Add(new SQLiteParameter("Lyrics"));
-                sqcInsert.Parameters.Add(new SQLiteParameter("BPM"));
-                sqcInsert.Parameters.Add(new SQLiteParameter("Version"));
-                sqcInsert.Parameters.Add(new SQLiteParameter("playCount"));
-                sqcInsert.Parameters.Add(new SQLiteParameter("skipCount"));
-                sqcInsert.Parameters.Add(new SQLiteParameter("rating"));
+                string[] parameters = new string[16] { "Artists", "Title", "Genre", "idAlbum", "TrackNr", "Copyright", "Conductor", "Composer", "Comment", "AmazonID", "Lyrics", "BPM", "Version", "playCount", "skipCount", "rating" };
+                string[] namedparams = new string[parameters.Count()];
+                for (int j = 0; j < parameters.Count(); j++)
+                {
+                    namedparams[j] = ":" + parameters[j];
+                    sqcInsert.Parameters.Add(new SQLiteParameter(parameters[j]));
+                }
+                sqcInsert.Parameters.Add(new SQLiteParameter("lArtists"));
+                sqcInsert.Parameters.Add(new SQLiteParameter("lTitle"));
+                //TODO: Make artist, title etc chosable as always
+                sqcInsert.CommandText = "INSERT INTO Songs (" + String.Join(", ", parameters) + ") SELECT " + String.Join(", ", namedparams) + " WHERE NOT EXISTS(SELECT id FROM Songs WHERE LOWER(Artists)=:lArtists AND LOWER(Title)=:lTitle)";
             }
 
             foreach (Song song in songs)
             {
-                object id;
-                // Song schon eingetragen?
-                sqcCheck.Parameters["Artists"].Value = song.getInformation(Song.META_ARTISTS);
-                sqcCheck.Parameters["Title"].Value = song.getInformation(Song.META_TITLE);
-                id = sqcCheck.ExecuteScalar();
+                object id = null;
 
-                if (id == null && insert)
+                if (insert)
                 {
-                    // Nein, also eintragen (falls angegeben)
                     sqcInsert.Parameters["Artists"].Value = song.getInformation(Song.META_ARTISTS);
                     sqcInsert.Parameters["Title"].Value = song.getInformation(Song.META_TITLE);
                     sqcInsert.Parameters["Genre"].Value = song.getInformation(Song.META_GENRES);
@@ -138,14 +128,19 @@ namespace ThePlayer
                     sqcInsert.Parameters["playCount"].Value = song.getInformation(Song.META_PLAYCOUNT);
                     sqcInsert.Parameters["skipCount"].Value = song.getInformation(Song.META_SKIPCOUNT);
                     sqcInsert.Parameters["rating"].Value = song.getInformation(Song.META_RATING);
-                    sqcInsert.ExecuteNonQuery();
+                    sqcInsert.Parameters["lArtists"].Value = song.getInformation(Song.META_ARTISTS).ToLower();
+                    sqcInsert.Parameters["lTitle"].Value = song.getInformation(Song.META_TITLE).ToLower();
 
-                    // Und jetzt die ID holen (TODO: Iih. Das muss anders gehen.)
+                    if (sqcInsert.ExecuteNonQuery() > 0)
+                        id = new SQLiteCommand("SELECT last_insert_rowid()", connection).ExecuteScalar();
+                }
+                if (!insert || id == null)
+                {
                     sqcCheck.Parameters["Artists"].Value = song.getInformation(Song.META_ARTISTS);
                     sqcCheck.Parameters["Title"].Value = song.getInformation(Song.META_TITLE);
                     id = sqcCheck.ExecuteScalar();
                 }
-                else if (id == null)
+                if (id == null)
                     id = -1;
 
                 // ID eintragen (entweder von existierendem Datensatz oder von neu eingefügtem)
@@ -163,7 +158,7 @@ namespace ThePlayer
             foreach (Song song in songs)
             {
                 if (song.Album != null && song.Album.getInformation(CAlbum.META_NAME) != "")
-                    song.Album.id = ManageAlbums(song.Album, false);
+                    song.Album.id = InsertAlbum(song.Album);
                 result.Add(song);
             }
             return result;
@@ -251,39 +246,32 @@ namespace ThePlayer
         /// <param name="albumname"></param>
         /// <param name="case_sensitive"></param>
         /// <returns></returns>
-        public int ManageAlbums(CAlbum album, bool case_sensitive)
+        public int InsertAlbum(CAlbum album)
         {
             SQLiteCommand sqc = new SQLiteCommand(connection);
-            if (case_sensitive)
+            sqc.CommandText = "INSERT INTO Albums (Name, AlbumArtists, Year) SELECT ?, ?, ? WHERE NOT EXISTS(SELECT id FROM Albums WHERE LOWER(Name)=? AND LOWER(AlbumArtists)=? AND Year=?)";
+            sqc.Parameters.Add(new SQLiteParameter(null, album.getInformation(CAlbum.META_NAME)));
+            sqc.Parameters.Add(new SQLiteParameter(null, album.getInformation(CAlbum.META_ALBUMARTISTS)));
+            sqc.Parameters.Add(new SQLiteParameter(null, album.getInformation(CAlbum.META_YEAR)));
+            sqc.Parameters.Add(new SQLiteParameter("Name", album.getInformation(CAlbum.META_NAME).ToLower()));
+            sqc.Parameters.Add(new SQLiteParameter("AlbumArtists", album.getInformation(CAlbum.META_ALBUMARTISTS).ToLower()));
+            sqc.Parameters.Add(new SQLiteParameter("Year", album.getInformation(CAlbum.META_YEAR)));
+
+            int i = sqc.ExecuteNonQuery();
+            if (i > 0)
             {
-                sqc.CommandText = "SELECT id FROM Albums WHERE Name=? AND AlbumArtists=? AND Year=?";
-                sqc.Parameters.Add(new SQLiteParameter("Name", album.getInformation(CAlbum.META_NAME)));
-                sqc.Parameters.Add(new SQLiteParameter("AlbumArtists", album.getInformation(CAlbum.META_ALBUMARTISTS)));
-                sqc.Parameters.Add(new SQLiteParameter("Year", album.getInformation(CAlbum.META_YEAR)));
+                object id = new SQLiteCommand("SELECT last_insert_rowid()", connection).ExecuteScalar();
+                return Convert.ToInt32(id);
             }
             else
             {
-                sqc.CommandText = "SELECT id FROM Albums WHERE LOWER(Name)=? AND LOWER(AlbumArtists)=? AND LOWER(Year)=?";
+                sqc.CommandText = "SELECT id FROM Albums WHERE LOWER(Name)=? AND LOWER(AlbumArtists)=? AND Year=?";
+                sqc.Parameters.Clear();
                 sqc.Parameters.Add(new SQLiteParameter("Name", album.getInformation(CAlbum.META_NAME).ToLower()));
                 sqc.Parameters.Add(new SQLiteParameter("AlbumArtists", album.getInformation(CAlbum.META_ALBUMARTISTS).ToLower()));
-                sqc.Parameters.Add(new SQLiteParameter("Year", album.getInformation(CAlbum.META_YEAR).ToLower()));
+                sqc.Parameters.Add(new SQLiteParameter("Year", album.getInformation(CAlbum.META_YEAR)));
+                return Convert.ToInt32(sqc.ExecuteScalar());
             }
-            object id = sqc.ExecuteScalar();
-            if (id == null)
-            {
-                sqc.CommandText = "INSERT INTO Albums (Name, AlbumArtists, Year) VALUES (?, ?, ?)";
-                if (!case_sensitive)
-                {
-                    // Don't insert lowercase album meta
-                    sqc.Parameters.Clear();
-                    sqc.Parameters.Add(new SQLiteParameter("Name", album.getInformation(CAlbum.META_NAME)));
-                    sqc.Parameters.Add(new SQLiteParameter("AlbumArtists", album.getInformation(CAlbum.META_ALBUMARTISTS)));
-                    sqc.Parameters.Add(new SQLiteParameter("Year", album.getInformation(CAlbum.META_YEAR)));
-                }
-                sqc.ExecuteNonQuery();
-                return ManageAlbums(album, case_sensitive);
-            }
-            return Convert.ToInt32(id);
         }
         #endregion
 

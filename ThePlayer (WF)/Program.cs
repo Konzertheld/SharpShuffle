@@ -35,6 +35,7 @@ namespace ThePlayer
             //GlobalConfig.Load();
 
             ActiveDatabase = new Database();
+            ActiveDatabase.ClearDB();
 
             // Create directories, they're needed for loading
             if (!Directory.Exists(GlobalConfig.Appdatapath)) Directory.CreateDirectory(GlobalConfig.Appdatapath);

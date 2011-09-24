@@ -59,10 +59,7 @@ namespace ThePlayer
         {
             view.Clear();
             foreach (string s in indices)
-            {
-                foreach (Song song in Program.ActiveDatabase.LoadSongs(s, new string[1] { "Artists" }))
-                    view.AddSongs(song);
-            }
+                view.AddSongs(Program.ActiveDatabase.LoadSongs(s, new string[1] { "Artists" }));
         }
 
         public List<string[]> ViewSongs()
@@ -80,7 +77,7 @@ namespace ThePlayer
 
         public Song getSongFromView(int index)
         {
-            return view.getSongs()[index];
+            return view.getSongs(Sorting)[index];
         }
     }
 
