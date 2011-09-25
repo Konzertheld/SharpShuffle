@@ -47,6 +47,9 @@
             this.btnNext = new System.Windows.Forms.Button();
             this.btnStop = new System.Windows.Forms.Button();
             this.lsvPlaylist = new System.Windows.Forms.ListView();
+            this.einstellungenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.clearDBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -56,7 +59,8 @@
             this.dateiToolStripMenuItem,
             this.auswahlToolStripMenuItem,
             this.playlistToolStripMenuItem,
-            this.lastfmToolStripMenuItem});
+            this.lastfmToolStripMenuItem,
+            this.einstellungenToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1092, 24);
@@ -171,6 +175,7 @@
             this.lsvCurrentSongview.TabIndex = 13;
             this.lsvCurrentSongview.UseCompatibleStateImageBehavior = false;
             this.lsvCurrentSongview.View = System.Windows.Forms.View.Details;
+            this.lsvCurrentSongview.SelectedIndexChanged += new System.EventHandler(this.lsvCurrentSongview_SelectedIndexChanged);
             this.lsvCurrentSongview.DoubleClick += new System.EventHandler(this.lsvCurrentSongview_DoubleClick);
             this.lsvCurrentSongview.KeyUp += new System.Windows.Forms.KeyEventHandler(this.lsvCurrentSongview_KeyUp);
             // 
@@ -220,12 +225,34 @@
             // 
             // lsvPlaylist
             // 
+            this.lsvPlaylist.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader2});
             this.lsvPlaylist.Location = new System.Drawing.Point(882, 27);
             this.lsvPlaylist.Name = "lsvPlaylist";
             this.lsvPlaylist.Size = new System.Drawing.Size(198, 630);
             this.lsvPlaylist.TabIndex = 18;
             this.lsvPlaylist.UseCompatibleStateImageBehavior = false;
-            this.lsvPlaylist.View = System.Windows.Forms.View.List;
+            this.lsvPlaylist.View = System.Windows.Forms.View.Details;
+            // 
+            // einstellungenToolStripMenuItem
+            // 
+            this.einstellungenToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.clearDBToolStripMenuItem});
+            this.einstellungenToolStripMenuItem.Name = "einstellungenToolStripMenuItem";
+            this.einstellungenToolStripMenuItem.Size = new System.Drawing.Size(90, 20);
+            this.einstellungenToolStripMenuItem.Text = "Einstellungen";
+            // 
+            // clearDBToolStripMenuItem
+            // 
+            this.clearDBToolStripMenuItem.Name = "clearDBToolStripMenuItem";
+            this.clearDBToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.clearDBToolStripMenuItem.Text = "ClearDB";
+            this.clearDBToolStripMenuItem.Click += new System.EventHandler(this.clearDBToolStripMenuItem_Click);
+            // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Text = "";
+            this.columnHeader2.Width = 194;
             // 
             // Mainform
             // 
@@ -272,6 +299,9 @@
         private System.Windows.Forms.ToolStripMenuItem scrobbelnAktivToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem manuellScrobbelnToolStripMenuItem;
         private System.Windows.Forms.ListView lsvPlaylist;
+        private System.Windows.Forms.ToolStripMenuItem einstellungenToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem clearDBToolStripMenuItem;
+        private System.Windows.Forms.ColumnHeader columnHeader2;
     }
 }
 

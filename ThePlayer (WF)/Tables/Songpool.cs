@@ -11,6 +11,7 @@ namespace ThePlayer
     public class Songpool
     {
         public string Name { get; private set; }
+        public int id;
 
         #region Konstruktoren
         /// <summary>
@@ -20,7 +21,7 @@ namespace ThePlayer
         public Songpool(string name)
         {
             Name = name;
-            Program.ActiveDatabase.ManageSongpool(name);
+            id = Program.ActiveDatabase.ManageSongpool(name);
         }
         /// <summary>
         /// Create a songpool. A new songpool with the given name is automatically inserted into the database if necessary. The given songs are automatically added.
@@ -63,8 +64,7 @@ namespace ThePlayer
         /// <returns></returns>
         public void AddSongs(Song song, bool allow_duplicates)
         {
-            // Looks awful but does not more than call PutSongsinPool, getting the song's id and the pool's id.
-            Program.ActiveDatabase.PutSongsInPool(Program.ActiveDatabase.ManageSongs(song, false), Program.ActiveDatabase.ManageSongpool(this.Name), allow_duplicates);
+            AddSongs(new Song[1] { song }, allow_duplicates);
         }
         public void AddSongs(IEnumerable<Song> songs)
         {
@@ -72,7 +72,15 @@ namespace ThePlayer
         }
         public void AddSongs(IEnumerable<Song> songs, bool allow_duplicates)
         {
-            Program.ActiveDatabase.PutSongsInPool(Program.ActiveDatabase.ManageSongs(songs, false), Program.ActiveDatabase.ManageSongpool(this.Name), allow_duplicates);
+            Program.ActiveDatabase.PutSongsInPool(Program.ActiveDatabase.ManageSongs(songs, false), this.id, allow_duplicates);
+        }
+        public void AddSongs(string poolname)
+        {
+            AddSongs(poolname, false);
+        }
+        public void AddSongs(string poolname, bool allow_duplicates)
+        {
+            Program.ActiveDatabase.AddPoolToPool(Program.ActiveDatabase.ManageSongpool(poolname), id);
         }
 
         //TODO: Remove songs by id
@@ -175,7 +183,7 @@ namespace ThePlayer
 
         public string[] ToArray()
         {
-            List<Song> songs = Program.ActiveDatabase.LoadSongs(Name);
+            List<Song> songs = Program.ActiveDatabase.LoadSongs(Name, new string[1] { "Poolsongs.id" });
             string[] result = new string[songs.Count];
             for (int i = 0; i < songs.Count; i++)
                 result[i] = songs[i].ToString();

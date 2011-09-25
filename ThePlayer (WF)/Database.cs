@@ -74,7 +74,7 @@ namespace ThePlayer
         {
             // Alben laden bzw. anlegen
             SQLiteTransaction sqt = connection.BeginTransaction();
-            if(insert) songs = LinkSongsWithAlbums(songs);
+            if (insert) songs = LinkSongsWithAlbums(songs);
 
             // Array anlegen für die IDs der angelegten / gefundenen Datensätze.
             int[] iResult = new int[songs.Count()];
@@ -106,43 +106,47 @@ namespace ThePlayer
             foreach (Song song in songs)
             {
                 object id = null;
-
-                if (insert)
+                //TODO: Überlegen, ob es Fälle gibt, in denen ein Song eine ID hat, obwohl er nicht mit dieser ID in der Datenbank ist
+                if (song.id != 0)
+                    id = song.id;
+                else
                 {
-                    sqcInsert.Parameters["Artists"].Value = song.getInformation(Song.META_ARTISTS);
-                    sqcInsert.Parameters["Title"].Value = song.getInformation(Song.META_TITLE);
-                    sqcInsert.Parameters["Genre"].Value = song.getInformation(Song.META_GENRES);
-                    if (song.Album != null)
-                        sqcInsert.Parameters["idAlbum"].Value = song.Album.id;
-                    else
-                        sqcInsert.Parameters["idAlbum"].Value = null;
-                    sqcInsert.Parameters["TrackNr"].Value = song.getInformation(Song.META_TRACK);
-                    sqcInsert.Parameters["Copyright"].Value = song.getInformation(Song.META_COPYRIGHT);
-                    sqcInsert.Parameters["Conductor"].Value = song.getInformation(Song.META_CONDUCTOR);
-                    sqcInsert.Parameters["Composer"].Value = song.getInformation(Song.META_COMPOSERS);
-                    sqcInsert.Parameters["Comment"].Value = song.getInformation(Song.META_COMMENT);
-                    sqcInsert.Parameters["AmazonID"].Value = song.getInformation(Song.META_AMAZON);
-                    sqcInsert.Parameters["Lyrics"].Value = song.getInformation(Song.META_LYRICS);
-                    sqcInsert.Parameters["BPM"].Value = song.getInformation(Song.META_BPM);
-                    sqcInsert.Parameters["Version"].Value = song.getInformation(Song.META_VERSION);
-                    sqcInsert.Parameters["playCount"].Value = song.getInformation(Song.META_PLAYCOUNT);
-                    sqcInsert.Parameters["skipCount"].Value = song.getInformation(Song.META_SKIPCOUNT);
-                    sqcInsert.Parameters["rating"].Value = song.getInformation(Song.META_RATING);
-                    sqcInsert.Parameters["lArtists"].Value = song.getInformation(Song.META_ARTISTS).ToLower();
-                    sqcInsert.Parameters["lTitle"].Value = song.getInformation(Song.META_TITLE).ToLower();
+                    if (insert)
+                    {
+                        sqcInsert.Parameters["Artists"].Value = song.getInformation(Song.META_ARTISTS);
+                        sqcInsert.Parameters["Title"].Value = song.getInformation(Song.META_TITLE);
+                        sqcInsert.Parameters["Genre"].Value = song.getInformation(Song.META_GENRES);
+                        if (song.Album != null)
+                            sqcInsert.Parameters["idAlbum"].Value = song.Album.id;
+                        else
+                            sqcInsert.Parameters["idAlbum"].Value = null;
+                        sqcInsert.Parameters["TrackNr"].Value = song.getInformation(Song.META_TRACK);
+                        sqcInsert.Parameters["Copyright"].Value = song.getInformation(Song.META_COPYRIGHT);
+                        sqcInsert.Parameters["Conductor"].Value = song.getInformation(Song.META_CONDUCTOR);
+                        sqcInsert.Parameters["Composer"].Value = song.getInformation(Song.META_COMPOSERS);
+                        sqcInsert.Parameters["Comment"].Value = song.getInformation(Song.META_COMMENT);
+                        sqcInsert.Parameters["AmazonID"].Value = song.getInformation(Song.META_AMAZON);
+                        sqcInsert.Parameters["Lyrics"].Value = song.getInformation(Song.META_LYRICS);
+                        sqcInsert.Parameters["BPM"].Value = song.getInformation(Song.META_BPM);
+                        sqcInsert.Parameters["Version"].Value = song.getInformation(Song.META_VERSION);
+                        sqcInsert.Parameters["playCount"].Value = song.getInformation(Song.META_PLAYCOUNT);
+                        sqcInsert.Parameters["skipCount"].Value = song.getInformation(Song.META_SKIPCOUNT);
+                        sqcInsert.Parameters["rating"].Value = song.getInformation(Song.META_RATING);
+                        sqcInsert.Parameters["lArtists"].Value = song.getInformation(Song.META_ARTISTS).ToLower();
+                        sqcInsert.Parameters["lTitle"].Value = song.getInformation(Song.META_TITLE).ToLower();
 
-                    if (sqcInsert.ExecuteNonQuery() > 0)
-                        id = new SQLiteCommand("SELECT last_insert_rowid()", connection).ExecuteScalar();
+                        if (sqcInsert.ExecuteNonQuery() > 0)
+                            id = new SQLiteCommand("SELECT last_insert_rowid()", connection).ExecuteScalar();
+                    }
+                    if (!insert || id == null)
+                    {
+                        sqcCheck.Parameters["Artists"].Value = song.getInformation(Song.META_ARTISTS);
+                        sqcCheck.Parameters["Title"].Value = song.getInformation(Song.META_TITLE);
+                        id = sqcCheck.ExecuteScalar();
+                    }
+                    if (id == null)
+                        id = -1;
                 }
-                if (!insert || id == null)
-                {
-                    sqcCheck.Parameters["Artists"].Value = song.getInformation(Song.META_ARTISTS);
-                    sqcCheck.Parameters["Title"].Value = song.getInformation(Song.META_TITLE);
-                    id = sqcCheck.ExecuteScalar();
-                }
-                if (id == null)
-                    id = -1;
-
                 // ID eintragen (entweder von existierendem Datensatz oder von neu eingefügtem)
                 iResult[i] = Convert.ToInt32(id);
                 i++;
@@ -200,6 +204,24 @@ namespace ThePlayer
                 }
             }
             sqt.Commit();
+        }
+        public void PutSongsInPool(IEnumerable<Song> songs, int pool_id)
+        {
+            PutSongsInPool(songs, pool_id, false);
+        }
+        public void PutSongsInPool(IEnumerable<Song> songs, int pool_id, bool allow_duplicates)
+        {
+            var ids = from s in songs
+                      where s.id != null
+                      select s.id;
+            var unknownsongs = from s in songs
+                               where s.id == null
+                               select s;
+            int[] nowknownids = ManageSongs(unknownsongs, false);
+            int[] idstouse = new int[ids.Count() + nowknownids.Count()];
+            nowknownids.CopyTo(idstouse, 0);
+            ((int[])ids).CopyTo(idstouse, nowknownids.Count());
+            PutSongsInPool(idstouse, pool_id, allow_duplicates);
         }
 
         /// <summary>
@@ -273,6 +295,31 @@ namespace ThePlayer
                 return Convert.ToInt32(sqc.ExecuteScalar());
             }
         }
+
+        /// <summary>
+        /// Add all songs that don't already exist there to another pool.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="destination"></param>
+        public void AddPoolToPool(string source, string destination)
+        {
+            AddPoolToPool(ManageSongpool(source), ManageSongpool(destination));
+        }
+        /// <summary>
+        /// Add all songs that don't already exist there to another pool.
+        /// </summary>
+        /// <param name="source_id"></param>
+        /// <param name="dest_id"></param>
+        public void AddPoolToPool(int source_id, int dest_id)
+        {
+            SQLiteTransaction trans = connection.BeginTransaction();
+            SQLiteCommand c = new SQLiteCommand(connection);
+            c.CommandText = "INSERT INTO Poolsongs (idSong, idPool) SELECT idSong, :idDest FROM Poolsongs WHERE idPool=:idSource AND NOT idSong IN (SELECT idSong FROM Poolsongs WHERE idPool=:idDest)";
+            c.Parameters.Add(new SQLiteParameter("idDest", dest_id));
+            c.Parameters.Add(new SQLiteParameter("idSource", source_id));
+            c.ExecuteNonQuery();
+            trans.Commit();
+        }
         #endregion
 
         #region Load data
@@ -309,9 +356,6 @@ namespace ThePlayer
         }
         public List<Song> LoadSongs(int id_pool, IEnumerable<string> order_by, IEnumerable<MP_Filter> filters, bool case_sensitive)
         {
-            // SELECT Songs.Artists, Songs.Title, Albums.Name, Songs.id FROM Songs LEFT JOIN Albums ON Songs.idAlbum=Albums.id WHERE LOWER(Songs.Artists)="wir sind helden"
-
-            //TODO: Load all fields
             List<Song> result = new List<Song>();
             SQLiteCommand sqc = new SQLiteCommand(connection);
 
@@ -334,7 +378,7 @@ namespace ThePlayer
 
             sqc.Parameters.Add(new SQLiteParameter("idPool", id_pool));
 
-            sqc.CommandText = "SELECT Songs.Artists, Songs.Title, Songs.Genre, Songs.TrackNr, Songs.Copyright, Songs.Comment, Songs.Composer, Songs.Conductor, Songs.AmazonID, Songs.Lyrics, Songs.BPM, Songs.Version, Songs.playCount, Songs.skipCount, Songs.rating, Albums.Name AS Album, Albums.AlbumArtists, Albums.Year FROM Songs LEFT JOIN Albums ON Albums.id=Songs.idAlbum WHERE Songs.id IN (SELECT idSong FROM Poolsongs WHERE idPool=?)" + String.Join(" AND ", wheres);
+            sqc.CommandText = "SELECT Songs.id AS SID, Songs.Artists, Songs.Title, Songs.Genre, Songs.TrackNr, Songs.Copyright, Songs.Comment, Songs.Composer, Songs.Conductor, Songs.AmazonID, Songs.Lyrics, Songs.BPM, Songs.Version, Songs.playCount, Songs.skipCount, Songs.rating, Albums.Name AS Album, Albums.AlbumArtists, Albums.Year, Poolsongs.id FROM Poolsongs INNER JOIN Songs ON Poolsongs.idSong=Songs.id INNER JOIN Albums ON Albums.id=Songs.idAlbum WHERE Poolsongs.idPool=?" + String.Join(" AND ", wheres);
             if (order_by.Count() > 0) sqc.CommandText += " ORDER BY " + String.Join(", ", order_by);
 
             // Process the result: Create song objects
@@ -343,7 +387,12 @@ namespace ThePlayer
             {
                 Song tempsong = new Song();
                 for (int i = 0; i < sqr.FieldCount; i++)
-                    tempsong.setInformation(sqr.GetName(i), sqr.GetValue(i).ToString());
+                {
+                    if (sqr.GetName(i) == "SID")
+                        tempsong.id = sqr.GetInt32(i);
+                    else
+                        tempsong.setInformation(sqr.GetName(i), sqr.GetValue(i).ToString());
+                }
                 result.Add(tempsong);
             }
             return result;

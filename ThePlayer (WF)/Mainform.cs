@@ -158,8 +158,8 @@ namespace ThePlayer
 
             // Display the refreshed songlist
             lsvCurrentSongview.Items.Clear();
-            foreach (string[] song in Program.ActivePlayerUI.ViewSongs())
-                lsvCurrentSongview.Items.Add(new ListViewItem(song));
+            lsvCurrentSongview.Items.AddRange(Program.ActivePlayerUI.ViewSongs());
+            
         }
 
         private void lsvCurrentSongview_DoubleClick(object sender, EventArgs e)
@@ -192,6 +192,16 @@ namespace ThePlayer
                     Program.ActivePlayer.AddSongToPlaylist(Program.ActivePlayerUI.getSongFromView(i));
                 }
             }
+        }
+
+        private void clearDBToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Program.ActiveDatabase.ClearDB();
+        }
+
+        private void lsvCurrentSongview_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

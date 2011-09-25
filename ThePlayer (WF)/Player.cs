@@ -6,6 +6,7 @@ using Declarations;
 using Declarations.Media;
 using Declarations.Players;
 using Implementation;
+using System.Windows.Forms;
 
 namespace ThePlayer
 {
@@ -45,6 +46,7 @@ namespace ThePlayer
         public List<string> Columns;
         public List<string> Sorting;
         private Songpool view;
+        //private List<Song> newview;
 
         public PlayerView()
         {
@@ -53,30 +55,33 @@ namespace ThePlayer
             Columns = new List<string>(new string[5] { Song.META_ARTISTS, Song.META_TITLE, Song.META_ALBUM, Song.META_GENRES, Song.META_PLAYCOUNT });
             Sorting = new List<string>(new string[3] { Song.META_ARTISTS, Song.META_ALBUM, Song.META_TRACK });
             view = new Songpool("_VIEW_");
+            //newview = new List<Song>();
         }
 
         public void ChangePools(string[] indices)
         {
             view.Clear();
             foreach (string s in indices)
-                view.AddSongs(Program.ActiveDatabase.LoadSongs(s, Sorting));
+                view.AddSongs(s, false);
         }
 
-        public List<string[]> ViewSongs()
+        public ListViewItem[] ViewSongs()
         {
-            List<string[]> result = new List<string[]>();
-            foreach (Song song in view.getSongs(Sorting))
+            List<Song> songstoview = view.getSongs(Sorting);
+            ListViewItem[] result = new ListViewItem[songstoview.Count];
+            for (int k = 0; k < songstoview.Count; k++)
             {
                 string[] s = new string[Columns.Count];
                 for (int i = 0; i < Columns.Count; i++)
-                    s[i] = song.getInformation(Columns[i]);
-                result.Add(s);
+                    s[i] = songstoview[k].getInformation(Columns[i]);
+                result[k] = new ListViewItem(s);
             }
             return result;
         }
 
         public Song getSongFromView(int index)
         {
+            //TODO: Improve performance (maybe use SELECT with offset?)
             return view.getSongs(Sorting)[index];
         }
     }
