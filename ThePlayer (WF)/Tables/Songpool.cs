@@ -7,7 +7,6 @@ using System.Xml.Linq;
 
 namespace ThePlayer
 {
-    [Serializable]
     public class Songpool
     {
         public string Name { get; private set; }
