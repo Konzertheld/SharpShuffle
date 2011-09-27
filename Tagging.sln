@@ -12,6 +12,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6089FCAA-552B-44B1-A1A1-08A3E4CB0062}"
 	ProjectSection(SolutionItems) = preProject
 		Nächste Schritte.txt = Nächste Schritte.txt
+		Querys.txt = Querys.txt
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Implementation", "Implementation\Implementation.csproj", "{6BA02CCA-2E14-4A64-8AB6-594E600D80C9}"
@@ -21,6 +22,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibVlcWrapper", "LibVlcWrapper\LibVlcWrapper.csproj", "{57F08087-B175-4C96-BE36-83FBC4A21065}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lpfm.LastFmScrobbler", "lpfm_2d4836745364\LastFmScrobbler\Lpfm.LastFmScrobbler.csproj", "{BA7F7E8A-B089-4323-8C8D-F406E7AFCDBE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpShuffle", "SharpShuffle\SharpShuffle.csproj", "{DD314B5E-7AE9-4C37-8D73-52BC692D1E21}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -118,6 +121,16 @@ Global
 		{BA7F7E8A-B089-4323-8C8D-F406E7AFCDBE}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{BA7F7E8A-B089-4323-8C8D-F406E7AFCDBE}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{BA7F7E8A-B089-4323-8C8D-F406E7AFCDBE}.Release|x86.ActiveCfg = Release|Any CPU
+		{DD314B5E-7AE9-4C37-8D73-52BC692D1E21}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{DD314B5E-7AE9-4C37-8D73-52BC692D1E21}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{DD314B5E-7AE9-4C37-8D73-52BC692D1E21}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{DD314B5E-7AE9-4C37-8D73-52BC692D1E21}.Debug|x86.ActiveCfg = Debug|x86
+		{DD314B5E-7AE9-4C37-8D73-52BC692D1E21}.Debug|x86.Build.0 = Debug|x86
+		{DD314B5E-7AE9-4C37-8D73-52BC692D1E21}.Release|Any CPU.ActiveCfg = Release|x86
+		{DD314B5E-7AE9-4C37-8D73-52BC692D1E21}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{DD314B5E-7AE9-4C37-8D73-52BC692D1E21}.Release|Mixed Platforms.Build.0 = Release|x86
+		{DD314B5E-7AE9-4C37-8D73-52BC692D1E21}.Release|x86.ActiveCfg = Release|x86
+		{DD314B5E-7AE9-4C37-8D73-52BC692D1E21}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,2 @@
+Songs eines bestimmten Pools anhand des Namens laden:
+SELECT idSong FROM Poolsongs INNER JOIN Songpools ON Songpools.id=idPool WHERE Songpools.Name="_VIEW_"

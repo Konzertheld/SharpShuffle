@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ThePlayer
+namespace SharpShuffle.Database
 {
     public class Song : Dataset
     {
         #region Constants
-        
+        public string[] FIELDS = new string[15] { "Artists", "Title", "Genres", "Version", "TrackNr", "Copyright", "Conductor", "Composer", "Comment", "Lyrics", "BPM", "PlayCount", "SkipCount", "Rating", "idAlbum" };
+        public string[] JOINEDFIELDS = new string[15] { "Artists", "Title", "Genres", "Version", "TrackNr", "Copyright", "Conductor", "Composer", "Comment", "Lyrics", "BPM", "PlayCount", "SkipCount", "Rating", "idAlbum" };
+
         public const string META_ALBUM = "Album";
         public const string META_AMAZON = "AmazonID";
         public const string META_ARTISTS = "Artists";

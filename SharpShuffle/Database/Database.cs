@@ -4,57 +4,74 @@ using System.Linq;
 using System.Text;
 using System.Data.SQLite;
 
-namespace ThePlayer
+namespace SharpShuffle.Database
 {
     class Database
     {
         private SQLiteConnection connection;
 
-        public Database()
+        public Dictionary<int, Songpool> LoadedSongpools;
+
+        public Database(string path)
         {
-            connection = new SQLiteConnection("Data Source=" + Program.GlobalConfig.Appdatapath + "\\database.db");
+            connection = new SQLiteConnection("Data Source=" + path);
             connection.Open();
+
+            LoadedSongpools = new Dictionary<int, Songpool>();
         }
 
-        #region Insert and Check
+        #region Database methods
         /// <summary>
-        /// Returns a songpool's id. Inserts the songpool before if necessary.
+        /// Helper method for database models.
         /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public int ManageSongpool(string name)
+        /// <returns>Returns an SQLiteCommand based on the active database connection.</returns>
+        public SQLiteCommand GetCommand()
+        {
+            return new SQLiteCommand(connection);
+        }
+
+        public void CloseDB()
+        {
+            connection.Close();
+        }
+
+        public void ClearDB()
         {
             SQLiteCommand c = new SQLiteCommand(connection);
-            c.CommandText = "SELECT id FROM Songpools WHERE name=?";
-            c.Parameters.Add(new SQLiteParameter("name", name));
-            object id = c.ExecuteScalar();
-            if (id != null)
-                return Convert.ToInt32(id);
-
-            c.CommandText = "INSERT INTO songpools (name) VALUES (?)";
+            c.CommandText = "DELETE FROM Songs";
             c.ExecuteNonQuery();
-            return ManageSongpool(name);
+            c.CommandText = "DELETE FROM Songpools";
+            c.ExecuteNonQuery();
+            c.CommandText = "DELETE FROM Poolsongs";
+            c.ExecuteNonQuery();
+            c.CommandText = "DELETE FROM Audiofiles";
+            c.ExecuteNonQuery();
+            c.CommandText = "DELETE FROM Albums";
+            c.ExecuteNonQuery();
+            c.CommandText = "VACUUM";
+            c.ExecuteNonQuery();
+        }
+        #endregion
+
+        #region Data Methods - Creation
+        /// <summary>
+        /// Make sure a songpool exists. If it does not yet, it is inserted. Returns true if a pool was created and false if it did already exist.
+        /// </summary>
+        /// <param name="name">The desired name.</param>
+        public bool CreateSongpool(string name)
+        {
+            using (SQLiteCommand sqc = new SQLiteCommand(connection))
+            {
+                sqc.CommandText = "INSERT INTO Songpools (Name) SELECT :Name WHERE NOT EXISTS (SELECT id FROM Songpools WHERE Name=:Name)";
+                sqc.Parameters.Add(new SQLiteParameter("Name", name));
+                int affected = sqc.ExecuteNonQuery();
+                return (affected > 0);
+            }
         }
 
-        /// <summary>
-        /// Returns the id for the given song. Inserts it before when not found.
-        /// </summary>
-        /// <param name="song"></param>
-        /// <returns></returns>
-        public int[] ManageSongs(Song song)
-        {
-            return ManageSongs(song, true);
-        }
-        /// <summary>
-        /// Returns the id for the given song. Optionally inserts it before when not found.
-        /// </summary>
-        /// <param name="song"></param>
-        /// <param name="insert"></param>
-        /// <returns></returns>
-        public int[] ManageSongs(Song song, bool insert)
-        {
-            return ManageSongs(new Song[1] { song }, insert);
-        }
+        #endregion
+
+        #region Insert and Check
         /// <summary>
         /// Returns the ids for the given songs. Inserts them before when not found.
         /// </summary>
@@ -212,10 +229,10 @@ namespace ThePlayer
         public void PutSongsInPool(IEnumerable<Song> songs, int pool_id, bool allow_duplicates)
         {
             var ids = from s in songs
-                      where s.id != null
+                      where s.id != 0
                       select s.id;
             var unknownsongs = from s in songs
-                               where s.id == null
+                               where s.id == 0
                                select s;
             int[] nowknownids = ManageSongs(unknownsongs, false);
             int[] idstouse = new int[ids.Count() + nowknownids.Count()];
@@ -270,150 +287,130 @@ namespace ThePlayer
         /// <returns></returns>
         public int InsertAlbum(CAlbum album)
         {
-            SQLiteCommand sqc = new SQLiteCommand(connection);
-            sqc.CommandText = "INSERT INTO Albums (Name, AlbumArtists, Year) SELECT ?, ?, ? WHERE NOT EXISTS(SELECT id FROM Albums WHERE LOWER(Name)=? AND LOWER(AlbumArtists)=? AND Year=?)";
-            sqc.Parameters.Add(new SQLiteParameter(null, album.getInformation(CAlbum.META_NAME)));
-            sqc.Parameters.Add(new SQLiteParameter(null, album.getInformation(CAlbum.META_ALBUMARTISTS)));
-            sqc.Parameters.Add(new SQLiteParameter(null, album.getInformation(CAlbum.META_YEAR)));
-            sqc.Parameters.Add(new SQLiteParameter("Name", album.getInformation(CAlbum.META_NAME).ToLower()));
-            sqc.Parameters.Add(new SQLiteParameter("AlbumArtists", album.getInformation(CAlbum.META_ALBUMARTISTS).ToLower()));
-            sqc.Parameters.Add(new SQLiteParameter("Year", album.getInformation(CAlbum.META_YEAR)));
-
-            int i = sqc.ExecuteNonQuery();
-            if (i > 0)
+            using (SQLiteCommand sqc = new SQLiteCommand(connection))
             {
-                object id = new SQLiteCommand("SELECT last_insert_rowid()", connection).ExecuteScalar();
-                return Convert.ToInt32(id);
-            }
-            else
-            {
-                sqc.CommandText = "SELECT id FROM Albums WHERE LOWER(Name)=? AND LOWER(AlbumArtists)=? AND Year=?";
-                sqc.Parameters.Clear();
+                sqc.CommandText = "INSERT INTO Albums (Name, AlbumArtists, Year) SELECT ?, ?, ? WHERE NOT EXISTS(SELECT id FROM Albums WHERE LOWER(Name)=? AND LOWER(AlbumArtists)=? AND Year=?)";
+                sqc.Parameters.Add(new SQLiteParameter(null, album.getInformation(CAlbum.META_NAME)));
+                sqc.Parameters.Add(new SQLiteParameter(null, album.getInformation(CAlbum.META_ALBUMARTISTS)));
+                sqc.Parameters.Add(new SQLiteParameter(null, album.getInformation(CAlbum.META_YEAR)));
                 sqc.Parameters.Add(new SQLiteParameter("Name", album.getInformation(CAlbum.META_NAME).ToLower()));
                 sqc.Parameters.Add(new SQLiteParameter("AlbumArtists", album.getInformation(CAlbum.META_ALBUMARTISTS).ToLower()));
                 sqc.Parameters.Add(new SQLiteParameter("Year", album.getInformation(CAlbum.META_YEAR)));
-                return Convert.ToInt32(sqc.ExecuteScalar());
+
+                int i = sqc.ExecuteNonQuery();
+                if (i > 0)
+                {
+                    object id = new SQLiteCommand("SELECT last_insert_rowid()", connection).ExecuteScalar();
+                    return Convert.ToInt32(id);
+                }
+                else
+                {
+                    sqc.CommandText = "SELECT id FROM Albums WHERE LOWER(Name)=? AND LOWER(AlbumArtists)=? AND Year=?";
+                    sqc.Parameters.Clear();
+                    sqc.Parameters.Add(new SQLiteParameter("Name", album.getInformation(CAlbum.META_NAME).ToLower()));
+                    sqc.Parameters.Add(new SQLiteParameter("AlbumArtists", album.getInformation(CAlbum.META_ALBUMARTISTS).ToLower()));
+                    sqc.Parameters.Add(new SQLiteParameter("Year", album.getInformation(CAlbum.META_YEAR)));
+                    return Convert.ToInt32(sqc.ExecuteScalar());
+                }
             }
         }
 
         /// <summary>
         /// Add all songs that don't already exist there to another pool.
         /// </summary>
-        /// <param name="source"></param>
-        /// <param name="destination"></param>
-        public void AddPoolToPool(string source, string destination)
+        /// <param name="source">Source pool name</param>
+        /// <param name="destination">Destination pool name</param>
+        public void PoolMergeInPool(string source, string destination)
         {
-            AddPoolToPool(ManageSongpool(source), ManageSongpool(destination));
-        }
-        /// <summary>
-        /// Add all songs that don't already exist there to another pool.
-        /// </summary>
-        /// <param name="source_id"></param>
-        /// <param name="dest_id"></param>
-        public void AddPoolToPool(int source_id, int dest_id)
-        {
-            SQLiteTransaction trans = connection.BeginTransaction();
-            SQLiteCommand c = new SQLiteCommand(connection);
-            c.CommandText = "INSERT INTO Poolsongs (idSong, idPool) SELECT idSong, :idDest FROM Poolsongs WHERE idPool=:idSource AND NOT idSong IN (SELECT idSong FROM Poolsongs WHERE idPool=:idDest)";
-            c.Parameters.Add(new SQLiteParameter("idDest", dest_id));
-            c.Parameters.Add(new SQLiteParameter("idSource", source_id));
-            c.ExecuteNonQuery();
-            trans.Commit();
+            using (SQLiteCommand sqc = new SQLiteCommand(connection))
+            {
+                using (SQLiteTransaction sqt = connection.BeginTransaction())
+                {
+                    sqc.CommandText = "INSERT INTO Poolsongs (idSong, idPool) SELECT idSong, :idDest FROM Poolsongs WHERE idPool=:idSource AND NOT idSong IN (SELECT idSong FROM Poolsongs WHERE idPool=:idDest)";
+                    sqc.Parameters.Add(new SQLiteParameter("idDest", ID_Songpool(destination)));
+                    sqc.Parameters.Add(new SQLiteParameter("idSource", ID_Songpool(source)));
+                    sqc.ExecuteNonQuery();
+                    sqt.Commit();
+                }
+            }
         }
         #endregion
 
         #region Load data
-        public List<string> LoadSongpools()
+        /// <summary>
+        /// Get a list of all existing songpools.
+        /// </summary>
+        /// <returns>name list</returns>
+        public List<string> PoolList()
         {
             List<string> result = new List<string>();
-            SQLiteCommand sqc = new SQLiteCommand(connection);
-            sqc.CommandText = "SELECT Name FROM Songpools";
-            SQLiteDataReader sqr = sqc.ExecuteReader();
-            while (sqr.Read())
-                result.Add(sqr.GetString(0));
+            using (SQLiteCommand sqc = new SQLiteCommand(connection))
+            {
+                sqc.CommandText = "SELECT Name FROM Songpools";
+                using (SQLiteDataReader sqr = sqc.ExecuteReader())
+                {
+                    while (sqr.Read())
+                        result.Add(sqr.GetString(0));
+                }
+            }
             return result;
         }
 
+
         public List<Song> LoadSongs(string poolname)
         {
-            return LoadSongs(poolname, new List<string>());
+            return LoadSongs(poolname, new string[0], new Filter[0]);
         }
-        public List<Song> LoadSongs(int id_pool)
-        {
-            return LoadSongs(id_pool, new List<string>());
-        }
-        public List<Song> LoadSongs(string poolname, IEnumerable<string> order_by)
-        {
-            return LoadSongs(ManageSongpool(poolname), order_by);
-        }
-        public List<Song> LoadSongs(int id_pool, IEnumerable<string> order_by)
-        {
-            return LoadSongs(id_pool, order_by, new List<MP_Filter>(), false);
-        }
-        public List<Song> LoadSongs(string poolname, IEnumerable<string> order_by, IEnumerable<MP_Filter> filters)
-        {
-            return LoadSongs(ManageSongpool(poolname), order_by, filters, false);
-        }
-        public List<Song> LoadSongs(int id_pool, IEnumerable<string> order_by, IEnumerable<MP_Filter> filters, bool case_sensitive)
+        public List<Song> LoadSongs(string poolname, IEnumerable<string> order_by, IEnumerable<Filter> filters)
         {
             List<Song> result = new List<Song>();
-            SQLiteCommand sqc = new SQLiteCommand(connection);
-
-            // Process the filters to WHEREs
-            List<string> wheres = new List<string>();
-            foreach (MP_Filter f in filters)
+            using (SQLiteCommand sqc = new SQLiteCommand(connection))
             {
-                if (case_sensitive)
-                {
-                    wheres.Add(((f.Not_Flag) ? "NOT " : "") + f.Key + f.Comparetype + "?");
-                    sqc.Parameters.Add(new SQLiteParameter(f.Key, f.Value));
-                }
-                else
+                // Process the filters to WHEREs
+                List<string> wheres = new List<string>();
+                foreach (Filter f in filters)
                 {
                     wheres.Add(((f.Not_Flag) ? "NOT " : "") + "LOWER(" + f.Key + ")" + f.Comparetype + "?");
                     sqc.Parameters.Add(new SQLiteParameter(f.Key, f.Value.ToLower()));
                 }
-                break;
-            }
 
-            sqc.Parameters.Add(new SQLiteParameter("idPool", id_pool));
+                //sqc.Parameters.Add(new SQLiteParameter("idPool", 4));
 
-            sqc.CommandText = "SELECT Songs.id AS SID, Songs.Artists, Songs.Title, Songs.Genre, Songs.TrackNr, Songs.Copyright, Songs.Comment, Songs.Composer, Songs.Conductor, Songs.AmazonID, Songs.Lyrics, Songs.BPM, Songs.Version, Songs.playCount, Songs.skipCount, Songs.rating, Albums.Name AS Album, Albums.AlbumArtists, Albums.Year, Poolsongs.id FROM Poolsongs INNER JOIN Songs ON Poolsongs.idSong=Songs.id INNER JOIN Albums ON Albums.id=Songs.idAlbum WHERE Poolsongs.idPool=?" + String.Join(" AND ", wheres);
-            if (order_by.Count() > 0) sqc.CommandText += " ORDER BY " + String.Join(", ", order_by);
+                sqc.CommandText = "SELECT Songs.id AS SID, Songs.Artists, Songs.Title, Songs.Genre, Songs.TrackNr, Songs.Copyright, Songs.Comment, Songs.Composer, Songs.Conductor, Songs.AmazonID, Songs.Lyrics, Songs.BPM, Songs.Version, Songs.playCount, Songs.skipCount, Songs.rating, Albums.Name AS Album, Albums.AlbumArtists, Albums.Year, Poolsongs.id FROM Poolsongs INNER JOIN Songs ON Poolsongs.idSong=Songs.id INNER JOIN Albums ON Albums.id=Songs.idAlbum WHERE Poolsongs.idPool=?" + String.Join(" AND ", wheres);
+                if (order_by.Count() > 0) sqc.CommandText += " ORDER BY " + String.Join(", ", order_by);
 
-            // Process the result: Create song objects
-            SQLiteDataReader sqr = sqc.ExecuteReader();
-            while (sqr.Read())
-            {
-                Song tempsong = new Song();
-                for (int i = 0; i < sqr.FieldCount; i++)
+                // Process the result: Create song objects
+                SQLiteDataReader sqr = sqc.ExecuteReader();
+                while (sqr.Read())
                 {
-                    if (sqr.GetName(i) == "SID")
-                        tempsong.id = sqr.GetInt32(i);
-                    else
-                        tempsong.setInformation(sqr.GetName(i), sqr.GetValue(i).ToString());
+                    Song tempsong = new Song();
+                    for (int i = 0; i < sqr.FieldCount; i++)
+                    {
+                        if (sqr.GetName(i) == "SID")
+                            tempsong.id = sqr.GetInt32(i);
+                        else
+                            tempsong.setInformation(sqr.GetName(i), sqr.GetValue(i).ToString());
+                    }
+                    result.Add(tempsong);
                 }
-                result.Add(tempsong);
+                return result;
             }
-            return result;
         }
 
         public string GetFileForSong(Song song)
         {
             //TODO: Don't simply take all audiofiles. The user might not want that.
-            List<Song> templist = new List<Song>();
-            templist.Add(song);
-            int meta_id = ManageSongs(templist, false)[0];
-            SQLiteCommand c = new SQLiteCommand(connection);
-            c.CommandText = "SELECT Path FROM Audiofiles WHERE idMeta=?";
-            SQLiteParameter p1 = new SQLiteParameter();
-            p1.Value = meta_id;
-            c.Parameters.Add(p1);
-            object result = c.ExecuteScalar();
-            if (result == null)
-                return null;
-            else
-                return (string)result;
+            int meta_id = ManageSongs(new Song[1] { song }, false)[0];
+            using (SQLiteCommand sqc = new SQLiteCommand(connection))
+            {
+                sqc.CommandText = "SELECT Path FROM Audiofiles WHERE idMeta=:idMeta";
+                sqc.Parameters.Add(new SQLiteParameter("idMeta", meta_id));
+                object result = sqc.ExecuteScalar();
+                if (result == null)
+                    return null;
+                else
+                    return (string)result;
+            }
         }
         #endregion
 
@@ -448,30 +445,22 @@ namespace ThePlayer
         }
         #endregion
 
-        #region DB functions
-        public void CloseDB()
-        {
-            connection.Close();
-        }
 
-        public void ClearDB()
+        #region Get IDs
+        /// <summary>
+        /// Simply get a songpool's id by the name.
+        /// </summary>
+        /// <param name="name">Name of the songpool.</param>
+        /// <returns>Database index</returns>
+        public int ID_Songpool(string name)
         {
-            SQLiteCommand c = new SQLiteCommand(connection);
-            c.CommandText = "DELETE FROM Songs";
-            c.ExecuteNonQuery();
-            c.CommandText = "DELETE FROM Songpools";
-            c.ExecuteNonQuery();
-            c.CommandText = "DELETE FROM Poolsongs";
-            c.ExecuteNonQuery();
-            c.CommandText = "DELETE FROM Audiofiles";
-            c.ExecuteNonQuery();
-            c.CommandText = "DELETE FROM Albums";
-            c.ExecuteNonQuery();
-            c.CommandText = "VACUUM";
-            c.ExecuteNonQuery();
+            using (SQLiteCommand sqc = new SQLiteCommand(connection))
+            {
+                sqc.CommandText = "SELECT id FROM Songpools WHERE Name=:Name";
+                sqc.Parameters.Add(new SQLiteParameter("Name", name));
+                return Convert.ToInt32(sqc.ExecuteScalar());
+            }
         }
         #endregion
-
-
     }
 }
