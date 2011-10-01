@@ -11,10 +11,10 @@ namespace SharpShuffle
         public static Database.Database ActiveDB;
 
         [STAThread]
-        static void main()
+        public static void Main()
         {
             ActiveDB = new Database.Database(Environment.SpecialFolder.ApplicationData + "\\" + AppName + "\\database.db");
-
+            
             App app = new App();
             app.MainWindow = new MainWindow();
             app.MainWindow.Show();
