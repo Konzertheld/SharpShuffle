@@ -11,7 +11,7 @@ namespace SharpShuffle.Database
         Artists,
         BPM,
         Comment,
-        Composers,
+        Composer,
         Conductor,
         Copyright,
         Version,
@@ -51,7 +51,7 @@ namespace SharpShuffle.Database
             }
             set
             {
-                this[(SONGMETA)Enum.Parse(typeof(SONGMETA), index)] = index;
+                this[(SONGMETA)Enum.Parse(typeof(SONGMETA), index)] = value;
             }
         }
         public object this[SONGMETA index]
@@ -66,7 +66,7 @@ namespace SharpShuffle.Database
                         return this.BPM;
                     case SONGMETA.Comment:
                         return this.Comment;
-                    case SONGMETA.Composers:
+                    case SONGMETA.Composer:
                         return this.Composers;
                     case SONGMETA.Conductor:
                         return this.Conductor;
@@ -94,51 +94,55 @@ namespace SharpShuffle.Database
             }
             set
             {
-                switch (index)
+                try
                 {
-                    case SONGMETA.Artists:
-                        this.Artists = (string)value;
-                        break;
-                    case SONGMETA.BPM:
-                        this.BPM = (uint)value;
-                        break;
-                    case SONGMETA.Comment:
-                        this.Comment = (string)value;
-                        break;
-                    case SONGMETA.Composers:
-                        this.Composers = (string)value;
-                        break;
-                    case SONGMETA.Conductor:
-                        this.Conductor = (string)value;
-                        break;
-                    case SONGMETA.Copyright:
-                        this.Copyright = (string)value;
-                        break;
-                    case SONGMETA.Genres:
-                        this.Genres = (string)value;
-                        break;
-                    case SONGMETA.Lyrics:
-                        this.Lyrics = (string)value;
-                        break;
-                    case SONGMETA.Title:
-                        this.Title = (string)value;
-                        break;
-                    case SONGMETA.TrackNr:
-                        this.TrackNr = (uint)value;
-                        break;
-                    case SONGMETA.Version:
-                        this.Version = (string)value;
-                        break;
-                    case SONGMETA.PlayCount:
-                        this.PlayCount = (uint)value;
-                        break;
-                    case SONGMETA.SkipCount:
-                        this.SkipCount = (uint)value;
-                        break;
-                    case SONGMETA.Rating:
-                        this.Rating = (short)value;
-                        break;
+                    switch (index)
+                    {
+                        case SONGMETA.Artists:
+                            this.Artists = (string)value;
+                            break;
+                        case SONGMETA.BPM:
+                            this.BPM = (uint)value;
+                            break;
+                        case SONGMETA.Comment:
+                            this.Comment = (string)value;
+                            break;
+                        case SONGMETA.Composer:
+                            this.Composers = (string)value;
+                            break;
+                        case SONGMETA.Conductor:
+                            this.Conductor = (string)value;
+                            break;
+                        case SONGMETA.Copyright:
+                            this.Copyright = (string)value;
+                            break;
+                        case SONGMETA.Genres:
+                            this.Genres = (string)value;
+                            break;
+                        case SONGMETA.Lyrics:
+                            this.Lyrics = (string)value;
+                            break;
+                        case SONGMETA.Title:
+                            this.Title = (string)value;
+                            break;
+                        case SONGMETA.TrackNr:
+                            this.TrackNr = (uint)value;
+                            break;
+                        case SONGMETA.Version:
+                            this.Version = (string)value;
+                            break;
+                        case SONGMETA.PlayCount:
+                            this.PlayCount = (uint)value;
+                            break;
+                        case SONGMETA.SkipCount:
+                            this.SkipCount = (uint)value;
+                            break;
+                        case SONGMETA.Rating:
+                            this.Rating = (short)value;
+                            break;
+                    }
                 }
+                catch (InvalidCastException E) { }
             }
         }
 
