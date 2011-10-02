@@ -118,6 +118,7 @@ namespace SharpShuffle.Database
                     Lyrics = (string)value;
                 else if (index == SONGMETA.BPM)
                     BPM = Convert.ToUInt16(value);
+                else throw new IndexOutOfRangeException("Wow! This should never be possible! The Songmeta enum does not contain such a value. Don't pass shit to the song indexer.");
             }
         }
 

@@ -57,6 +57,8 @@ namespace SharpShuffle.Database
                     this.TrackCount = Convert.ToUInt16(value);
                 else if (index == ALBUMMETA.Year)
                     this.Year = Convert.ToUInt16(value);
+                else
+                    throw new IndexOutOfRangeException("Wow! This should never be possible! The Albummeta enum does not contain such a value. Don't pass shit to the album indexer.");
             }
         }
     }
