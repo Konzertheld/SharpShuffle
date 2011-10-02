@@ -10,26 +10,13 @@ namespace SharpShuffle.Database
     {
         private SQLiteConnection connection;
 
-        public Dictionary<int, Songpool> LoadedSongpools;
-
         public Database(string path)
         {
             connection = new SQLiteConnection("Data Source=" + path);
             connection.Open();
-
-            LoadedSongpools = new Dictionary<int, Songpool>();
         }
 
         #region Database methods
-        /// <summary>
-        /// Helper method for database models.
-        /// </summary>
-        /// <returns>Returns an SQLiteCommand based on the active database connection.</returns>
-        public SQLiteCommand GetCommand()
-        {
-            return new SQLiteCommand(connection);
-        }
-
         public void CloseDB()
         {
             connection.Close();
@@ -37,19 +24,21 @@ namespace SharpShuffle.Database
 
         public void ClearDB()
         {
-            SQLiteCommand c = new SQLiteCommand(connection);
-            c.CommandText = "DELETE FROM Songs";
-            c.ExecuteNonQuery();
-            c.CommandText = "DELETE FROM Songpools";
-            c.ExecuteNonQuery();
-            c.CommandText = "DELETE FROM Poolsongs";
-            c.ExecuteNonQuery();
-            c.CommandText = "DELETE FROM Audiofiles";
-            c.ExecuteNonQuery();
-            c.CommandText = "DELETE FROM Albums";
-            c.ExecuteNonQuery();
-            c.CommandText = "VACUUM";
-            c.ExecuteNonQuery();
+            using (SQLiteCommand c = new SQLiteCommand(connection))
+            {
+                c.CommandText = "DELETE FROM Songs";
+                c.ExecuteNonQuery();
+                c.CommandText = "DELETE FROM Songpools";
+                c.ExecuteNonQuery();
+                c.CommandText = "DELETE FROM Poolsongs";
+                c.ExecuteNonQuery();
+                c.CommandText = "DELETE FROM Audiofiles";
+                c.ExecuteNonQuery();
+                c.CommandText = "DELETE FROM Albums";
+                c.ExecuteNonQuery();
+                c.CommandText = "VACUUM";
+                c.ExecuteNonQuery();
+            }
         }
         #endregion
 
