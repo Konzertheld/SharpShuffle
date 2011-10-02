@@ -13,7 +13,7 @@ namespace SharpShuffle
         [STAThread]
         public static void Main()
         {
-            ActiveDB = new Database.Database(Environment.SpecialFolder.ApplicationData + "\\" + AppName + "\\database.db");
+            ActiveDB = new Database.Database(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + AppName + "\\database.db");
             
             App app = new App();
             app.MainWindow = new MainWindow();
