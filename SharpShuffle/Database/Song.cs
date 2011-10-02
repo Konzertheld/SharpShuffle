@@ -86,7 +86,7 @@ namespace SharpShuffle.Database
                     return this.SkipCount;
                 else if (index == SONGMETA.Rating)
                     return this.Rating;
-                else return "";
+                else throw new IndexOutOfRangeException("Wow! This should never be possible! The Songmeta enum does not contain such a value. Don't pass shit to the song indexer.");
             }
             set
             {
