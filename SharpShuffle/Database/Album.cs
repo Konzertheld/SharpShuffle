@@ -5,18 +5,20 @@ using System.Text;
 
 namespace SharpShuffle.Database
 {
-    public class CAlbum : Dataset
+    public enum ALBUMMETA
     {
-        public const string META_YEAR = "Year";
-        public const string META_ALBUMARTISTS = "AlbumArtists";
-        public const string META_NAME = "Name";
+        AlbumArtists,
+        Name,
+        TrackCount,
+        Year
+    }
 
-        public CAlbum()
-        {
-            _allTheInformation = new Dictionary<string, string>();
-            _allTheInformation[META_NAME] = "";
-            _allTheInformation[META_ALBUMARTISTS] = "";
-            _allTheInformation[META_YEAR] = "";
-        }
+    public class CAlbum
+    {
+        public uint id { get; set; }
+        public uint Year { get; set; }
+        public string AlbumArtists { get; set; }
+        public string Name { get; set; }
+        public uint TrackCount { get; set; }
     }
 }

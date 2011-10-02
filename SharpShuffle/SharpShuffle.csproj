@@ -70,7 +70,6 @@
     <Compile Include="Database\Database.cs" />
     <Compile Include="Database\Album.cs" />
     <Compile Include="Database\Audiofile.cs" />
-    <Compile Include="Database\Dataset.cs" />
     <Compile Include="Database\Filter.cs" />
     <Compile Include="Database\Song.cs" />
     <Compile Include="Database\Songpool.cs" />

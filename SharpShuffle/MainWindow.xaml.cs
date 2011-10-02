@@ -30,13 +30,7 @@ namespace SharpShuffle
             songs.Add(new Database.Song());
             songs.Add(new Database.Song());
             songs.Add(new Database.Song());
-            songs[0].setInformation(Database.Song.META_ALBUM, "sdkjsdkfjk");
-            songs[0].setInformation(Database.Song.META_BPM, "123");
-            songs[1].setInformation(Database.Song.META_COMMENT, "uiokhjkhjk");
-            songs[1].setInformation(Database.Song.META_TITLE, "wetet");
-            songs[2].setInformation(Database.Song.META_ALBUM, "sdkjsdkfjk");
-            songs[2].setInformation(Database.Song.META_TRACK, "3");
-            songs[2].setInformation(Database.Song.META_VERSION, "sdfdfcvcv");
+            
             lsvView.Items.Add(songs[0]);
         }
     }

@@ -5,52 +5,158 @@ using System.Text;
 
 namespace SharpShuffle.Database
 {
-    public class Song : Dataset
+    public enum SONGMETA
     {
-        #region Constants
-        public string[] FIELDS = new string[15] { "Artists", "Title", "Genres", "Version", "TrackNr", "Copyright", "Conductor", "Composer", "Comment", "Lyrics", "BPM", "PlayCount", "SkipCount", "Rating", "idAlbum" };
-        public string[] JOINEDFIELDS = new string[15] { "Artists", "Title", "Genres", "Version", "TrackNr", "Copyright", "Conductor", "Composer", "Comment", "Lyrics", "BPM", "PlayCount", "SkipCount", "Rating", "idAlbum" };
+        id,
+        Artists,
+        BPM,
+        Comment,
+        Composers,
+        Conductor,
+        Copyright,
+        Version,
+        Genres,
+        Lyrics,
+        Title,
+        TrackNr,
+        PlayCount,
+        SkipCount,
+        Rating
+    }
 
-        public const string META_ALBUM = "Album";
-        public const string META_AMAZON = "AmazonID";
-        public const string META_ARTISTS = "Artists";
-        public const string META_COMMENT = "Comment";
-        public const string META_COMPOSERS = "Composers";
-        public const string META_CONDUCTOR = "Conductor";
-        public const string META_COPYRIGHT = "Copyright";
-        public const string META_BPM = "BPM";
-        public const string META_VERSION = "Version";
-        public const string META_GENRES = "Genres";
-        public const string META_LYRICS = "Lyrics";
-        public const string META_TITLE = "Title";
-        public const string META_TRACK = "TrackNr";
-        public const string META_PLAYCOUNT = "playCount";
-        public const string META_SKIPCOUNT = "skipCount";
-        public const string META_RATING = "rating";
-        #endregion
-
+    public class Song
+    {
+        public uint id { get; set; }
+        public string Artists { get; set; }
+        public string Comment { get; set; }
+        public string Composers { get; set; }
+        public string Conductor { get; set; }
+        public string Copyright { get; set; }
+        public uint BPM { get; set; }
+        public string Version { get; set; }
+        public string Genres { get; set; }
+        public string Lyrics { get; set; }
+        public string Title { get; set; }
+        public uint TrackNr { get; set; }
+        public uint PlayCount { get; set; }
+        public uint SkipCount { get; set; }
+        public short Rating { get; set; }
         public CAlbum Album;
 
-        public Song()
+        public object this[string index]
         {
-            _allTheInformation = new Dictionary<string, string>(20);
-            //TODO: Test if this is necessary for the DB query
-            _allTheInformation[META_ALBUM] = "";
-            _allTheInformation[META_AMAZON] = "";
-            _allTheInformation[META_ARTISTS] = "";
-            _allTheInformation[META_COMMENT] = "";
-            _allTheInformation[META_COMPOSERS] = "";
-            _allTheInformation[META_CONDUCTOR] = "";
-            _allTheInformation[META_COPYRIGHT] = "";
-            _allTheInformation[META_BPM] = "";
-            _allTheInformation[META_VERSION] = "Version";
-            _allTheInformation[META_GENRES] = "";
-            _allTheInformation[META_LYRICS] = "";
-            _allTheInformation[META_TITLE] = "";
-            _allTheInformation[META_TRACK] = "";
-            _allTheInformation[META_PLAYCOUNT] = "0";
-            _allTheInformation[META_SKIPCOUNT] = "0";
-            _allTheInformation[META_RATING] = "-1";
+            get
+            {
+                return this[(SONGMETA)Enum.Parse(typeof(SONGMETA), index)];
+            }
+            set
+            {
+                this[(SONGMETA)Enum.Parse(typeof(SONGMETA), index)] = index;
+            }
+        }
+        public object this[SONGMETA index]
+        {
+            get
+            {
+                switch (index)
+                {
+                    case SONGMETA.Artists:
+                        return this.Artists;
+                    case SONGMETA.BPM:
+                        return this.BPM;
+                    case SONGMETA.Comment:
+                        return this.Comment;
+                    case SONGMETA.Composers:
+                        return this.Composers;
+                    case SONGMETA.Conductor:
+                        return this.Conductor;
+                    case SONGMETA.Copyright:
+                        return this.Copyright;
+                    case SONGMETA.Genres:
+                        return this.Genres;
+                    case SONGMETA.Lyrics:
+                        return this.Lyrics;
+                    case SONGMETA.Title:
+                        return this.Title;
+                    case SONGMETA.TrackNr:
+                        return this.TrackNr;
+                    case SONGMETA.Version:
+                        return this.Version;
+                    case SONGMETA.PlayCount:
+                        return this.PlayCount;
+                    case SONGMETA.SkipCount:
+                        return this.SkipCount;
+                    case SONGMETA.Rating:
+                        return this.Rating;
+                    default:
+                        throw new IndexOutOfRangeException("Wow! This should never be possible! The Songmeta enum does not contain such a value. Don't pass shit to the song indexer.");
+                }
+            }
+            set
+            {
+                switch (index)
+                {
+                    case SONGMETA.Artists:
+                        this.Artists = (string)value;
+                        break;
+                    case SONGMETA.BPM:
+                        this.BPM = (uint)value;
+                        break;
+                    case SONGMETA.Comment:
+                        this.Comment = (string)value;
+                        break;
+                    case SONGMETA.Composers:
+                        this.Composers = (string)value;
+                        break;
+                    case SONGMETA.Conductor:
+                        this.Conductor = (string)value;
+                        break;
+                    case SONGMETA.Copyright:
+                        this.Copyright = (string)value;
+                        break;
+                    case SONGMETA.Genres:
+                        this.Genres = (string)value;
+                        break;
+                    case SONGMETA.Lyrics:
+                        this.Lyrics = (string)value;
+                        break;
+                    case SONGMETA.Title:
+                        this.Title = (string)value;
+                        break;
+                    case SONGMETA.TrackNr:
+                        this.TrackNr = (uint)value;
+                        break;
+                    case SONGMETA.Version:
+                        this.Version = (string)value;
+                        break;
+                    case SONGMETA.PlayCount:
+                        this.PlayCount = (uint)value;
+                        break;
+                    case SONGMETA.SkipCount:
+                        this.SkipCount = (uint)value;
+                        break;
+                    case SONGMETA.Rating:
+                        this.Rating = (short)value;
+                        break;
+                }
+            }
+        }
+
+        public override string ToString()
+        {
+            //TODO: Let the user choose
+            return string.Format("{0} - {1}", this.Artists, this.Title);
+        }
+
+        /// <summary>
+        /// Songs are equal, when they have equal artists, titles and versions (where version is a user defined field).
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public override bool Equals(object obj)
+        {
+            Song song = (Song)obj;
+            return (this.Artists == song.Artists && this.Title == song.Title && this.Version == song.Version);
         }
 
         /// <summary>
@@ -58,70 +164,51 @@ namespace SharpShuffle.Database
         /// </summary>
         public static Song ReadTags(string Filepath)
         {
-            Song Track = new Song();
+            Song song = new Song();
             TagLib.File f = TagLib.File.Create(Filepath);
 
-            if (f.Tag.AmazonId != null && f.Tag.AmazonId != "") Track.setInformation(Song.META_AMAZON, f.Tag.AmazonId);
-            if (f.Tag.JoinedPerformers != null && f.Tag.JoinedPerformers != "") Track.setInformation(Song.META_ARTISTS, f.Tag.JoinedPerformers);
-            if (f.Tag.BeatsPerMinute != 0) Track.setInformation(Song.META_BPM, f.Tag.BeatsPerMinute.ToString());
-            if (f.Tag.Comment != null && f.Tag.Comment != "") Track.setInformation(Song.META_COMMENT, f.Tag.Comment);
-            if (f.Tag.JoinedComposers != null && f.Tag.JoinedComposers != "") Track.setInformation(Song.META_COMPOSERS, f.Tag.JoinedComposers);
-            if (f.Tag.Conductor != null && f.Tag.Conductor != "") Track.setInformation(Song.META_CONDUCTOR, f.Tag.Conductor);
-            if (f.Tag.Copyright != null && f.Tag.Copyright != "") Track.setInformation(Song.META_COPYRIGHT, f.Tag.Copyright);
-            if (f.Tag.JoinedGenres != null && f.Tag.JoinedGenres != "") Track.setInformation(Song.META_GENRES, f.Tag.JoinedGenres);
-            if (f.Tag.Lyrics != null && f.Tag.Lyrics != "") Track.setInformation(Song.META_LYRICS, f.Tag.Lyrics);
-            if (f.Tag.Title != null && f.Tag.Title != "") Track.setInformation(Song.META_TITLE, f.Tag.Title);
-            if (f.Tag.Track != 0) Track.setInformation(Song.META_TRACK, f.Tag.Track.ToString());
+            if (f.Tag.JoinedPerformers != null && f.Tag.JoinedPerformers != "") song.Artists = f.Tag.JoinedPerformers;
+            if (f.Tag.BeatsPerMinute != 0) song.BPM = f.Tag.BeatsPerMinute;
+            if (f.Tag.Comment != null && f.Tag.Comment != "") song.Comment = f.Tag.Comment;
+            if (f.Tag.JoinedComposers != null && f.Tag.JoinedComposers != "") song.Composers = f.Tag.JoinedComposers;
+            if (f.Tag.Conductor != null && f.Tag.Conductor != "") song.Conductor = f.Tag.Conductor;
+            if (f.Tag.Copyright != null && f.Tag.Copyright != "") song.Copyright = f.Tag.Copyright;
+            if (f.Tag.JoinedGenres != null && f.Tag.JoinedGenres != "") song.Genres = f.Tag.JoinedGenres;
+            if (f.Tag.Lyrics != null && f.Tag.Lyrics != "") song.Lyrics = f.Tag.Lyrics;
+            if (f.Tag.Title != null && f.Tag.Title != "") song.Title = f.Tag.Title;
+            if (f.Tag.Track != 0) song.TrackNr = f.Tag.Track;
 
             // Get rid of album information when album is not set
             if (f.Tag.Album != null && f.Tag.Album != "")
             {
-                Track.Album = new CAlbum();
-                Track.Album.setInformation(CAlbum.META_NAME, f.Tag.Album);
-                if (f.Tag.Year != 0) Track.Album.setInformation(CAlbum.META_YEAR, f.Tag.Year.ToString());
-                if (f.Tag.JoinedAlbumArtists != null && f.Tag.JoinedAlbumArtists != "") Track.Album.setInformation(CAlbum.META_ALBUMARTISTS, f.Tag.JoinedAlbumArtists);
+                song.Album = new CAlbum();
+                song.Album.Name = f.Tag.Album;
+                if (f.Tag.Year != 0) song.Album.Year = f.Tag.Year;
+                if (f.Tag.JoinedAlbumArtists != null && f.Tag.JoinedAlbumArtists != "") song.Album.AlbumArtists = f.Tag.JoinedAlbumArtists;
+                if (f.Tag.TrackCount != 0) song.Album.TrackCount = f.Tag.TrackCount;
+
             }
 
-            return Track;
-        }
-
-        public override string ToString()
-        {
-            //TODO: Let the user choose
-            return string.Format("{0} - {1}", this.getInformation(META_ARTISTS), this.getInformation(META_TITLE));
-        }
-
-        public override bool Equals(object obj)
-        {
-            Song song = (Song)obj;
-            //TODO: When does a song match a song?
-            try
-            {
-                return (_allTheInformation[META_ARTISTS] == song._allTheInformation[META_ARTISTS] && _allTheInformation[META_TITLE] == song._allTheInformation[META_TITLE]);
-            }
-            catch (KeyNotFoundException E)
-            {
-                return false;
-            }
+            return song;
         }
     }
 
     public class SongComparer : IComparer<Song>
     {
-        private List<string> _orderby;
+        private List<SONGMETA> _orderby;
         private bool _ignorecase;
 
         public SongComparer()
         {
-            _orderby = new List<string>();
-            _orderby.Add(Song.META_ARTISTS);
+            _orderby = new List<SONGMETA>();
+            _orderby.Add(SONGMETA.Artists);
         }
-        public SongComparer(IEnumerable<string> orderby)
+        public SongComparer(IEnumerable<SONGMETA> orderby)
         {
-            _orderby = new List<string>(orderby);
+            _orderby = new List<SONGMETA>(orderby);
             _ignorecase = true;
         }
-        public SongComparer(IEnumerable<string> orderby, bool ignorecase)
+        public SongComparer(IEnumerable<SONGMETA> orderby, bool ignorecase)
             : this(orderby)
         {
             this._ignorecase = ignorecase;
@@ -130,9 +217,9 @@ namespace SharpShuffle.Database
 
         public int Compare(Song a, Song b)
         {
-            foreach (string identifier in _orderby)
+            foreach (SONGMETA identifier in _orderby)
             {
-                int test = String.Compare(a.getInformation(identifier), b.getInformation(identifier), _ignorecase);
+                int test = String.Compare((string)a[identifier], (string)b[identifier], _ignorecase);
                 if (test != 0)
                     return test;
             }
