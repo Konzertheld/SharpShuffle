@@ -32,12 +32,12 @@ namespace SharpShuffle.Database
         public string Composers { get; set; }
         public string Conductor { get; set; }
         public string Copyright { get; set; }
-        public uint BPM { get; set; }
+        public ushort BPM { get; set; }
         public string Version { get; set; }
         public string Genres { get; set; }
         public string Lyrics { get; set; }
         public string Title { get; set; }
-        public uint TrackNr { get; set; }
+        public ushort TrackNr { get; set; }
         public uint PlayCount { get; set; }
         public uint SkipCount { get; set; }
         public short Rating { get; set; }
@@ -58,91 +58,66 @@ namespace SharpShuffle.Database
         {
             get
             {
-                switch (index)
-                {
-                    case SONGMETA.Artists:
-                        return this.Artists;
-                    case SONGMETA.BPM:
-                        return this.BPM;
-                    case SONGMETA.Comment:
-                        return this.Comment;
-                    case SONGMETA.Composer:
-                        return this.Composers;
-                    case SONGMETA.Conductor:
-                        return this.Conductor;
-                    case SONGMETA.Copyright:
-                        return this.Copyright;
-                    case SONGMETA.Genres:
-                        return this.Genres;
-                    case SONGMETA.Lyrics:
-                        return this.Lyrics;
-                    case SONGMETA.Title:
-                        return this.Title;
-                    case SONGMETA.TrackNr:
-                        return this.TrackNr;
-                    case SONGMETA.Version:
-                        return this.Version;
-                    case SONGMETA.PlayCount:
-                        return this.PlayCount;
-                    case SONGMETA.SkipCount:
-                        return this.SkipCount;
-                    case SONGMETA.Rating:
-                        return this.Rating;
-                    default:
-                        throw new IndexOutOfRangeException("Wow! This should never be possible! The Songmeta enum does not contain such a value. Don't pass shit to the song indexer.");
-                }
+                if (index == SONGMETA.Artists)
+                    return this.Artists;
+                else if (index == SONGMETA.BPM)
+                    return this.BPM;
+                else if (index == SONGMETA.Comment)
+                    return this.Comment;
+                else if (index == SONGMETA.Composer)
+                    return this.Composers;
+                else if (index == SONGMETA.Conductor)
+                    return this.Conductor;
+                else if (index == SONGMETA.Copyright)
+                    return this.Copyright;
+                else if (index == SONGMETA.Genres)
+                    return this.Genres;
+                else if (index == SONGMETA.Lyrics)
+                    return this.Lyrics;
+                else if (index == SONGMETA.Title)
+                    return this.Title;
+                else if (index == SONGMETA.TrackNr)
+                    return this.TrackNr;
+                else if (index == SONGMETA.Version)
+                    return this.Version;
+                else if (index == SONGMETA.PlayCount)
+                    return this.PlayCount;
+                else if (index == SONGMETA.SkipCount)
+                    return this.SkipCount;
+                else if (index == SONGMETA.Rating)
+                    return this.Rating;
+                else return "";
             }
             set
             {
-                try
-                {
-                    switch (index)
-                    {
-                        case SONGMETA.Artists:
-                            this.Artists = (string)value;
-                            break;
-                        case SONGMETA.BPM:
-                            this.BPM = (uint)value;
-                            break;
-                        case SONGMETA.Comment:
-                            this.Comment = (string)value;
-                            break;
-                        case SONGMETA.Composer:
-                            this.Composers = (string)value;
-                            break;
-                        case SONGMETA.Conductor:
-                            this.Conductor = (string)value;
-                            break;
-                        case SONGMETA.Copyright:
-                            this.Copyright = (string)value;
-                            break;
-                        case SONGMETA.Genres:
-                            this.Genres = (string)value;
-                            break;
-                        case SONGMETA.Lyrics:
-                            this.Lyrics = (string)value;
-                            break;
-                        case SONGMETA.Title:
-                            this.Title = (string)value;
-                            break;
-                        case SONGMETA.TrackNr:
-                            this.TrackNr = (uint)value;
-                            break;
-                        case SONGMETA.Version:
-                            this.Version = (string)value;
-                            break;
-                        case SONGMETA.PlayCount:
-                            this.PlayCount = (uint)value;
-                            break;
-                        case SONGMETA.SkipCount:
-                            this.SkipCount = (uint)value;
-                            break;
-                        case SONGMETA.Rating:
-                            this.Rating = (short)value;
-                            break;
-                    }
-                }
-                catch (InvalidCastException E) { }
+                if (index == SONGMETA.Artists)
+                    Artists = (string)value;
+                else if (index == SONGMETA.Title)
+                    Title = (string)value;
+                else if (index == SONGMETA.TrackNr)
+                    TrackNr = Convert.ToUInt16(value);
+                else if (index == SONGMETA.Version)
+                    Version = (string)value;
+                else if (index == SONGMETA.PlayCount)
+                    PlayCount = Convert.ToUInt32(value);
+                else if (index == SONGMETA.SkipCount)
+                    SkipCount = Convert.ToUInt32(value);
+                else if (index == SONGMETA.Rating)
+                    Rating = Convert.ToInt16(value);
+                else if (index == SONGMETA.Genres)
+                    Genres = (string)value;
+                else if (index == SONGMETA.Comment)
+                    Comment = (string)value;
+                else if (index == SONGMETA.Composer)
+                    Composers = (string)value;
+                else if (index == SONGMETA.Copyright)
+                    Copyright = (string)value;
+                else if (index == SONGMETA.Conductor)
+                    Conductor = (string)value;
+                else if (index == SONGMETA.Lyrics)
+                    Lyrics = (string)value;
+                else if (index == SONGMETA.BPM)
+                    BPM = Convert.ToUInt16(value);
             }
         }
 
@@ -163,6 +138,19 @@ namespace SharpShuffle.Database
             return (this.Artists == song.Artists && this.Title == song.Title && this.Version == song.Version);
         }
 
+        public override int GetHashCode()
+        {
+            unchecked // Overflow is fine, just wrap
+            {
+                int hash = 17;
+                // Suitable nullity checks etc, of course :)
+                hash = hash * 23 + Artists.GetHashCode();
+                hash = hash * 23 + Title.GetHashCode();
+                hash = hash * 23 + Version.GetHashCode();
+                return hash;
+            }
+        }
+
         /// <summary>
         /// Read the tags from a file and save them in the Song object. Useful when creating a new pool of songs.
         /// </summary>
@@ -172,7 +160,7 @@ namespace SharpShuffle.Database
             TagLib.File f = TagLib.File.Create(Filepath);
 
             if (f.Tag.JoinedPerformers != null && f.Tag.JoinedPerformers != "") song.Artists = f.Tag.JoinedPerformers;
-            if (f.Tag.BeatsPerMinute != 0) song.BPM = f.Tag.BeatsPerMinute;
+            if (f.Tag.BeatsPerMinute != 0) song.BPM = Convert.ToUInt16(f.Tag.BeatsPerMinute);
             if (f.Tag.Comment != null && f.Tag.Comment != "") song.Comment = f.Tag.Comment;
             if (f.Tag.JoinedComposers != null && f.Tag.JoinedComposers != "") song.Composers = f.Tag.JoinedComposers;
             if (f.Tag.Conductor != null && f.Tag.Conductor != "") song.Conductor = f.Tag.Conductor;
@@ -180,7 +168,7 @@ namespace SharpShuffle.Database
             if (f.Tag.JoinedGenres != null && f.Tag.JoinedGenres != "") song.Genres = f.Tag.JoinedGenres;
             if (f.Tag.Lyrics != null && f.Tag.Lyrics != "") song.Lyrics = f.Tag.Lyrics;
             if (f.Tag.Title != null && f.Tag.Title != "") song.Title = f.Tag.Title;
-            if (f.Tag.Track != 0) song.TrackNr = f.Tag.Track;
+            if (f.Tag.Track != 0) song.TrackNr = Convert.ToUInt16(f.Tag.Track);
 
             // Get rid of album information when album is not set
             if (f.Tag.Album != null && f.Tag.Album != "")
