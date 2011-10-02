@@ -124,11 +124,11 @@ namespace SharpShuffle.Database
                         id = song.id;
                     else
                     {
-                        for(ushort j=0;j<parameters.Count();j++)
+                        for (ushort j = 0; j < parameters.Count(); j++)
                         {
                             sqcInsert.Parameters[parameters[j]].Value = song[parameters[j]];
                         }
-                        
+
                         if (song.Album != null)
                             sqcInsert.Parameters["idAlbum"].Value = song.Album.id;
                         else
@@ -351,7 +351,8 @@ namespace SharpShuffle.Database
 
                 //sqc.Parameters.Add(new SQLiteParameter("idPool", 4));
 
-                sqc.CommandText = "SELECT Songs.id AS SID, Songs.Artists, Songs.Title, Songs.Genre, Songs.TrackNr, Songs.Copyright, Songs.Comment, Songs.Composer, Songs.Conductor, Songs.AmazonID, Songs.Lyrics, Songs.BPM, Songs.Version, Songs.playCount, Songs.skipCount, Songs.rating, Albums.Name AS Album, Albums.AlbumArtists, Albums.Year, Poolsongs.id FROM Poolsongs INNER JOIN Songs ON Poolsongs.idSong=Songs.id INNER JOIN Albums ON Albums.id=Songs.idAlbum WHERE Poolsongs.idPool=?" + String.Join(" AND ", wheres);
+                sqc.CommandText = "SELECT Songs.id AS SID, Songs.Artists, Songs.Title, Songs.Genres, Songs.TrackNr, Songs.Copyright, Songs.Comment, Songs.Composer, Songs.Conductor, Songs.Lyrics, Songs.BPM, Songs.Version, Songs.PlayCount, Songs.SkipCount, Songs.Rating, Albums.Name AS Album, Albums.AlbumArtists, Albums.TrackCount, Albums.Year, Poolsongs.id FROM Poolsongs INNER JOIN Songs ON Poolsongs.idSong=Songs.id INNER JOIN Albums ON Albums.id=Songs.idAlbum WHERE Poolsongs.idPool=(SELECT id FROM Songpools WHERE Songpools.Name=:Poolname)" + String.Join(" AND ", wheres);
+                sqc.Parameters.Add(new SQLiteParameter("Poolname", poolname));
                 if (order_by.Count() > 0) sqc.CommandText += " ORDER BY " + String.Join(", ", order_by);
 
                 // Process the result: Create song objects
@@ -362,10 +363,25 @@ namespace SharpShuffle.Database
                         Song tempsong = new Song();
                         for (int i = 0; i < sqr.FieldCount; i++)
                         {
-                            if (sqr.GetName(i) == "SID")
-                                tempsong.id = Convert.ToUInt32(sqr.GetInt32(i));
-                            else
-                                tempsong[sqr.GetName(i)] = sqr.GetValue(i);
+                            switch (sqr.GetName(i))
+                            {
+                                case "SID":
+                                    tempsong.id = Convert.ToUInt32(sqr.GetInt32(i));
+                                    break;
+                                case "Album":
+                                    tempsong.Album = new CAlbum();
+                                    tempsong.Album.Name = (string)sqr.GetValue(i);
+                                    break;
+                                case "AlbumArtists":
+                                case "TrackCount":
+                                case "Year":
+                                    if (tempsong.Album != null)
+                                        tempsong.Album[sqr.GetName(i)] = sqr.GetValue(i);
+                                    break;
+                                default:
+                                    tempsong[sqr.GetName(i)] = sqr.GetValue(i);
+                                    break;
+                            }
                         }
                         result.Add(tempsong);
                     }
