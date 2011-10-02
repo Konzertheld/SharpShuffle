@@ -36,41 +36,27 @@ namespace SharpShuffle.Database
         {
             get
             {
-                switch (index)
-                {
-                    case ALBUMMETA.AlbumArtists:
-                        return this.AlbumArtists;
-                    case ALBUMMETA.Name:
-                        return this.Name;
-                    case ALBUMMETA.TrackCount:
-                        return this.TrackCount;
-                    case ALBUMMETA.Year:
-                        return this.Year;
-                    default:
-                        throw new IndexOutOfRangeException("Wow! This should never be possible! The Albummeta enum does not contain such a value. Don't pass shit to the album indexer.");
-                }
+                if (index == ALBUMMETA.AlbumArtists)
+                    return this.AlbumArtists;
+                else if (index == ALBUMMETA.Name)
+                    return this.Name;
+                else if (index == ALBUMMETA.TrackCount)
+                    return this.TrackCount;
+                else if (index == ALBUMMETA.Year)
+                    return this.Year;
+                else
+                    throw new IndexOutOfRangeException("Wow! This should never be possible! The Albummeta enum does not contain such a value. Don't pass shit to the album indexer.");
             }
             set
             {
-                try
-                {
-                    switch (index)
-                    {
-                        case ALBUMMETA.AlbumArtists:
-                            this.AlbumArtists = (string)value;
-                            break;
-                        case ALBUMMETA.Name:
-                            this.Name = (string)value;
-                            break;
-                        case ALBUMMETA.TrackCount:
-                            this.TrackCount = (ushort)value;
-                            break;
-                        case ALBUMMETA.Year:
-                            this.Year = (ushort)value;
-                            break;
-                    }
-                }
-                catch (InvalidCastException E) { }
+                if (index == ALBUMMETA.AlbumArtists)
+                    this.AlbumArtists = (string)value;
+                else if (index == ALBUMMETA.Name)
+                    this.Name = (string)value;
+                else if (index == ALBUMMETA.TrackCount)
+                    this.TrackCount = Convert.ToUInt16(value);
+                else if (index == ALBUMMETA.Year)
+                    this.Year = Convert.ToUInt16(value);
             }
         }
     }
