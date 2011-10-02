@@ -351,7 +351,7 @@ namespace SharpShuffle.Database
 
                 //sqc.Parameters.Add(new SQLiteParameter("idPool", 4));
 
-                sqc.CommandText = "SELECT Songs.id AS SID, Songs.Artists, Songs.Title, Songs.Genres, Songs.TrackNr, Songs.Copyright, Songs.Comment, Songs.Composer, Songs.Conductor, Songs.Lyrics, Songs.BPM, Songs.Version, Songs.PlayCount, Songs.SkipCount, Songs.Rating, Albums.Name AS Album, Albums.AlbumArtists, Albums.TrackCount, Albums.Year, Poolsongs.id FROM Poolsongs INNER JOIN Songs ON Poolsongs.idSong=Songs.id INNER JOIN Albums ON Albums.id=Songs.idAlbum WHERE Poolsongs.idPool=(SELECT id FROM Songpools WHERE Songpools.Name=:Poolname)" + String.Join(" AND ", wheres);
+                sqc.CommandText = "SELECT Songs.id AS SID, Songs.Artists, Songs.Title, Songs.Genres, Songs.TrackNr, Songs.Copyright, Songs.Comment, Songs.Composer, Songs.Conductor, Songs.Lyrics, Songs.BPM, Songs.Version, Songs.PlayCount, Songs.SkipCount, Songs.Rating, Albums.Name AS Album, Albums.AlbumArtists, Albums.TrackCount, Albums.Year FROM Poolsongs INNER JOIN Songs ON Poolsongs.idSong=Songs.id INNER JOIN Albums ON Albums.id=Songs.idAlbum WHERE Poolsongs.idPool=(SELECT id FROM Songpools WHERE Songpools.Name=:Poolname)" + String.Join(" AND ", wheres);
                 sqc.Parameters.Add(new SQLiteParameter("Poolname", poolname));
                 if (order_by.Count() > 0) sqc.CommandText += " ORDER BY " + String.Join(", ", order_by);
 
