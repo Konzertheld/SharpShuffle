@@ -62,79 +62,51 @@ namespace SharpShuffle.Database
 
         #region Insert and Check
         /// <summary>
-        /// Returns the ids for the given songs. Inserts them before when not found.
+        /// Inserts songs into the database (only not existing). Returns the input list with ids set.
         /// </summary>
         /// <param name="songs"></param>
         /// <returns></returns>
-        public uint[] ManageSongs(IEnumerable<Song> songs)
-        {
-            return ManageSongs(songs, true);
-        }
-        /// <summary>
-        /// Returns the ids for the given songs. Optionally inserts them when not found.
-        /// </summary>
-        /// <param name="songs"></param>
-        /// <param name="insert"></param>
-        /// <returns></returns>
-        public uint[] ManageSongs(IEnumerable<Song> songs, bool insert)
+        public IEnumerable<Song> ManageSongs(IEnumerable<Song> songs)
         {
             // Alben laden bzw. anlegen
             using (SQLiteTransaction sqt = connection.BeginTransaction())
             {
-                if (insert) songs = LinkSongsWithAlbums(songs);
+                songs = LinkSongsWithAlbums(songs);
 
                 // Array anlegen für die IDs der angelegten / gefundenen Datensätze.
-                uint[] iResult = new uint[songs.Count()];
-                uint i = 0;
                 string[] parameters = Enum.GetNames(typeof(SONGMETA));
                 string[] namedparameters = new string[parameters.Count()];
 
-                SQLiteCommand sqcCheck = new SQLiteCommand(connection);
-                //TODO: 1. More and chosable criteria. 2. Do this with LoadSongs().
-                sqcCheck.CommandText = "SELECT id FROM Songs WHERE Artists=:Artists AND Title=:Title";
-                sqcCheck.Parameters.Add(new SQLiteParameter("Artists"));
-                sqcCheck.Parameters.Add(new SQLiteParameter("Title"));
-
-                SQLiteCommand sqcInsert = new SQLiteCommand(connection);
-
-                for (ushort j = 0; j < parameters.Count(); j++)
+                using (SQLiteCommand sqcInsert = new SQLiteCommand(connection))
                 {
-                    sqcInsert.Parameters.Add(new SQLiteParameter(parameters[j]));
-                    namedparameters[j] = ":" + parameters[j];
-                }
-
-                sqcInsert.CommandText = "INSERT INTO Songs (idAlbum, " + String.Join(", ", parameters) + ") SELECT :idAlbum, " + String.Join(", ", namedparameters) + " WHERE NOT EXISTS(SELECT id FROM Songs WHERE LOWER(Artists)=LOWER(:Artists) AND LOWER(Title)=LOWER(:Title) AND LOWER(Version)=LOWER(:Version))";
-
-                foreach (Song song in songs)
-                {
-                    object id = null;
-                    //TODO: Überlegen, ob es Fälle gibt, in denen ein Song eine ID hat, obwohl er nicht mit dieser ID in der Datenbank ist
-                    if (song.id != 0)
-                        id = song.id;
-                    else
+                    for (ushort j = 0; j < parameters.Count(); j++)
                     {
-                        for (ushort j = 0; j < parameters.Count(); j++)
-                        {
-                            sqcInsert.Parameters[parameters[j]].Value = song[parameters[j]];
-                        }
-
-                        if (song.Album != null)
-                            sqcInsert.Parameters["idAlbum"].Value = song.Album.id;
-                        else
-                            sqcInsert.Parameters["idAlbum"].Value = null;
-
-                        if (sqcInsert.ExecuteNonQuery() > 0)
-                            id = new SQLiteCommand("SELECT last_insert_rowid()", connection).ExecuteScalar();
-                        if (id == null)
-                            id = -1;
+                        sqcInsert.Parameters.Add(new SQLiteParameter(parameters[j]));
+                        namedparameters[j] = ":" + parameters[j];
                     }
-                    // ID eintragen (entweder von existierendem Datensatz oder von neu eingefügtem)
-                    iResult[i] = Convert.ToUInt32(id);
-                    i++;
-                }
+                    sqcInsert.CommandText = "INSERT INTO Songs (idAlbum, " + String.Join(", ", parameters) + ") SELECT :idAlbum, " + String.Join(", ", namedparameters) + " WHERE NOT EXISTS(SELECT id FROM Songs WHERE LOWER(Artists)=LOWER(:Artists) AND LOWER(Title)=LOWER(:Title) AND LOWER(Version)=LOWER(:Version))";
 
+                    foreach (Song song in songs)
+                    {
+                        if (song.id == 0)
+                        {
+                            for (ushort j = 0; j < parameters.Count(); j++)
+                            {
+                                sqcInsert.Parameters[parameters[j]].Value = song[parameters[j]];
+                            }
+
+                            if (song.Album != null)
+                                sqcInsert.Parameters["idAlbum"].Value = song.Album.id;
+                            else
+                                sqcInsert.Parameters["idAlbum"].Value = null;
+
+                            if (sqcInsert.ExecuteNonQuery() > 0)
+                                song.id = Convert.ToUInt32(new SQLiteCommand("SELECT last_insert_rowid()", connection).ExecuteScalar());
+                        }
+                    }
+                }
                 sqt.Commit();
-                return iResult;
+                return songs;
             }
         }
 
@@ -193,7 +165,7 @@ namespace SharpShuffle.Database
         }
         public void PutSongsInPool(IEnumerable<Song> songs, uint pool_id, bool allow_duplicates)
         {
-            var ids = from s in songs
+            /*var ids = from s in songs
                       where s.id != 0
                       select s.id;
             var unknownsongs = from s in songs
@@ -203,7 +175,7 @@ namespace SharpShuffle.Database
             uint[] idstouse = new uint[ids.Count() + nowknownids.Count()];
             nowknownids.CopyTo(idstouse, 0);
             ((uint[])ids).CopyTo(idstouse, nowknownids.Count());
-            PutSongsInPool(idstouse, pool_id, allow_duplicates);
+            PutSongsInPool(idstouse, pool_id, allow_duplicates);*/
         }
 
         /// <summary>
@@ -385,7 +357,7 @@ namespace SharpShuffle.Database
         public string GetFileForSong(Song song)
         {
             //TODO: Don't simply take all audiofiles. The user might not want that.
-            uint meta_id = ManageSongs(new Song[1] { song }, false)[0];
+            /*uint meta_id = ManageSongs(new Song[1] { song }, false)[0];
             using (SQLiteCommand sqc = new SQLiteCommand(connection))
             {
                 sqc.CommandText = "SELECT Path FROM Audiofiles WHERE idMeta=:idMeta";
@@ -395,7 +367,8 @@ namespace SharpShuffle.Database
                     return null;
                 else
                     return (string)result;
-            }
+            }*/
+            return null;
         }
         #endregion
 
@@ -407,7 +380,7 @@ namespace SharpShuffle.Database
         public void RemoveSongsFromPool(IEnumerable<Song> songs, int pool_id)
         {
             //TODO: Return the number of affected rows
-            uint[] remove_ids = ManageSongs(songs, false);
+            /*uint[] remove_ids = ManageSongs(songs, false);
             SQLiteTransaction sqt = connection.BeginTransaction();
             SQLiteCommand sqc = new SQLiteCommand(connection);
             sqc.CommandText = "DELETE FROM Poolsongs WHERE idSong=? AND idPool=?";
@@ -418,7 +391,7 @@ namespace SharpShuffle.Database
                 sqc.Parameters["idSong"].Value = remove_ids[i];
                 sqc.ExecuteNonQuery();
             }
-            sqt.Commit();
+            sqt.Commit();*/
         }
 
         public void ClearPool(int pool_id)
