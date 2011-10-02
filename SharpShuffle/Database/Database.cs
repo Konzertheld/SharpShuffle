@@ -363,24 +363,27 @@ namespace SharpShuffle.Database
                         Song tempsong = new Song();
                         for (int i = 0; i < sqr.FieldCount; i++)
                         {
-                            switch (sqr.GetName(i))
+                            if (!sqr.IsDBNull(i))
                             {
-                                case "SID":
-                                    tempsong.id = Convert.ToUInt32(sqr.GetInt32(i));
-                                    break;
-                                case "Album":
-                                    tempsong.Album = new CAlbum();
-                                    tempsong.Album.Name = (string)sqr.GetValue(i);
-                                    break;
-                                case "AlbumArtists":
-                                case "TrackCount":
-                                case "Year":
-                                    if (tempsong.Album != null)
-                                        tempsong.Album[sqr.GetName(i)] = sqr.GetValue(i);
-                                    break;
-                                default:
-                                    tempsong[sqr.GetName(i)] = sqr.GetValue(i);
-                                    break;
+                                switch (sqr.GetName(i))
+                                {
+                                    case "SID":
+                                        tempsong.id = Convert.ToUInt32(sqr.GetInt32(i));
+                                        break;
+                                    case "Album":
+                                        tempsong.Album = new CAlbum();
+                                        tempsong.Album.Name = (string)sqr.GetValue(i);
+                                        break;
+                                    case "AlbumArtists":
+                                    case "TrackCount":
+                                    case "Year":
+                                        if (tempsong.Album != null)
+                                            tempsong.Album[sqr.GetName(i)] = sqr.GetValue(i);
+                                        break;
+                                    default:
+                                        tempsong[sqr.GetName(i)] = sqr.GetValue(i);
+                                        break;
+                                }
                             }
                         }
                         result.Add(tempsong);
