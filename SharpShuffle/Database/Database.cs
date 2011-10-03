@@ -385,6 +385,30 @@ namespace SharpShuffle
         }
 
         /// <summary>
+        /// Get all the song ids for a list of songs. Useful for songs that were skipped inserting because they already existed.
+        /// </summary>
+        /// <param name="songs"></param>
+        /// <returns></returns>
+        public IEnumerable<Song> LoadSongIDs(IEnumerable<Song> songs)
+        {
+            using (SQLiteTransaction sqt = connection.BeginTransaction())
+            {
+                using (SQLiteCommand sqc = new SQLiteCommand(connection))
+                {
+                    sqc.CommandText = "SELECT id FROM Songs WHERE Artists=:Artists AND Title=:Title AND Version=:Version";
+                    foreach (Song song in songs)
+                    {
+                        sqc.Parameters.Add(new SQLiteParameter("Artists", song.Artists));
+                        sqc.Parameters.Add(new SQLiteParameter("Title", song.Title));
+                        sqc.Parameters.Add(new SQLiteParameter("Version", song.Version));
+                        song.id = Convert.ToUInt32(sqc.ExecuteScalar());
+                    }
+                }
+            }
+            return songs;
+        }
+
+        /// <summary>
         /// Get the id for a single song.
         /// </summary>
         /// <param name="song"></param>
@@ -396,7 +420,7 @@ namespace SharpShuffle
                 sqc.CommandText = "SELECT id FROM Songs WHERE Artists=:Artists AND Title=:Title AND Version=:Version";
                 sqc.Parameters.Add(new SQLiteParameter("Artists", song.Artists));
                 sqc.Parameters.Add(new SQLiteParameter("Title", song.Title));
-                sqc.Parameters.Add(new SQLiteParameter("Version", song.Title));
+                sqc.Parameters.Add(new SQLiteParameter("Version", song.Version));
                 return Convert.ToUInt32(sqc.ExecuteScalar());
             }
         }
