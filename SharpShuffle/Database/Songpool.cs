@@ -6,7 +6,7 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Data.SQLite;
 
-namespace SharpShuffle.Database
+namespace SharpShuffle
 {
     public class Songpool
     {

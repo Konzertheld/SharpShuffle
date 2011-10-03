@@ -73,6 +73,7 @@
     <Compile Include="Database\Filter.cs" />
     <Compile Include="Database\Song.cs" />
     <Compile Include="Database\Songpool.cs" />
+    <Compile Include="Filemanagement.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="XML.cs" />
     <Page Include="MainWindow.xaml">

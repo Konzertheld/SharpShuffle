@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Data.SQLite;
 
-namespace SharpShuffle.Database
+namespace SharpShuffle
 {
     class Database
     {

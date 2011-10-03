@@ -56,6 +56,7 @@ namespace ThePlayer
             List<string> files = new List<string>(read.Keys);
             int[] ids = null;
             ids = Program.ActiveDatabase.ManageSongs(songs, savemeta);
+            songs.FindAll(delegate(Song test) { return (test.id == 0); });
 
             if (linkfiles)
             {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SharpShuffle.Database
+namespace SharpShuffle
 {
     /// <summary>
     /// Filter class to create filter lists for filtering with AND.

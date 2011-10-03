@@ -26,10 +26,10 @@ namespace SharpShuffle
 
         private void Grid_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            List<Database.Song> songs = new List<Database.Song>();
-            songs.Add(new Database.Song());
-            songs.Add(new Database.Song());
-            songs.Add(new Database.Song());
+            List<Song> songs = new List<Song>();
+            songs.Add(new Song());
+            songs.Add(new Song());
+            songs.Add(new Song());
             
             lsvView.Items.Add(songs[0]);
         }

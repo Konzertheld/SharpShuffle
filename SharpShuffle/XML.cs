@@ -15,13 +15,13 @@ namespace SharpShuffle
         {
             XmlReaderSettings xrs = new XmlReaderSettings();
             xrs.DtdProcessing = DtdProcessing.Parse;
-            List<Database.Song> songs = new List<Database.Song>();
+            List<Song> songs = new List<Song>();
             List<string> audiofiles = new List<string>();
             using (XmlReader xr = XmlReader.Create(path, xrs))
             {
                 bool inmeta = false;
                 ushort level = 0; // for skipping all the shit at the beginning
-                Database.Song tempsong = new Database.Song();
+                Song tempsong = new Song();
 
 
                 while (xr.Read())
@@ -50,11 +50,11 @@ namespace SharpShuffle
                                             tempsong.Artists = value;
                                             break;
                                         case "Album Artist":
-                                            if (tempsong.Album == null) tempsong.Album = new Database.CAlbum();
+                                            if (tempsong.Album == null) tempsong.Album = new CAlbum();
                                             tempsong.Album.AlbumArtists = value;
                                             break;
                                         case "Album":
-                                            if (tempsong.Album == null) tempsong.Album = new Database.CAlbum();
+                                            if (tempsong.Album == null) tempsong.Album = new CAlbum();
                                             tempsong.Album.Name = value;
                                             break;
                                         case "BPM":
@@ -76,11 +76,11 @@ namespace SharpShuffle
                                             tempsong.TrackNr = ushort.Parse(value);
                                             break;
                                         case "Track Count":
-                                            if (tempsong.Album == null) tempsong.Album = new Database.CAlbum();
+                                            if (tempsong.Album == null) tempsong.Album = new CAlbum();
                                             tempsong.Album.TrackCount = uint.Parse(value);
                                             break;
                                         case "Year":
-                                            if (tempsong.Album == null) tempsong.Album = new Database.CAlbum();
+                                            if (tempsong.Album == null) tempsong.Album = new CAlbum();
                                             tempsong.Album.Year = uint.Parse(value);
                                             break;
                                         case "Location":
@@ -119,7 +119,7 @@ namespace SharpShuffle
                                 else
                                 {
                                     inmeta = true;
-                                    tempsong = new Database.Song();
+                                    tempsong = new Song();
                                 }
                                 break;
                             case "plist":
