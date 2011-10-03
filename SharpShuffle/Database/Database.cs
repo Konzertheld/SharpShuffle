@@ -126,19 +126,45 @@ namespace SharpShuffle.Database
         /// </summary>
         /// <param name="song_ids"></param>
         /// <param name="pool_id"></param>
-        public void PutSongsInPool(uint[] song_ids, uint pool_id)
+        public void PutSongsInPool(uint[] song_ids, string poolname)
         {
             using (SQLiteTransaction sqt = connection.BeginTransaction())
             {
                 using (SQLiteCommand sqcInsert = new SQLiteCommand(connection))
                 {
-                    sqcInsert.CommandText = "INSERT INTO Poolsongs (idSong, idPool) VALUES (:idSong, :idTarget) WHERE NOT :idSong IN (SELECT idSong FROM Poolsongs WHERE idPool=:idTarget)";
+                    sqcInsert.CommandText = "INSERT INTO Poolsongs (idSong, idPool) VALUES (:idSong, (SELECT id FROM Songpools WHERE Name=:Pool)) WHERE NOT :idSong IN (SELECT idSong FROM Poolsongs WHERE idPool=:idTarget)";
                     sqcInsert.Parameters.Add(new SQLiteParameter("idSong"));
-                    sqcInsert.Parameters.Add(new SQLiteParameter("idTarget", pool_id));
+                    sqcInsert.Parameters.Add(new SQLiteParameter("Pool", poolname));
                     for (int i = 0; i < song_ids.Count(); i++)
                     {
                         sqcInsert.Parameters["idSong"].Value = song_ids[i];
                         sqcInsert.ExecuteNonQuery();
+                    }
+                }
+                sqt.Commit();
+            }
+        }
+        /// <summary>
+        /// Put songs in a pool. Songs that already are in the pool are skipped. Songs that don't have their id set are also skipped.
+        /// </summary>
+        /// <param name="songs"></param>
+        /// <param name="pool_id"></param>
+        public void PutSongsInPool(IEnumerable<Song> songs, string poolname)
+        {
+            using (SQLiteTransaction sqt = connection.BeginTransaction())
+            {
+                using (SQLiteCommand sqcInsert = new SQLiteCommand(connection))
+                {
+                    sqcInsert.CommandText = "INSERT INTO Poolsongs (idSong, idPool) VALUES (:idSong, (SELECT id FROM Songpools WHERE Name=:Pool)) WHERE NOT :idSong IN (SELECT idSong FROM Poolsongs WHERE idPool=:idTarget)";
+                    sqcInsert.Parameters.Add(new SQLiteParameter("idSong"));
+                    sqcInsert.Parameters.Add(new SQLiteParameter("Pool", poolname));
+                    foreach (Song song in songs)
+                    {
+                        if (song.id != 0)
+                        {
+                            sqcInsert.Parameters["idSong"].Value = song.id;
+                            sqcInsert.ExecuteNonQuery();
+                        }
                     }
                 }
                 sqt.Commit();
