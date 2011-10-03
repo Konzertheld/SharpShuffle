@@ -148,8 +148,10 @@ namespace SharpShuffle
         /// <returns></returns>
         public override bool Equals(object obj)
         {
-            Song song = (Song)obj;
-            return (this.Artists == song.Artists && this.Title == song.Title && this.Version == song.Version);
+            Song song = obj as Song;
+            if (song != null)
+                return (this.Artists == song.Artists && this.Title == song.Title && this.Version == song.Version);
+            else return false;
         }
 
         public override int GetHashCode()
