@@ -136,10 +136,7 @@ namespace SharpShuffle
                     }
                 }
             }
-            long vorher = DateTime.Now.Ticks;
             Startup.ActiveDB.InsertSongs(songs);
-            long nachher = DateTime.Now.Ticks;
-            long diffms = (nachher - vorher) / 10000;
         }
     }
 }
