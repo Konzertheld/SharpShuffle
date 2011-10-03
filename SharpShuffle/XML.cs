@@ -22,7 +22,7 @@ namespace SharpShuffle
                 bool inmeta = false;
                 ushort level = 0; // for skipping all the shit at the beginning
                 Database.Song tempsong = new Database.Song();
-                
+
 
                 while (xr.Read())
                 {
@@ -137,6 +137,9 @@ namespace SharpShuffle
                 }
             }
             Startup.ActiveDB.InsertSongs(songs);
+            string importpool = "iTunes Import " + DateTime.Now.ToString();
+            Startup.ActiveDB.CreateSongpool(importpool);
+            Startup.ActiveDB.PutSongsInPool(songs, importpool);
         }
     }
 }
