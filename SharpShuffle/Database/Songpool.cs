@@ -11,47 +11,47 @@ namespace SharpShuffle
     public class Songpool
     {
         public string Name { get; private set; }
-        public int id;
-        /*
 
+        public Songpool (string name)
+        {
+            Startup.ActiveDB.CreateSongpool(name);
+        }
 
-        #region Add and remove songs
         /// <summary>
-        /// Add song, avoid duplicates.
+        /// Add a single song to this pool. If the song already exists, this will do nothing.
         /// </summary>
         /// <param name="song"></param>
         /// <returns></returns>
         public void AddSongs(Song song)
         {
-            AddSongs(song, false);
+            AddSongs(new Song[1] { song });
         }
         /// <summary>
-        /// Add song, duplicates optional.
+        /// Add a list of songs to this pool. Songs that already are in the pool will be skipped without notification.
         /// </summary>
-        /// <param name="song"></param>
-        /// <param name="allow_duplicates">Set to true if you want to insert the song even if it already exists in this pool.</param>
-        /// <returns></returns>
-        public void AddSongs(Song song, bool allow_duplicates)
-        {
-            AddSongs(new Song[1] { song }, allow_duplicates);
-        }
+        /// <param name="songs"></param>
         public void AddSongs(IEnumerable<Song> songs)
         {
-            AddSongs(songs, false);
+            Startup.ActiveDB.PutSongsInPool(songs, this.Name);
         }
-        public void AddSongs(IEnumerable<Song> songs, bool allow_duplicates)
-        {
-            Program.ActiveDatabase.PutSongsInPool(Program.ActiveDatabase.ManageSongs(songs, false), this.id, allow_duplicates);
-        }
+        /// <summary>
+        /// Add all the songs from another pool to this pool. Songs that already are in the pool will be skipped without notification.
+        /// </summary>
+        /// <param name="poolname"></param>
         public void AddSongs(string poolname)
         {
-            AddSongs(poolname, false);
-        }
-        public void AddSongs(string poolname, bool allow_duplicates)
-        {
-            Program.ActiveDatabase.AddPoolToPool(Program.ActiveDatabase.ManageSongpool(poolname), id);
+            Startup.ActiveDB.PoolMergeInPool(poolname, this.Name);
         }
 
+        /// <summary>
+        /// Will delete all songs from the pool without further notification.
+        /// </summary>
+        public void Clear()
+        {
+            Startup.ActiveDB.ClearPool(this.Name);
+        }
+
+        /*
         //TODO: Remove songs by id
         /// <summary>
         /// Removes all instances of a song in this pool using the same criteria as for avoiding duplicates when adding.
