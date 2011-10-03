@@ -21,7 +21,8 @@ namespace SharpShuffle.Database
         TrackNr,
         PlayCount,
         SkipCount,
-        Rating
+        Rating,
+        Length
     }
 
     public class Song
@@ -41,6 +42,7 @@ namespace SharpShuffle.Database
         public uint PlayCount { get; set; }
         public uint SkipCount { get; set; }
         public short Rating { get; set; }
+        public uint Length { get; set; }
         public CAlbum Album;
 
         public object this[string index]
@@ -86,6 +88,8 @@ namespace SharpShuffle.Database
                     return this.SkipCount;
                 else if (index == SONGMETA.Rating)
                     return this.Rating;
+                else if (index == SONGMETA.Length)
+                    return this.Length;
                 else throw new IndexOutOfRangeException("Wow! This should never be possible! The Songmeta enum does not contain such a value. Don't pass shit to the song indexer.");
             }
             set
@@ -118,6 +122,8 @@ namespace SharpShuffle.Database
                     Lyrics = (string)value;
                 else if (index == SONGMETA.BPM)
                     BPM = Convert.ToUInt16(value);
+                else if (index == SONGMETA.Length)
+                    Length = Convert.ToUInt32(value);
                 else throw new IndexOutOfRangeException("Wow! This should never be possible! The Songmeta enum does not contain such a value. Don't pass shit to the song indexer.");
             }
         }
@@ -144,7 +150,6 @@ namespace SharpShuffle.Database
             unchecked // Overflow is fine, just wrap
             {
                 int hash = 17;
-                // Suitable nullity checks etc, of course :)
                 hash = hash * 23 + Artists.GetHashCode();
                 hash = hash * 23 + Title.GetHashCode();
                 hash = hash * 23 + Version.GetHashCode();
