@@ -172,41 +172,27 @@ namespace SharpShuffle
         }
 
         /// <summary>
-        /// Insert audiofiles into the database. Make sure idMeta is set to avoid putting strange stuff into your database. If the given path is existing, it is updated with the given idMeta.
+        /// Insert audiofiles into the database. Make sure the song's id is set to avoid putting strange stuff into your database. If the given path is existing, it is updated with the given song.
         /// </summary>
-        /// <param name="files"></param>
-        public void ManageAudiofiles(IEnumerable<Audiofile> files)
+        /// <param name="scannedfiles">A dictionary containing the read meta associated with the paths.</param>
+        public void ManageAudiofiles(Dictionary<string, Song> scannedfiles)
         {
-            SQLiteTransaction sqt = connection.BeginTransaction();
-            SQLiteCommand sqcCheck = new SQLiteCommand(connection);
-            sqcCheck.CommandText = "SELECT id FROM audiofiles WHERE Path=?";
-            sqcCheck.Parameters.Add(new SQLiteParameter("Path"));
-            SQLiteCommand sqcInsert = new SQLiteCommand(connection);
-            sqcInsert.CommandText = "INSERT INTO audiofiles (Path, idMeta) VALUES (?, ?)";
-            sqcInsert.Parameters.Add(new SQLiteParameter("Path"));
-            sqcInsert.Parameters.Add(new SQLiteParameter("idMeta"));
-            SQLiteCommand sqcUpdate = new SQLiteCommand(connection);
-            sqcUpdate.CommandText = "UPDATE audiofiles SET idMeta=? WHERE Path=?";
-            sqcUpdate.Parameters.Add(new SQLiteParameter("idMeta"));
-            sqcUpdate.Parameters.Add(new SQLiteParameter("Path"));
-            foreach (Audiofile file in files)
+            using (SQLiteTransaction sqt = connection.BeginTransaction())
             {
-                sqcCheck.Parameters["Path"].Value = file.Path;
-                if (sqcCheck.ExecuteScalar() == null)
+                using (SQLiteCommand sqc = new SQLiteCommand(connection))
                 {
-                    sqcInsert.Parameters["Path"].Value = file.Path;
-                    sqcInsert.Parameters["idMeta"].Value = file.idMeta;
-                    sqcInsert.ExecuteNonQuery();
+                    sqc.CommandText = "INSERT OR IGNORE INTO Audiofiles (Path, idMeta) VALUES (:Path, :idMeta); UPDATE Audiofiles SET idMeta=:idMeta WHERE Path=:Path";
+                    sqc.Parameters.Add(new SQLiteParameter("Path"));
+                    sqc.Parameters.Add(new SQLiteParameter("idMeta"));
+                    foreach (string path in scannedfiles.Keys)
+                    {
+                        sqc.Parameters["Path"].Value = path;
+                        sqc.Parameters["idMeta"].Value = scannedfiles[path].id;
+                        sqc.ExecuteNonQuery();
+                    }
                 }
-                else
-                {
-                    sqcUpdate.Parameters["idMeta"].Value = file.idMeta;
-                    sqcUpdate.Parameters["Path"].Value = file.Path;
-                    sqcUpdate.ExecuteNonQuery();
-                }
-
+                sqt.Commit();
             }
-            sqt.Commit();
         }
 
         /// <summary>
@@ -395,7 +381,7 @@ namespace SharpShuffle
             {
                 using (SQLiteCommand sqc = new SQLiteCommand(connection))
                 {
-                    sqc.CommandText = "SELECT id FROM Songs WHERE Artists=:Artists AND Title=:Title AND Version=:Version";
+                    sqc.CommandText = "SELECT id FROM Songs WHERE LOWER(Artists)=LOWER(:Artists) AND LOWER(Title)=LOWER(:Title) AND LOWER(Version)=LOWER(:Version)";
                     foreach (Song song in songs)
                     {
                         sqc.Parameters.Add(new SQLiteParameter("Artists", song.Artists));
