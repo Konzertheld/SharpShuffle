@@ -7,7 +7,6 @@ namespace SharpShuffle.Database
 {
     public enum SONGMETA
     {
-        id,
         Artists,
         BPM,
         Comment,
@@ -44,6 +43,14 @@ namespace SharpShuffle.Database
         public short Rating { get; set; }
         public uint Length { get; set; }
         public CAlbum Album;
+
+        public Song()
+        {
+            // Initialize the identifying fields to avoid comparison problems with null
+            Artists = "";
+            Title = "";
+            Version = "";
+        }
 
         public object this[string index]
         {
