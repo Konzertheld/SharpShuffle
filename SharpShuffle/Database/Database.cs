@@ -455,12 +455,14 @@ namespace SharpShuffle
             sqt.Commit();*/
         }
 
-        public void ClearPool(int pool_id)
+        public void ClearPool(string poolname)
         {
-            SQLiteCommand sqc = new SQLiteCommand(connection);
-            sqc.CommandText = "DELETE FROM Poolsongs WHERE idPool=?";
-            sqc.Parameters.Add(new SQLiteParameter("idPool", pool_id));
-            sqc.ExecuteNonQuery();
+            using (SQLiteCommand sqc = new SQLiteCommand(connection))
+            {
+                sqc.CommandText = "DELETE FROM Poolsongs WHERE idPool=(SELECT id FROM Songpools WHERE Name=:Name)";
+                sqc.Parameters.Add(new SQLiteParameter("Name", poolname));
+                sqc.ExecuteNonQuery();
+            }
         }
         #endregion
 
