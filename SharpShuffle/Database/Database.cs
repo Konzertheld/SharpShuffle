@@ -36,6 +36,8 @@ namespace SharpShuffle.Database
                 c.ExecuteNonQuery();
                 c.CommandText = "DELETE FROM Albums";
                 c.ExecuteNonQuery();
+                c.CommandText = "DELETE FROM sqlite_sequence WHERE name='Songs' OR name='Songpools' OR name='Poolsongs' OR name='Audiofiles' OR name='Albums'";
+                c.ExecuteNonQuery();
                 c.CommandText = "VACUUM";
                 c.ExecuteNonQuery();
             }
@@ -88,19 +90,20 @@ namespace SharpShuffle.Database
                         sqcInsert.Parameters.Add(new SQLiteParameter(parameters[j]));
                         namedparameters[j] = ":" + parameters[j];
                     }
+                    sqcInsert.Parameters.Add(new SQLiteParameter("idAlbum"));
                     sqcInsert.CommandText = "INSERT INTO Songs (idAlbum, " + String.Join(", ", parameters) + ") SELECT :idAlbum, " + String.Join(", ", namedparameters) + " WHERE NOT EXISTS(SELECT id FROM Songs WHERE LOWER(Artists)=LOWER(:Artists) AND LOWER(Title)=LOWER(:Title) AND LOWER(Version)=LOWER(:Version))";
 
                     foreach (Song song in songs)
                     {
-                        // Prepare all the parameters, execute the query and save the id.
                         if (song.id == 0)
                         {
+                            // If the id is 0, assume the song is not yet in the database. Fill all the parameters, execute the query and save the id.
                             for (ushort j = 0; j < parameters.Count(); j++)
                             {
                                 sqcInsert.Parameters[parameters[j]].Value = song[parameters[j]];
                             }
 
-                            if (song.Album != null)
+                            if (song.Album != null && song.Album.id != 0)
                                 sqcInsert.Parameters["idAlbum"].Value = song.Album.id;
                             else
                                 sqcInsert.Parameters["idAlbum"].Value = null;
@@ -108,8 +111,8 @@ namespace SharpShuffle.Database
                             if (sqcInsert.ExecuteNonQuery() > 0)
                                 song.id = Convert.ToUInt32(new SQLiteCommand("SELECT last_insert_rowid()", connection).ExecuteScalar());
 
-                            // If the song was not inserted (propably because it already existed) and we do not already have the id, get it.
-
+                            // If the id is still empty at this point, the song was not inserted because it already existed. The ID remains 0
+                            // so whatever called InsertSongs() has to check itself which were newly inserted.
                         }
                     }
                 }
@@ -188,6 +191,7 @@ namespace SharpShuffle.Database
         /// <returns></returns>
         public uint InsertAlbum(CAlbum album)
         {
+            if (album.Name == null || album.Name.Trim() == "") return 0;
             using (SQLiteCommand sqc = new SQLiteCommand(connection))
             {
                 sqc.CommandText = "INSERT INTO Albums (Name, AlbumArtists, TrackCount, Year) SELECT :Name, :AlbumArtists, :TrackCount, :Year WHERE NOT EXISTS(SELECT id FROM Albums WHERE LOWER(Name)=LOWER(:Name) AND LOWER(AlbumArtists)=LOWER(:AlbumArtists) AND TrackCount=:TrackCount AND Year=:Year)";
@@ -351,6 +355,23 @@ namespace SharpShuffle.Database
                     }
                     return result.ToArray();
                 }
+            }
+        }
+
+        /// <summary>
+        /// Get the id for a single song.
+        /// </summary>
+        /// <param name="song"></param>
+        /// <returns></returns>
+        public uint LoadSongID(Song song)
+        {
+            using (SQLiteCommand sqc = new SQLiteCommand(connection))
+            {
+                sqc.CommandText = "SELECT id FROM Songs WHERE Artists=:Artists AND Title=:Title AND Version=:Version";
+                sqc.Parameters.Add(new SQLiteParameter("Artists", song.Artists));
+                sqc.Parameters.Add(new SQLiteParameter("Title", song.Title));
+                sqc.Parameters.Add(new SQLiteParameter("Version", song.Title));
+                return Convert.ToUInt32(sqc.ExecuteScalar());
             }
         }
 
