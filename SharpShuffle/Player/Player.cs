@@ -42,7 +42,7 @@ namespace SharpShuffle
         /// <summary>
         /// Songs to play
         /// </summary>
-        private Playlist _Playlist { get; set; }
+        public Playlist Playlist { get; set; }
         /// <summary>
         /// Songs that have been played. Technically: Songs that matched the "mark the song as played" criterias.
         /// </summary>
@@ -78,10 +78,6 @@ namespace SharpShuffle
         /// Null-based index in totalHistory. Very important as this is relevant to where we are actually.
         /// </summary>
         private int historyPosition;
-        /// <summary>
-        /// The currently used playlist's index.
-        /// </summary>
-        private int playlistNumber;
         #endregion
 
         #region Events and VLC
@@ -90,7 +86,6 @@ namespace SharpShuffle
 
         public event PlayerPositionChangedHandler PositionChanged;
         public event PlaylistEndedHandler PlaylistEnded;
-        public event PlaylistChangedHandler PlaylistChanged;
         public event SongChangedHandler SongChanged;
         #endregion
 
@@ -98,7 +93,7 @@ namespace SharpShuffle
         public Player()
         {
             // Initialization (TODO: Make all the stuff configurable, of course)
-            _Playlist = new Playlist();
+            Playlist = new Playlist();
             PlayedHistory = new Playlist();
             totalHistory = new List<Song>();
             Queue = new List<Song>();
@@ -128,6 +123,7 @@ namespace SharpShuffle
         {
             //TODO: Use PositionChanged instead?!
             double pos = (double)e.NewTime / vlc.Length;
+            if(PositionChanged!=null)
             PositionChanged(pos);
             //TODO: Make this configurable
             if (pos > 0.8 && !currentSongLogged)
@@ -143,7 +139,7 @@ namespace SharpShuffle
         {
             // The song has played to end, ban it from the current playlist at least until all the songs were skipped or played
             if (playbackMode == TP_PLAYBACKMODE.Playlist)
-                _Playlist.Kick();
+                Playlist.Kick();
 
             // Don't call NextSong() here because NextSong might do nothing because playback is no longer running (the user pressed stop).
             Song s = GetNextSong();
@@ -185,19 +181,19 @@ namespace SharpShuffle
             playbackMode = TP_PLAYBACKMODE.Playlist;
 
 
-            if (_Playlist.SongsLeft())
+            if (Playlist.SongsLeft())
             {
                 // If there are any songs left to play from the playlist get a random one that matches our criteria
-                while (_Playlist.Next() != -1)
+                while (Playlist.Next() != -1)
                 {
-                    if (AllowSong(_Playlist.Current()))
+                    if (AllowSong(Playlist.Current()))
                         break;
                     else
-                        _Playlist.Kick();
+                        Playlist.Kick();
                 }
 
                 // Set the current song and if necessary raise the PlaylistEnded event.
-                CurrentSong = _Playlist.Current();
+                CurrentSong = Playlist.Current();
                 if (CurrentSong == null && PlaylistEnded != null)
                     PlaylistEnded();
 
@@ -319,18 +315,6 @@ namespace SharpShuffle
                 playbackDirection = TP_PLAYBACKDIRECTION.Backwards;
                 PlaySong(GetNextSong());
             }
-        }
-        #endregion
-
-        #region Playlist control
-        public void ClearPlaylist()
-        {
-            _Playlist.Clear();
-        }
-
-        public void AddSongToPlaylist(Song song)
-        {
-            _Playlist.Add(song);
         }
         #endregion
 
