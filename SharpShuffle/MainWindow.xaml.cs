@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Collections.ObjectModel;
 
 namespace SharpShuffle
 {
@@ -19,15 +20,21 @@ namespace SharpShuffle
     /// </summary>
     public partial class MainWindow : Window
     {
-        System.Collections.ObjectModel.ObservableCollection<Song> songs = new System.Collections.ObjectModel.ObservableCollection<Song>();
+        ObservableCollection<Song> songs = new ObservableCollection<Song>();
+        ObservableCollection<Song> playlist = new ObservableCollection<Song>();
+
+        Player player;
 
         public MainWindow()
         {
             InitializeComponent();
+            player = new Player();
+            songs = new System.Collections.ObjectModel.ObservableCollection<Song>(Startup.ActiveDB.LoadSongs("Endsortierung"));
+            playlist = new ObservableCollection<Song>(player.Playlist);
+            
 
             lsvFilterPool.ItemsSource = Startup.ActiveDB.PoolList();
-
-            songs = new System.Collections.ObjectModel.ObservableCollection<Song>(Startup.ActiveDB.LoadSongs("Endsortierung"));
+            
             lsvView.ItemsSource = songs;
             foreach (SONGMETA meta in Enum.GetValues(typeof(SONGMETA)))
             {
@@ -35,6 +42,20 @@ namespace SharpShuffle
                 ((GridView)(lsvView.View)).Columns.Last().Header = meta.ToString();
                 ((GridView)(lsvView.View)).Columns.Last().DisplayMemberBinding = new Binding(meta.ToString());
             }
+
+            lsvPlaylist.ItemsSource = playlist;
+            ((GridView)(lsvPlaylist.View)).Columns.Add(new GridViewColumn());
+            ((GridView)(lsvPlaylist.View)).Columns.Add(new GridViewColumn());
+            ((GridView)(lsvPlaylist.View)).Columns[0].DisplayMemberBinding = new Binding("Artists");
+            ((GridView)(lsvPlaylist.View)).Columns[1].DisplayMemberBinding = new Binding("Title");
+            
+        }
+
+        private void RefreshPlaylist()
+        {
+            playlist = new ObservableCollection<Song>(player.Playlist);
+            lsvPlaylist.ItemsSource = playlist;
+            lsvPlaylist.Items.Refresh();
         }
 
         private void lsvView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -55,7 +76,9 @@ namespace SharpShuffle
 
         private void lsvView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            MessageBox.Show(Startup.ActiveDB.GetFileForSong(lsvView.Items[lsvView.SelectedIndex] as Song));
+            player.Playlist.Add(lsvView.SelectedItem as Song);
+            RefreshPlaylist();
+            player.PlayPlaylist();
         }
 
         private void lsvView_KeyUp(object sender, KeyEventArgs e)
