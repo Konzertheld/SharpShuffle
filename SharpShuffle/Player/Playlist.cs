@@ -5,38 +5,27 @@ using System.Text;
 
 namespace SharpShuffle
 {
-    public class Playlist
+    public class Playlist : List<Song>
     {
-        private List<Song> total;
+        
         private List<Song> remaining;
         public int Position { get; private set; }
         public bool Randomize;
         public bool Repeat;
 
         public Playlist()
+            :base()
         {
-            total = new List<Song>();
+            
             remaining = new List<Song>();
             Position = -1;
             Randomize = true;
             Repeat = true;
         }
 
-        public Song this[int index]
+        new public void Add(Song song)
         {
-            get
-            {
-                return total[index];
-            }
-            set
-            {
-                total[index] = value;
-            }
-        }
-
-        public void Add(Song song)
-        {
-            total.Add(song);
+            base.Add(song);
             remaining.Add(song);
         }
 
@@ -53,23 +42,18 @@ namespace SharpShuffle
         /// <param name="index"></param>
         public void Remove(int index)
         {
-            total.RemoveAt(index);
-            remaining.Remove(total[index]);
+            base.RemoveAt(index);
+            remaining.Remove(this[index]);
 
         }
         /// <summary>
         /// Remove all occurences of a specific song.
         /// </summary>
         /// <param name="song"></param>
-        public void Remove(Song song)
+        new public void Remove(Song song)
         {
-            total.RemoveAll(delegate(Song needle) { return needle.Equals(song); });
+            this.RemoveAll(delegate(Song needle) { return needle.Equals(song); });
             remaining.RemoveAll(delegate(Song needle) { return needle.Equals(song); });
-        }
-
-        public int Count()
-        {
-            return total.Count();
         }
 
         public bool SongsLeft()
@@ -77,22 +61,17 @@ namespace SharpShuffle
             return remaining.Count > 0;
         }
 
-        public bool Contains(Song song)
-        {
-            return total.Contains(song);
-        }
-
         public Song Current()
         {
-            if (Position < total.Count)
+            if (Position < this.Count())
                 return this[Position];
             else
                 return null;
         }
 
-        public void Clear()
+        new public void Clear()
         {
-            total.Clear();
+            this.Clear();
             remaining.Clear();
             Position = -1;
         }
@@ -103,12 +82,11 @@ namespace SharpShuffle
         /// <param name="song"></param>
         public void Kick()
         {
-            remaining.Remove(total[Position]);
+            remaining.Remove(this[Position]);
 
             // If repeat is on, refill the remaining playlist so we can start again with all the songs.
             if (remaining.Count == 0 && Repeat)
-                remaining = total;
-
+                remaining = this;
             Next();
         }
 
@@ -125,13 +103,13 @@ namespace SharpShuffle
                     return -1;
                 do
                 {
-                    Position = new Random().Next(0, total.Count);
+                    Position = new Random().Next(0, this.Count());
                 } while (!remaining.Contains(Current()));
             }
             else
             {
                 Position++;
-                if (Position == total.Count)
+                if (Position == this.Count())
                     return -1;
             }
             return Position;
