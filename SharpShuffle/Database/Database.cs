@@ -79,12 +79,12 @@ namespace SharpShuffle
                         song.Album.id = InsertAlbum(song.Album);
                 }
 
-                // Array anlegen für die IDs der angelegten / gefundenen Datensätze.
-                string[] parameters = Enum.GetNames(typeof(SONGMETA));
-                string[] namedparameters = new string[parameters.Count()];
-
                 using (SQLiteCommand sqcInsert = new SQLiteCommand(connection))
                 {
+                    // Parameter und Query vorbereiten
+                    string[] parameters = Enum.GetNames(typeof(SONGMETA));
+                    string[] namedparameters = new string[parameters.Count()];
+
                     for (ushort j = 0; j < parameters.Count(); j++)
                     {
                         sqcInsert.Parameters.Add(new SQLiteParameter(parameters[j]));
@@ -93,6 +93,7 @@ namespace SharpShuffle
                     sqcInsert.Parameters.Add(new SQLiteParameter("idAlbum"));
                     sqcInsert.CommandText = "INSERT INTO Songs (idAlbum, " + String.Join(", ", parameters) + ") SELECT :idAlbum, " + String.Join(", ", namedparameters) + " WHERE NOT EXISTS(SELECT id FROM Songs WHERE LOWER(Artists)=LOWER(:Artists) AND LOWER(Title)=LOWER(:Title) AND LOWER(Version)=LOWER(:Version))";
 
+                    // Für jeden Song Parameter setzen und Query ausführen
                     foreach (Song song in songs)
                     {
                         if (song.id == 0)
@@ -466,6 +467,52 @@ namespace SharpShuffle
         }
         #endregion
 
+        #region Update Data
+        public IEnumerable<Song> UpdateSongs(IEnumerable<Song> songs)
+        {
+            using (SQLiteTransaction sqt = connection.BeginTransaction())
+            {
+                using (SQLiteCommand sqc = new SQLiteCommand(connection))
+                {
+                    // Alben laden bzw. anlegen
+                    foreach (Song song in songs)
+                    {
+                        if (song.Album != null && song.Album.Name != "")
+                            song.Album.id = InsertAlbum(song.Album);
+                    }
+
+                    // Parameter und Query vorbereiten
+                    string[] parameters = Enum.GetNames(typeof(SONGMETA));
+                    string[] valueparts = new string[parameters.Count()];
+
+                    for (ushort j = 0; j < parameters.Count(); j++)
+                    {
+                        sqc.Parameters.Add(new SQLiteParameter(parameters[j]));
+                        valueparts[j] = parameters[j] + "=" + ":" + parameters[j];
+                    }
+                    sqc.Parameters.Add(new SQLiteParameter("idAlbum"));
+                    sqc.CommandText = "UPDATE Songs SET idAlbum=:idAlbum, " + String.Join(", ", valueparts) + " WHERE LOWER(Artists)=LOWER(:Artists) AND LOWER(Title)=LOWER(:Title) AND LOWER(Version)=LOWER(:Version)";
+
+                    // Für jeden Song Parameter setzen und Query ausführen
+                    foreach (Song song in songs)
+                    {
+                        for (ushort j = 0; j < parameters.Count(); j++)
+                        {
+                            sqc.Parameters[parameters[j]].Value = song[parameters[j]];
+                        }
+
+                        if (song.Album != null && song.Album.id != 0)
+                            sqc.Parameters["idAlbum"].Value = song.Album.id;
+                        else
+                            sqc.Parameters["idAlbum"].Value = null;
+                        sqc.ExecuteNonQuery();
+                    }
+                }
+                sqt.Commit();
+            }
+            return songs;
+        }
+        #endregion
 
         #region Get IDs
         /// <summary>
