@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Xml;
 using System.Text;
+using System.Linq;
 
 namespace SharpShuffle
 {
     class XML
     {
         /// <summary>
-        /// Get meta and file pathes from iTunes (and Winamp-Export) XML files and store that data as songs and audiofiles in the database.
+        /// Get meta and file pathes from iTunes (and Winamp-Export) XML files and store that data as songs and audiofiles in the database. Overwrites existing songs.
         /// </summary>
         /// <param name="path">Path to your XML file.</param>
         public static void ReadITunesXML(string path)
@@ -136,10 +137,25 @@ namespace SharpShuffle
                     }
                 }
             }
+            // Insert new songs
             Startup.ActiveDB.InsertSongs(songs);
-            string importpool = "iTunes Import " + DateTime.Now.ToString();
-            Startup.ActiveDB.CreateSongpool(importpool);
-            Startup.ActiveDB.PutSongsInPool(songs, importpool);
+            // Split songs that have an id from those not having one (of course they have one, but it is not set in the song object yet)
+            var insertedsongs = from song in songs
+                                where song.id != 0
+                                select song;
+            var existingsongs = from song in songs
+                                where song.id == 0
+                                select song;
+            // Those not having an id set were existing. Update them and afterwards get the ids.
+            Startup.ActiveDB.UpdateSongs(existingsongs);
+            existingsongs = Startup.ActiveDB.LoadSongIDs(existingsongs);
+            // Merge them again
+            List<Song> result = new List<Song>(insertedsongs);
+            result.AddRange(existingsongs);
+            // Create a pool and finish
+            string strImportpool = "iTunes Import " + DateTime.Now.ToString();
+            Startup.ActiveDB.CreateSongpool(strImportpool);
+            Startup.ActiveDB.PutSongsInPool(result, strImportpool);
         }
     }
 }
