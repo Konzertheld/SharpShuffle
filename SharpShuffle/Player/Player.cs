@@ -31,6 +31,13 @@ namespace SharpShuffle
         Backwards
     }
 
+    public enum TP_PLAYBACKLOG
+    {
+        AfterBeginning,
+        AfterEnding,
+        After80Percent
+    }
+
     public delegate void PlayerPositionChangedHandler(double position);
     public delegate void PlaylistEndedHandler();
     public delegate void PlaylistChangedHandler(string[] newList);
@@ -74,6 +81,7 @@ namespace SharpShuffle
         /// </summary>
         private TP_PLAYBACKMODE playbackMode;
         private TP_PLAYBACKDIRECTION playbackDirection;
+        public TP_PLAYBACKLOG PlaybackLog { get; set; }
         /// <summary>
         /// Null-based index in totalHistory. Very important as this is relevant to where we are actually.
         /// </summary>
@@ -100,6 +108,7 @@ namespace SharpShuffle
             PlaybackState = TP_PLAYBACKSTATE.Stopped;
             playbackMode = TP_PLAYBACKMODE.Playlist;
             playbackDirection = TP_PLAYBACKDIRECTION.Forward;
+            PlaybackLog = TP_PLAYBACKLOG.After80Percent;
             historyPosition = -1;
             PlayRandom = true;
 
@@ -115,6 +124,8 @@ namespace SharpShuffle
         #region VLC Eventhandlers
         void Events_PlayerPlaying(object sender, EventArgs e)
         {
+            if (PlaybackLog == TP_PLAYBACKLOG.AfterBeginning)
+                LogCurrentSong();
             //Scrobbel.Scrobbeln(CurrentSong.getInformation(META_IDENTIFIERS.Artist), CurrentSong.getInformation(META_IDENTIFIERS.Title), (int)(vlc.Length / 1000));
         }
 
@@ -125,19 +136,16 @@ namespace SharpShuffle
             double pos = (double)e.NewTime / vlc.Length;
             if(PositionChanged!=null)
             PositionChanged(pos);
-            //TODO: Make this configurable
-            if (pos > 0.8 && !currentSongLogged)
-            {
-                //TODO: Scrobbeln nur vormerken, erst bei Next oder Stop ausführen
-                //Scrobbel.Scrobbeln(CurrentSong.getInformation(Song.META_ARTISTS), CurrentSong.getInformation(Song.META_TITLE), DateTime.Now.Subtract(new TimeSpan(1, 0, 0)), (int)(vlc.Length / 1000));
-                //PlayedHistory.AddSongs(CurrentSong, true);
-                currentSongLogged = true;
-            }
+            if (pos > 0.8 && PlaybackLog== TP_PLAYBACKLOG.After80Percent)
+                LogCurrentSong();
         }
 
         void Events_MediaEnded(object sender, EventArgs e)
         {
-            // The song has played to end, ban it from the current playlist at least until all the songs were skipped or played
+            if (PlaybackLog == TP_PLAYBACKLOG.AfterEnding)
+                LogCurrentSong();
+
+            // The song has played to end, tell the playlist to perform actions
             if (playbackMode == TP_PLAYBACKMODE.Playlist)
                 Playlist.Kick();
 
@@ -294,7 +302,9 @@ namespace SharpShuffle
         {
             if (vlc.IsPlaying)
             {
-                // Playback is running, skip to the next song
+                // Playback is running, increase the current song's skip counter and skip to the next song
+                CurrentSong.SkipCount++;
+                CurrentSong.Update();
                 PlaySong(GetNextSong());
             }
             else
@@ -319,6 +329,19 @@ namespace SharpShuffle
         #endregion
 
         #region Helper methods
+        private void LogCurrentSong()
+        {
+            if (!currentSongLogged)
+            {
+                //TODO: Scrobbeln nur vormerken, erst bei Next oder Stop ausführen
+                //Scrobbel.Scrobbeln(CurrentSong.getInformation(Song.META_ARTISTS), CurrentSong.getInformation(Song.META_TITLE), DateTime.Now.Subtract(new TimeSpan(1, 0, 0)), (int)(vlc.Length / 1000));
+                //PlayedHistory.AddSongs(CurrentSong, true);
+                CurrentSong.PlayCount++;
+                CurrentSong.Update();
+                currentSongLogged = true;
+            }
+        }
+
         /// <summary>
         /// Search all the Audiofilepools for a song.
         /// </summary>
