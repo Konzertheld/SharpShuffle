@@ -15,7 +15,7 @@
     </Window.Resources>
     <Grid Margin="8">
         <Grid.RowDefinitions>
-            <RowDefinition Height="30" />
+            <RowDefinition Height="20" />
             <RowDefinition Height="268*" />
             <RowDefinition Height="8" />
             <RowDefinition Height="378*" />
@@ -54,12 +54,19 @@
                 <GridView />
             </ListView.View>
         </ListView>
-        <ListView Grid.ColumnSpan="5" Grid.Row="3"  Name="lsvView" SelectionChanged="lsvView_SelectionChanged" MouseUp="lsvView_MouseUp" MouseDoubleClick="lsvView_MouseDoubleClick" KeyUp="lsvView_KeyUp">
-            <ListView.View>
-                <GridView></GridView>
-            </ListView.View>
-        </ListView>
-        <ProgressBar Margin="0,8,0,0" Grid.ColumnSpan="7" Grid.Row="4" Name="prgPosition" Value="40" Background="#D3E57772" Opacity="1" IsTabStop="False" BorderThickness="1" IsEnabled="False" IsIndeterminate="False" />
-        <Button Content="Button" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="1" Height="45" HorizontalAlignment="Left" Margin="245,52,0,0" Name="button1" VerticalAlignment="Top" Width="99" Click="button1_Click" />
+        <ProgressBar Margin="0,8,0,0" Grid.ColumnSpan="7" Grid.Row="4" Name="prgPosition" Value="100" Opacity="1" IsTabStop="False" BorderThickness="1" IsEnabled="False" IsIndeterminate="False" Foreground="White" FlowDirection="RightToLeft">
+            <ProgressBar.Background>
+                <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                    <GradientStop Color="#FF28DE28" Offset="0" />
+                    <GradientStop Color="Red" Offset="1" />
+                </LinearGradientBrush>
+            </ProgressBar.Background>
+        </ProgressBar>
+        <DataGrid AutoGenerateColumns="True" Grid.ColumnSpan="5" Grid.Row="3" Height="349" HorizontalAlignment="Left" Name="dgrView" VerticalAlignment="Top" Width="801" ItemsSource="{Binding}" MaxColumnWidth="400" AlternationCount="1" OpacityMask="Black" Background="White" IsReadOnly="True" IsTabStop="True" AlternatingRowBackground="#6442C742" GridLinesVisibility="None" MouseRightButtonUp="dgrView_MouseRightButtonUp" />
+        <Menu Grid.ColumnSpan="7" Height="30" HorizontalAlignment="Left" Name="MainMenu" VerticalAlignment="Top" Width="1071" Background="{x:Null}">
+            <MenuItem Header="Ansicht">
+                <MenuItem Name="menSpalten" Header="Spalten" />
+            </MenuItem>
+        </Menu>
     </Grid>
 </Window>
