@@ -26,22 +26,200 @@ namespace SharpShuffle
 
     public class Song
     {
-        public uint id { get; set; }
-        public string Artists { get; set; }
-        public string Comment { get; set; }
-        public string Composers { get; set; }
-        public string Conductor { get; set; }
-        public string Copyright { get; set; }
-        public ushort BPM { get; set; }
-        public string Version { get; set; }
-        public string Genres { get; set; }
-        public string Lyrics { get; set; }
-        public string Title { get; set; }
-        public ushort TrackNr { get; set; }
-        public uint PlayCount { get; set; }
-        public uint SkipCount { get; set; }
-        public short Rating { get; set; }
-        public uint Length { get; set; }
+        private uint _id;
+        public uint id
+        {
+            get
+            {
+                return _id;
+            }
+            set
+            {
+                _id = value;
+            }
+        }
+        private string _Artists;
+        public string Artists
+        {
+            get
+            {
+                return _Artists;
+            }
+            set
+            {
+                _Artists = value;
+            }
+        }
+        private string _Comment;
+        public string Comment
+        {
+            get
+            {
+                return _Comment;
+            }
+            set
+            {
+                _Comment = value;
+            }
+        }
+        private string _Composers;
+        public string Composers
+        {
+            get
+            {
+                return _Composers;
+            }
+            set
+            {
+                _Composers = value;
+            }
+        }
+        private string _Conductor;
+        public string Conductor
+        {
+            get
+            {
+                return _Conductor;
+            }
+            set
+            {
+                _Conductor = value;
+            }
+        }
+        private string _Copyright;
+        public string Copyright
+        {
+            get
+            {
+                return _Copyright;
+            }
+            set
+            {
+                _Copyright = value;
+            }
+        }
+        private ushort _BPM;
+        public ushort BPM
+        {
+            get
+            {
+                return _BPM;
+            }
+            set
+            {
+                _BPM = value;
+            }
+        }
+        private string _Version;
+        public string Version
+        {
+            get
+            {
+                return _Version;
+            }
+            set
+            {
+                _Version = value;
+            }
+        }
+        private string _Genres;
+        public string Genres
+        {
+            get
+            {
+                return _Genres;
+            }
+            set
+            {
+                _Genres = value;
+            }
+        }
+        private string _Lyrics;
+        public string Lyrics
+        {
+            get
+            {
+                return _Lyrics;
+            }
+            set
+            {
+                _Lyrics = value;
+            }
+        }
+        private string _Title;
+        public string Title
+        {
+            get
+            {
+                return _Title;
+            }
+            set
+            {
+                _Title = value;
+            }
+        }
+        private ushort _TrackNr;
+        public ushort TrackNr
+        {
+            get
+            {
+                return _TrackNr;
+            }
+            set
+            {
+                _TrackNr = value;
+            }
+        }
+        private uint _PlayCount;
+        public uint PlayCount
+        {
+            get
+            {
+                return _PlayCount;
+            }
+            set
+            {
+                _PlayCount = value;
+            }
+        }
+        private uint _SkipCount;
+        public uint SkipCount
+        {
+            get
+            {
+                return _SkipCount;
+            }
+            set
+            {
+                _SkipCount = value;
+            }
+        }
+        private short _Rating;
+        public short Rating
+        {
+            get
+            {
+                return _Rating;
+            }
+            set
+            {
+                _Rating = value;
+            }
+        }
+        private uint _Length;
+        public uint Length
+        {
+            get
+            {
+                return _Length;
+            }
+            set
+            {
+                _Length = value;
+            }
+        }
+
+        //TODO: Album-Attribute als Song-Attribute implementieren (in set{} dann im Album setzen)
         public CAlbum Album;
 
         public Song()
