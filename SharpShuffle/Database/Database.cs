@@ -468,6 +468,11 @@ namespace SharpShuffle
         #endregion
 
         #region Update Data
+        /// <summary>
+        /// Update song meta. Songs are identified using their artist-title-version combination.
+        /// </summary>
+        /// <param name="songs"></param>
+        /// <returns></returns>
         public IEnumerable<Song> UpdateSongs(IEnumerable<Song> songs)
         {
             using (SQLiteTransaction sqt = connection.BeginTransaction())
