@@ -135,6 +135,11 @@ namespace SharpShuffle
             }
         }
 
+        public void Update()
+        {
+            Startup.ActiveDB.UpdateSongs(new Song[1] { this });
+        }
+
         public override string ToString()
         {
             //TODO: Let the user choose
