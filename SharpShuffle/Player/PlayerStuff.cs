@@ -96,12 +96,12 @@ namespace SharpShuffle
         /// <summary>
         /// Number of items in the history that must not include the song for the song to be allowed.
         /// </summary>
-        int NoGoHistoryItems;
+        public int NoGoHistoryItems;
 
         /// <summary>
         /// Whether to include skipped songs into the NoGo or not. If set to true, a skipped song will not be played again until NoGoHistoryItems songs have been played or skipped.
         /// </summary>
-        bool TotalNoGo;
+        public bool TotalNoGo;
 
         public PlayerRandomSettings(int noGoHistoryItems, bool totalNoGo)
         {
