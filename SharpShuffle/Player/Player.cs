@@ -186,9 +186,9 @@ namespace SharpShuffle
 
             // Don't play songs that have already been played, according to randomization settings.
             if (RandomSettings.TotalNoGo)
-                result = result && !(totalHistory.Take(RandomSettings.NoGoHistoryItems).Contains(song));
+                result = result && !(totalHistory.Reverse<Song>().Take(RandomSettings.NoGoHistoryItems).Contains(song));
             else
-                result = result && !(PlayedHistory.Take(RandomSettings.NoGoHistoryItems).Contains(song));
+                result = result && !(PlayedHistory.Reverse<Song>().Take(RandomSettings.NoGoHistoryItems).Contains(song));
 
             return result;
         }
@@ -303,7 +303,7 @@ namespace SharpShuffle
             {
                 //TODO: Scrobbeln nur vormerken, erst bei Next oder Stop ausführen
                 //Scrobbel.Scrobbeln(CurrentSong.getInformation(Song.META_ARTISTS), CurrentSong.getInformation(Song.META_TITLE), DateTime.Now.Subtract(new TimeSpan(1, 0, 0)), (int)(vlc.Length / 1000));
-                //PlayedHistory.AddSongs(CurrentSong, true);
+                PlayedHistory.Add(CurrentSong);
                 CurrentSong.PlayCount++;
                 CurrentSong.Update();
                 currentSongLogged = true;
