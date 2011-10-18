@@ -1,7 +1,7 @@
 ﻿<Window x:Class="SharpShuffle.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="718" Width="1109">
+        Title="MainWindow" Height="718" Width="1109" Closed="Window_Closed">
     <Window.Resources>
         <Style x:Key="lsvFilterStyle">
             <Setter Property="Control.MinHeight" Value="120" />
@@ -62,7 +62,7 @@
                 </LinearGradientBrush>
             </ProgressBar.Background>
         </ProgressBar>
-        <DataGrid AutoGenerateColumns="True" Grid.ColumnSpan="5" Grid.Row="3" Height="349" HorizontalAlignment="Left" Name="dgrView" VerticalAlignment="Top" Width="801" ItemsSource="{Binding}" MaxColumnWidth="400" AlternationCount="1" OpacityMask="Black" Background="White" IsReadOnly="True" IsTabStop="True" AlternatingRowBackground="#6442C742" GridLinesVisibility="None" MouseRightButtonUp="dgrView_MouseRightButtonUp" />
+        <DataGrid AutoGenerateColumns="True" Grid.ColumnSpan="5" Grid.Row="3" Name="dgrView" ItemsSource="{Binding}" MaxColumnWidth="400" AlternationCount="1" OpacityMask="Black" Background="White" IsTabStop="True" AlternatingRowBackground="#6442C742" GridLinesVisibility="None" MouseDoubleClick="dgrView_MouseDoubleClick" RowEditEnding="dgrView_RowEditEnding" IsReadOnly="True" />
         <Menu Grid.ColumnSpan="7" Height="30" HorizontalAlignment="Left" Name="MainMenu" VerticalAlignment="Top" Width="1071" Background="{x:Null}">
             <MenuItem Header="Ansicht">
                 <MenuItem Name="menSpalten" Header="Spalten" />
