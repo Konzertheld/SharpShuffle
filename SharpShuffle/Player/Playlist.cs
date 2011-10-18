@@ -2,27 +2,31 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.ComponentModel;
 
 namespace SharpShuffle
 {
-    public class Playlist : List<Song>
+    public class Playlist : BindingList<Song>
     {
-        
         private List<Song> remaining;
         public int Position { get; private set; }
         public bool Randomize;
         public bool Repeat;
 
         public Playlist()
-            :base()
+            : base()
         {
-            
+
             remaining = new List<Song>();
             Position = -1;
             Randomize = true;
             Repeat = true;
         }
 
+        /// <summary>
+        /// Add a song to the playlist. Automatically adds that song to the list of remaining playable songs.
+        /// </summary>
+        /// <param name="song"></param>
         new public void Add(Song song)
         {
             base.Add(song);
@@ -52,15 +56,23 @@ namespace SharpShuffle
         /// <param name="song"></param>
         new public void Remove(Song song)
         {
-            this.RemoveAll(delegate(Song needle) { return needle.Equals(song); });
+            this.Remove(song);
             remaining.RemoveAll(delegate(Song needle) { return needle.Equals(song); });
         }
 
+        /// <summary>
+        /// Returns true if there are songs left to play (when all songs were played or skipped and repeat is off, somewhen there will be no more songs to play).
+        /// </summary>
+        /// <returns></returns>
         public bool SongsLeft()
         {
             return remaining.Count > 0;
         }
 
+        /// <summary>
+        /// Get the current song.
+        /// </summary>
+        /// <returns></returns>
         public Song Current()
         {
             if (Position < this.Count())
@@ -69,6 +81,9 @@ namespace SharpShuffle
                 return null;
         }
 
+        /// <summary>
+        /// Reset the playlist and remove all songs.
+        /// </summary>
         new public void Clear()
         {
             this.Clear();
@@ -86,14 +101,14 @@ namespace SharpShuffle
 
             // If repeat is on, refill the remaining playlist so we can start again with all the songs.
             if (remaining.Count == 0 && Repeat)
-                remaining = this;
+                remaining = new List<Song>(this);
             Next();
         }
 
         /// <summary>
         /// Set the position to the next song that has not been played yet.
         /// </summary>
-        /// <returns>Returns -1 if no songs is left.</returns>
+        /// <returns>Returns -1 if no songs is left and otherwise the new position.</returns>
         public int Next()
         {
             if (Randomize)
