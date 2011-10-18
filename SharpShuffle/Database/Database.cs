@@ -268,6 +268,20 @@ namespace SharpShuffle
             }
             return result;
         }
+        /// <summary>
+        /// Get a list of all existing songpools. Optionally exclude hidden pools.
+        /// </summary>
+        /// <param name="includeHidden"></param>
+        /// <returns></returns>
+        public List<string> PoolList(bool includeHidden)
+        {
+            List<string> result = PoolList();
+            if (!includeHidden)
+            {
+                result.RemoveAll(delegate(string needle) { return needle.Substring(0, 2) == "__"; });
+            }
+            return result;
+        }
 
         /// <summary>
         /// Load all the songs from a pool.
