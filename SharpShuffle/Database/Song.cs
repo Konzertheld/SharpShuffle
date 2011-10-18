@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.ComponentModel;
 
 namespace SharpShuffle
 {
@@ -24,8 +25,15 @@ namespace SharpShuffle
         Length
     }
 
-    public class Song
+    public class Song : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void NotifyPropertyChanged(string name)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(name));
+        }
+
         private uint _id;
         public uint id
         {
@@ -36,6 +44,7 @@ namespace SharpShuffle
             set
             {
                 _id = value;
+                this.NotifyPropertyChanged("id");
             }
         }
         private string _Artists;
@@ -48,6 +57,7 @@ namespace SharpShuffle
             set
             {
                 _Artists = value;
+                this.NotifyPropertyChanged("Artists");
             }
         }
         private string _Comment;
@@ -60,6 +70,7 @@ namespace SharpShuffle
             set
             {
                 _Comment = value;
+                this.NotifyPropertyChanged("Comment");
             }
         }
         private string _Composers;
@@ -72,6 +83,7 @@ namespace SharpShuffle
             set
             {
                 _Composers = value;
+                this.NotifyPropertyChanged("Composers");
             }
         }
         private string _Conductor;
@@ -84,6 +96,7 @@ namespace SharpShuffle
             set
             {
                 _Conductor = value;
+                this.NotifyPropertyChanged("Conductor");
             }
         }
         private string _Copyright;
@@ -96,6 +109,7 @@ namespace SharpShuffle
             set
             {
                 _Copyright = value;
+                this.NotifyPropertyChanged("Copyright");
             }
         }
         private ushort _BPM;
@@ -108,6 +122,7 @@ namespace SharpShuffle
             set
             {
                 _BPM = value;
+                this.NotifyPropertyChanged("BPM");
             }
         }
         private string _Version;
@@ -120,6 +135,7 @@ namespace SharpShuffle
             set
             {
                 _Version = value;
+                this.NotifyPropertyChanged("Version");
             }
         }
         private string _Genres;
@@ -132,6 +148,7 @@ namespace SharpShuffle
             set
             {
                 _Genres = value;
+                this.NotifyPropertyChanged("Genres");
             }
         }
         private string _Lyrics;
@@ -144,6 +161,7 @@ namespace SharpShuffle
             set
             {
                 _Lyrics = value;
+                this.NotifyPropertyChanged("Lyrics");
             }
         }
         private string _Title;
@@ -156,6 +174,7 @@ namespace SharpShuffle
             set
             {
                 _Title = value;
+                this.NotifyPropertyChanged("Title");
             }
         }
         private ushort _TrackNr;
@@ -168,6 +187,7 @@ namespace SharpShuffle
             set
             {
                 _TrackNr = value;
+                this.NotifyPropertyChanged("TrackNr");
             }
         }
         private uint _PlayCount;
@@ -180,6 +200,7 @@ namespace SharpShuffle
             set
             {
                 _PlayCount = value;
+                this.NotifyPropertyChanged("PlayCount");
             }
         }
         private uint _SkipCount;
@@ -192,6 +213,7 @@ namespace SharpShuffle
             set
             {
                 _SkipCount = value;
+                this.NotifyPropertyChanged("SkipCount");
             }
         }
         private short _Rating;
@@ -204,6 +226,7 @@ namespace SharpShuffle
             set
             {
                 _Rating = value;
+                this.NotifyPropertyChanged("Rating");
             }
         }
         private uint _Length;
@@ -216,6 +239,7 @@ namespace SharpShuffle
             set
             {
                 _Length = value;
+                this.NotifyPropertyChanged("Length");
             }
         }
 
