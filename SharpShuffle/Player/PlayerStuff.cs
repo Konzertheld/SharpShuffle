@@ -91,7 +91,7 @@ namespace SharpShuffle
     public delegate void PlaylistChangedHandler(string[] newList);
     public delegate void SongChangedHandler(Song song);
 
-    struct PlayerRandomSettings
+    public struct PlayerRandomSettings
     {
         /// <summary>
         /// Number of items in the history that must not include the song for the song to be allowed.
