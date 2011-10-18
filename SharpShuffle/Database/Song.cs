@@ -239,6 +239,7 @@ namespace SharpShuffle
             Version = "";
         }
 
+        #region Indexer
         public object this[string index]
         {
             get
@@ -321,12 +322,14 @@ namespace SharpShuffle
                 else throw new IndexOutOfRangeException("Wow! This should never be possible! The Songmeta enum does not contain such a value. Don't pass shit to the song indexer.");
             }
         }
+        #endregion
 
         public void Update()
         {
             Startup.ActiveDB.UpdateSongs(new Song[1] { this });
         }
 
+        #region Helper methods (overrides)
         public override string ToString()
         {
             //TODO: Let the user choose
@@ -357,6 +360,7 @@ namespace SharpShuffle
                 return hash;
             }
         }
+        #endregion
 
         /// <summary>
         /// Read the tags from a file and save them in the Song object. Useful when creating a new pool of songs.
