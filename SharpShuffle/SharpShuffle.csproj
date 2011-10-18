@@ -74,6 +74,7 @@
     <Compile Include="Database\Song.cs" />
     <Compile Include="Database\Songpool.cs" />
     <Compile Include="Filemanagement.cs" />
+    <Compile Include="Player\PlayerStuff.cs" />
     <Compile Include="Player\Playlist.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="XML.cs" />
