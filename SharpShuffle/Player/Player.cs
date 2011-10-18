@@ -118,6 +118,8 @@ namespace SharpShuffle
             Song s = GetNextSong();
             if (s != null)
                 PlaySong(s);
+            else if (PlaylistEnded != null)
+                PlaylistEnded();
         }
         #endregion
 
@@ -154,7 +156,7 @@ namespace SharpShuffle
             playbackMode = TP_PLAYBACKMODE.Playlist;
 
 
-            if (Playlist.SongsLeft())
+            if (Playlist.SongsLeft() && Playlist.Any(delegate(Song needle) { return AllowSong(needle); }))
             {
                 // If there are any songs left to play from the playlist get a random one that matches our criteria
                 while (Playlist.Next() != -1)
@@ -167,9 +169,6 @@ namespace SharpShuffle
 
                 // Set the current song and if necessary raise the PlaylistEnded event.
                 CurrentSong = Playlist.Current();
-                if (CurrentSong == null && PlaylistEnded != null)
-                    PlaylistEnded();
-
                 return CurrentSong;
             }
             else
@@ -195,6 +194,14 @@ namespace SharpShuffle
 
         private void PlaySong(Song song)
         {
+            // If the song is null there is nothing to play
+            if (song == null)
+            {
+                if (PlaylistEnded != null)
+                    PlaylistEnded();
+                return;
+            }
+
             // As soon as we are trying to play any song we are moving forward again.
             playbackDirection = TP_PLAYBACKDIRECTION.Forward;
 
