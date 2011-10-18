@@ -14,6 +14,8 @@ namespace SharpShuffle
 
         public Songpool (string name)
         {
+            if (name.Substring(0, 2) == "__")
+                throw new Exception("Der Name eines Pools darf nicht mit zwei Unterstrichen beginnen!");
             Startup.ActiveDB.CreateSongpool(name);
             Name = name;
         }
