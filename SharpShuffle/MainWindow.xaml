@@ -68,6 +68,7 @@
         <Menu Grid.ColumnSpan="7" Height="30" HorizontalAlignment="Left" Name="MainMenu" VerticalAlignment="Top" Width="1071" Background="{x:Null}">
             <MenuItem Header="Ansicht">
                 <MenuItem Name="menSpalten" Header="Spalten" />
+                <MenuItem Name="menShowHistory" Header="Verlauf anzeigen" Click="menShowHistory_Click" />
             </MenuItem>
         </Menu>
     </Grid>
