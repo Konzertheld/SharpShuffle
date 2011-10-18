@@ -6,34 +6,18 @@ using System.ComponentModel;
 
 namespace SharpShuffle
 {
-    public enum SONGMETA
-    {
-        Artists,
-        BPM,
-        Comment,
-        Composer,
-        Conductor,
-        Copyright,
-        Version,
-        Genres,
-        Lyrics,
-        Title,
-        TrackNr,
-        PlayCount,
-        SkipCount,
-        Rating,
-        Length
-    }
-
     public class Song : INotifyPropertyChanged
     {
+        #region Notifying event stuff
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged(string name)
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(name));
         }
+        #endregion
 
+        #region Attributes. Looks like a lot but is nothing like simple attributes.
         private uint _id;
         public uint id
         {
@@ -245,6 +229,7 @@ namespace SharpShuffle
 
         //TODO: Album-Attribute als Song-Attribute implementieren (in set{} dann im Album setzen)
         public CAlbum Album;
+        #endregion
 
         public Song()
         {
@@ -404,40 +389,6 @@ namespace SharpShuffle
             }
 
             return song;
-        }
-    }
-
-    public class SongComparer : IComparer<Song>
-    {
-        private List<SONGMETA> _orderby;
-        private bool _ignorecase;
-
-        public SongComparer()
-        {
-            _orderby = new List<SONGMETA>();
-            _orderby.Add(SONGMETA.Artists);
-        }
-        public SongComparer(IEnumerable<SONGMETA> orderby)
-        {
-            _orderby = new List<SONGMETA>(orderby);
-            _ignorecase = true;
-        }
-        public SongComparer(IEnumerable<SONGMETA> orderby, bool ignorecase)
-            : this(orderby)
-        {
-            this._ignorecase = ignorecase;
-        }
-
-
-        public int Compare(Song a, Song b)
-        {
-            foreach (SONGMETA identifier in _orderby)
-            {
-                int test = String.Compare((string)a[identifier], (string)b[identifier], _ignorecase);
-                if (test != 0)
-                    return test;
-            }
-            return 0;
         }
     }
 }

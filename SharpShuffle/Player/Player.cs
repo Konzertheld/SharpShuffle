@@ -9,40 +9,6 @@ using Implementation;
 
 namespace SharpShuffle
 {
-
-    public enum TP_PLAYBACKMODE
-    {
-        Single,
-        Playlist,
-        History,
-        Queue
-    }
-
-    public enum TP_PLAYBACKSTATE
-    {
-        Playing,
-        Paused,
-        Stopped
-    }
-
-    public enum TP_PLAYBACKDIRECTION
-    {
-        Forward,
-        Backwards
-    }
-
-    public enum TP_PLAYBACKLOG
-    {
-        AfterBeginning,
-        AfterEnding,
-        After80Percent
-    }
-
-    public delegate void PlayerPositionChangedHandler(double position);
-    public delegate void PlaylistEndedHandler();
-    public delegate void PlaylistChangedHandler(string[] newList);
-    public delegate void SongChangedHandler(Song song);
-
     public class Player
     {
         #region Songlists
@@ -53,7 +19,7 @@ namespace SharpShuffle
         /// <summary>
         /// Songs that have been played. Technically: Songs that matched the "mark the song as played" criterias.
         /// </summary>
-        public Playlist PlayedHistory { get; set; }
+        public List<Song> PlayedHistory { get; set; }
         /// <summary>
         /// Similar to history and playlist, but includes skipped songs. Technically a sequencial list of all Songs that have been passed to PlaySong() and were found as an Audiofile.
         /// </summary>
@@ -69,19 +35,18 @@ namespace SharpShuffle
         public Song CurrentSong { get { return _currentSong; } private set { currentSongLogged = false; _currentSong = value; if (SongChanged != null) SongChanged(_currentSong); } }
         private bool currentSongLogged;
 
-        public bool PlayRandom { get; set; }
-
         //TODO: Maybe raise an event for changed states. Maybe not, as we always stop when the next song is played. Which might also be suboptimal.
         /// <summary>
         /// State: Player is playing, paused (during a song) or stopped. PlayPause does not work when stopped.
         /// </summary>
         public TP_PLAYBACKSTATE PlaybackState { get; private set; }
-        /// <summary>
-        /// Helper variable for navigation. If we are navigating (prev and next) through songs that have already been played, they are not logged again.
-        /// </summary>
+        // Helper variables for navigation. If we are navigating (prev and next) through songs that have already been played, they are not logged again.
         private TP_PLAYBACKMODE playbackMode;
         private TP_PLAYBACKDIRECTION playbackDirection;
-        public TP_PLAYBACKLOG PlaybackLog { get; set; }
+        /// <summary>
+        /// Gets and sets the mode when a song is logged as played.
+        /// </summary>
+        public TP_PLAYBACKLOG PlaybackLoggingMode { get; set; }
         /// <summary>
         /// Null-based index in totalHistory. Very important as this is relevant to where we are actually.
         /// </summary>
@@ -102,15 +67,14 @@ namespace SharpShuffle
         {
             // Initialization (TODO: Make all the stuff configurable, of course)
             Playlist = new Playlist();
-            PlayedHistory = new Playlist();
+            PlayedHistory = new List<Song>();
             totalHistory = new List<Song>();
             Queue = new List<Song>();
             PlaybackState = TP_PLAYBACKSTATE.Stopped;
             playbackMode = TP_PLAYBACKMODE.Playlist;
             playbackDirection = TP_PLAYBACKDIRECTION.Forward;
-            PlaybackLog = TP_PLAYBACKLOG.After80Percent;
+            PlaybackLoggingMode = TP_PLAYBACKLOG.After80Percent;
             historyPosition = -1;
-            PlayRandom = true;
 
             // VLC Initialization
             factory = new MediaPlayerFactory();
@@ -124,7 +88,7 @@ namespace SharpShuffle
         #region VLC Eventhandlers
         void Events_PlayerPlaying(object sender, EventArgs e)
         {
-            if (PlaybackLog == TP_PLAYBACKLOG.AfterBeginning)
+            if (PlaybackLoggingMode == TP_PLAYBACKLOG.AfterBeginning)
                 LogCurrentSong();
             //Scrobbel.Scrobbeln(CurrentSong.getInformation(META_IDENTIFIERS.Artist), CurrentSong.getInformation(META_IDENTIFIERS.Title), (int)(vlc.Length / 1000));
         }
@@ -134,15 +98,15 @@ namespace SharpShuffle
         {
             //TODO: Use PositionChanged instead?!
             double pos = (double)e.NewTime / vlc.Length;
-            if(PositionChanged!=null)
-            PositionChanged(pos);
-            if (pos > 0.8 && PlaybackLog== TP_PLAYBACKLOG.After80Percent)
+            if (PositionChanged != null)
+                PositionChanged(pos);
+            if (pos > 0.8 && PlaybackLoggingMode == TP_PLAYBACKLOG.After80Percent)
                 LogCurrentSong();
         }
 
         void Events_MediaEnded(object sender, EventArgs e)
         {
-            if (PlaybackLog == TP_PLAYBACKLOG.AfterEnding)
+            if (PlaybackLoggingMode == TP_PLAYBACKLOG.AfterEnding)
                 LogCurrentSong();
 
             // The song has played to end, tell the playlist to perform actions
