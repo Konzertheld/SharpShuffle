@@ -31,11 +31,7 @@ namespace SharpShuffle
         #endregion
 
         #region Settings and Information
-        private Song _currentSong;
-        public Song CurrentSong { get { return _currentSong; } private set { currentSongLogged = false; _currentSong = value; if (SongChanged != null) SongChanged(_currentSong); } }
-        private bool currentSongLogged;
-
-        //TODO: Maybe raise an event for changed states. Maybe not, as we always stop when the next song is played. Which might also be suboptimal.
+        public PlayerRandomSettings RandomSettings;
         /// <summary>
         /// State: Player is playing, paused (during a song) or stopped. PlayPause does not work when stopped.
         /// </summary>
@@ -47,6 +43,10 @@ namespace SharpShuffle
         /// Gets and sets the mode when a song is logged as played.
         /// </summary>
         public TP_PLAYBACKLOG PlaybackLoggingMode { get; set; }
+
+        private Song _currentSong;
+        public Song CurrentSong { get { return _currentSong; } private set { currentSongLogged = false; _currentSong = value; if (SongChanged != null) SongChanged(_currentSong); } }
+        private bool currentSongLogged;
         /// <summary>
         /// Null-based index in totalHistory. Very important as this is relevant to where we are actually.
         /// </summary>
@@ -70,6 +70,7 @@ namespace SharpShuffle
             PlayedHistory = new List<Song>();
             totalHistory = new List<Song>();
             Queue = new List<Song>();
+            RandomSettings = new PlayerRandomSettings(100, true);
             PlaybackState = TP_PLAYBACKSTATE.Stopped;
             playbackMode = TP_PLAYBACKMODE.Playlist;
             playbackDirection = TP_PLAYBACKDIRECTION.Forward;
@@ -183,8 +184,11 @@ namespace SharpShuffle
             //TODO: All song filtering goes here
             bool result = true;
 
-            // Don't play songs that have already been played.
-            result = result && !(PlayedHistory.Contains(song));
+            // Don't play songs that have already been played, according to randomization settings.
+            if (RandomSettings.TotalNoGo)
+                result = result && !(totalHistory.Take(RandomSettings.NoGoHistoryItems).Contains(song));
+            else
+                result = result && !(PlayedHistory.Take(RandomSettings.NoGoHistoryItems).Contains(song));
 
             return result;
         }
