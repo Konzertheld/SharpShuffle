@@ -67,6 +67,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Config.cs" />
     <Compile Include="Database\Database.cs" />
     <Compile Include="Database\Album.cs" />
     <Compile Include="Database\Audiofile.cs" />
