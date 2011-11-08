@@ -19,9 +19,11 @@ namespace SharpShuffle
         public static void Main()
         {
             ActiveDB = new Database(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + AppName + "\\database.db");
-            ActiveDB.ClearDB();
+            //ActiveDB.ClearDB();
             long vorher = DateTime.Now.Ticks;
-            XML.ReadITunesXML(@"C:\Users\Christian\Documents\Winamp-Bib-Beispielmaterial\Netbook.xml");
+            //XML.ReadITunesXML(@"C:\Users\Christian\Desktop\winamp 2011-10-16.xml");
+            //Filemanagement.ProcessFolder(@"E:\Musik\Endsortierung\The Naked & Famous - Passive Me, Aggressive You", true, "TNAF - PMAY");
+            //Filemanagement.ProcessFolder(@"E:\Musik\Endsortierung", true, "Endsortierung");
             long nachher = DateTime.Now.Ticks;
             long diffms = (nachher - vorher) / 10000;
             App app = new App();
