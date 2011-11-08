@@ -15,7 +15,7 @@
     </Window.Resources>
     <Grid Margin="8">
         <Grid.RowDefinitions>
-            <RowDefinition Height="20" />
+            <RowDefinition Height="25" />
             <RowDefinition Height="268*" />
             <RowDefinition Height="8" />
             <RowDefinition Height="378*" />
@@ -64,12 +64,16 @@
                 </LinearGradientBrush>
             </ProgressBar.Background>
         </ProgressBar>
-        <DataGrid AutoGenerateColumns="True" Grid.ColumnSpan="5" Grid.Row="3" Name="dgrView" ItemsSource="{Binding}" MaxColumnWidth="400" AlternationCount="1" OpacityMask="Black" Background="White" IsTabStop="True" AlternatingRowBackground="#6442C742" GridLinesVisibility="None" MouseDoubleClick="dgrView_MouseDoubleClick" IsReadOnly="True" />
-        <Menu Grid.ColumnSpan="7" Height="30" HorizontalAlignment="Left" Name="MainMenu" VerticalAlignment="Top" Width="1071" Background="{x:Null}">
+        <DataGrid AutoGenerateColumns="True" Grid.ColumnSpan="5" Grid.Row="3" Name="dgrView" ItemsSource="{Binding}" MaxColumnWidth="400" AlternationCount="1" OpacityMask="Black" Background="White" IsTabStop="True" AlternatingRowBackground="#6442C742" GridLinesVisibility="None" IsReadOnly="True" KeyUp="dgrView_KeyUp" MouseUp="dgrView_MouseUp" />
+        <Menu Grid.ColumnSpan="5" Name="MainMenu" Background="{x:Null}">
             <MenuItem Header="Ansicht">
                 <MenuItem Name="menSpalten" Header="Spalten" />
                 <MenuItem Name="menShowHistory" Header="Verlauf anzeigen" Click="menShowHistory_Click" />
             </MenuItem>
         </Menu>
+        <Button Content="Go" HorizontalAlignment="Left" Grid.Column="6" Margin="7,3,0,0" Name="btnPlay" Width="20" />
+        <Button Content="|" HorizontalAlignment="Left" Grid.Column="6" Margin="34,3,0,0" Name="btnStop" Width="20" />
+        <Button Content=">" HorizontalAlignment="Left" Grid.Column="6" Margin="61,3,0,0" Name="btnNext" Width="20" />
+        <Button Content="&lt;" HorizontalAlignment="Left" Grid.Column="6" Margin="88,3,0,0" Name="btnPrev" Width="20" />
     </Grid>
 </Window>
