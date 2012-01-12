@@ -470,6 +470,10 @@ namespace SharpShuffle
             sqt.Commit();*/
         }
 
+        /// <summary>
+        /// Remove all songs from that pool. Does not remove the songs from the database. Does not remove the pool.
+        /// </summary>
+        /// <param name="poolname"></param>
         public void ClearPool(string poolname)
         {
             using (SQLiteCommand sqc = new SQLiteCommand(connection))
@@ -477,6 +481,38 @@ namespace SharpShuffle
                 sqc.CommandText = "DELETE FROM Poolsongs WHERE idPool=(SELECT id FROM Songpools WHERE Name=:Name)";
                 sqc.Parameters.Add(new SQLiteParameter("Name", poolname));
                 sqc.ExecuteNonQuery();
+            }
+        }
+
+        /// <summary>
+        /// Remove all audiofiles that no longer exist. Does not remove songs.
+        /// </summary>
+        public void CleanAudiofiles()
+        {
+            using (SQLiteCommand sqc = new SQLiteCommand(connection))
+            {
+                sqc.CommandText = "SELECT Path FROM Audiofiles";
+                using (SQLiteDataReader sqr = sqc.ExecuteReader())
+                {
+                    using (SQLiteCommand sqcKill = new SQLiteCommand(connection))
+                    {
+                        sqcKill.CommandText = "DELETE FROM Audiofiles WHERE Path=:Path";
+                        sqcKill.Parameters.Add(new SQLiteParameter("Path"));
+                        using (SQLiteTransaction sqt = connection.BeginTransaction())
+                        {
+                            while (sqr.Read())
+                            {
+                                string path = sqr.GetString(0);
+                                if (!System.IO.Directory.Exists(path))
+                                {
+                                    sqcKill.Parameters["Path"].Value = path;
+                                    sqcKill.ExecuteNonQuery();
+                                }
+                            }
+                            sqt.Commit();
+                        }
+                    }
+                }
             }
         }
         #endregion
