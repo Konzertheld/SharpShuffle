@@ -206,7 +206,7 @@ namespace SharpShuffle
             playbackDirection = TP_PLAYBACKDIRECTION.Forward;
 
             string temp = FindAudiofile(song);
-            if (temp == "")
+            if (temp == "" || temp == null)
             {
                 throw new Exception("Zu diesem Song wurde kein Audiofile gefunden.");
             }
