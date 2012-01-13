@@ -68,6 +68,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="wAddPool.xaml.cs">
+      <DependentUpon>wAddPool.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Config.cs" />
     <Compile Include="Database\Database.cs" />
     <Compile Include="Database\Album.cs" />
@@ -80,6 +83,10 @@
     <Compile Include="Player\Playlist.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="XML.cs" />
+    <Page Include="wAddPool.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

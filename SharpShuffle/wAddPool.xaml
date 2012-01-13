@@ -1,0 +1,14 @@
+﻿<Window x:Class="SharpShuffle.wAddPool"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="AddPool" Height="300" Width="490" ResizeMode="NoResize">
+    <Grid>
+        <TextBox Height="24" HorizontalAlignment="Left" Name="txtPath" VerticalAlignment="Top" Width="345" Text="Content" IsReadOnly="True" />
+        <Button Content="Pfad ändern" Height="24" HorizontalAlignment="Left" Margin="351,0,0,0" Name="btnChangePath" VerticalAlignment="Top" Width="106" />
+        <Label Content="Pfadtiefe für Subpools" Height="24" HorizontalAlignment="Left" Margin="12,30,0,0" Name="label1" VerticalAlignment="Top" />
+        <Slider Height="24" Name="sldPathDepth" Interval="1" Maximum="20" SmallChange="1" Margin="0,60,0,178" />
+        <TextBox Height="24" Text="Poolname" Name="txtPoolname" Margin="0,90,0,147" />
+        <Button Content="Erstellen" Height="24" HorizontalAlignment="Left" Margin="40,162,0,0" Name="btnCreate" VerticalAlignment="Top" Width="66" Click="btnCreate_Click" IsDefault="True" />
+        <Button Content="Abbrechen" Height="24" HorizontalAlignment="Right" Margin="0,162,276,0" Name="btnCancel" VerticalAlignment="Top" Width="66" IsCancel="True" />
+    </Grid>
+</Window>

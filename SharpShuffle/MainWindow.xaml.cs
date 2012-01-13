@@ -204,10 +204,9 @@ namespace SharpShuffle
             System.Windows.Forms.FolderBrowserDialog fbd = new System.Windows.Forms.FolderBrowserDialog();
             fbd.SelectedPath = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
             fbd.ShowDialog();
-            if (System.IO.Directory.Exists(fbd.SelectedPath))
-            {
-                Filemanagement.ProcessFolder(fbd.SelectedPath, true, "test");
-            }
+            wAddPool pool = new wAddPool();
+            pool.txtPath.Text = fbd.SelectedPath;
+            pool.ShowDialog();
             RefreshPools();
         }
 
