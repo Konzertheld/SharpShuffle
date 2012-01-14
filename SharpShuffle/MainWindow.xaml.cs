@@ -56,6 +56,12 @@ namespace SharpShuffle
             ((GridView)(lsvPlaylist.View)).Columns[1].DisplayMemberBinding = new Binding("Title");
         }
 
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            System.Runtime.Serialization.Formatters.Binary.BinaryFormatter bf = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+            bf.Serialize(new System.IO.FileStream("c:\\cols.dat", System.IO.FileMode.Create), viewColumns);
+        }
+
         private void RefreshPools()
         {
             lsvFilterPool.ItemsSource = Startup.ActiveDB.PoolList(false);
@@ -68,6 +74,7 @@ namespace SharpShuffle
             lstView.ItemsSource = songs;
         }
 
+        #region Player event handlers
         void player_PlaylistEnded()
         {
             MessageBox.Show("Playlist ended");
@@ -80,6 +87,7 @@ namespace SharpShuffle
                 prgPosition.Value = 100 - position * 100;
             }));
         }
+        #endregion
 
         #region View column control
         void BuildColumnsMenu()
@@ -127,77 +135,6 @@ namespace SharpShuffle
         {
             MenuItem item = sender as MenuItem;
             item.IsChecked = !item.IsChecked;
-        }
-        #endregion
-
-        #region Filter
-        private void lsvFilterPool_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            Songpool view = new Songpool("__VIEW");
-            view.Clear();
-            foreach (string pool in lsvFilterPool.SelectedItems)
-            {
-                view.AddSongs(pool);
-            }
-            RefreshView();
-        }
-        #endregion
-
-        #region View
-
-        private void dgrView_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-                SelectSong();
-        }
-        private void SelectSong()
-        {
-            // Determine what to do with the selected song depending on what special keys are pressed
-            PlayActions action = Config.GetPlayAction(ModifierKeys.None);
-            if ((Keyboard.Modifiers & ModifierKeys.Shift) == ModifierKeys.Shift)
-                action = Config.GetPlayAction(ModifierKeys.Shift);
-            else if ((Keyboard.Modifiers & ModifierKeys.Alt) == ModifierKeys.Alt)
-                action = Config.GetPlayAction(ModifierKeys.Alt);
-            else if ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
-                action = Config.GetPlayAction(ModifierKeys.Control);
-
-            // Do it
-            if (action == PlayActions.AddAndPlayNow)
-            {
-                player.Queue.Insert(0, lstView.SelectedItem as Song);
-                player.Playlist.Add(lstView.SelectedItem as Song);
-                player.NextSong(); // Is this always correct?
-            }
-            else if (action == PlayActions.AddAndPlayNext)
-            {
-                player.Queue.Insert(0, lstView.SelectedItem as Song);
-                player.Playlist.Add(lstView.SelectedItem as Song);
-            }
-            else if (action == PlayActions.Add)
-            {
-                player.Playlist.Add(lstView.SelectedItem as Song);
-                player.PlayPlaylist();
-            }
-            else if (action == PlayActions.PlayNowUseView)
-            {
-            }
-            else if (action == PlayActions.PlayNowReplacePlaylist)
-            {
-            }
-            if (player.PlaybackState != TP_PLAYBACKSTATE.Playing) player.PlayPause();
-        }
-        #endregion
-
-        private void Window_Closed(object sender, EventArgs e)
-        {
-            System.Runtime.Serialization.Formatters.Binary.BinaryFormatter bf = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-            bf.Serialize(new System.IO.FileStream("c:\\cols.dat", System.IO.FileMode.Create), viewColumns);
-        }
-
-        private void menShowHistory_Click(object sender, RoutedEventArgs e)
-        {
-            lsvFilterPool.SelectedItems.Clear();
-            songs = new ListCollectionView(player.PlayedHistory);
         }
 
         void GridViewColumnHeaderClickedHandler(object sender, RoutedEventArgs e)
@@ -253,6 +190,26 @@ namespace SharpShuffle
                 }
             }
         }
+        #endregion
+
+        #region Filter
+        private void lsvFilterPool_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Songpool view = new Songpool("__VIEW");
+            view.Clear();
+            foreach (string pool in lsvFilterPool.SelectedItems)
+            {
+                view.AddSongs(pool);
+            }
+            RefreshView();
+        }
+        #endregion
+
+        private void menShowHistory_Click(object sender, RoutedEventArgs e)
+        {
+            lsvFilterPool.SelectedItems.Clear();
+            songs = new ListCollectionView(player.PlayedHistory);
+        }
 
         private void ScanFolder_Click(object sender, RoutedEventArgs e)
         {
@@ -270,9 +227,52 @@ namespace SharpShuffle
             Startup.ActiveDB.CleanAudiofiles();
         }
 
-        private void dgrView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void lstView_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+                SelectSong();
+        }
+
+        private void lstView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             SelectSong();
+        }
+
+        private void SelectSong()
+        {
+            // Determine what to do with the selected song depending on what special keys are pressed
+            PlayActions action = Config.GetPlayAction(ModifierKeys.None);
+            if ((Keyboard.Modifiers & ModifierKeys.Shift) == ModifierKeys.Shift)
+                action = Config.GetPlayAction(ModifierKeys.Shift);
+            else if ((Keyboard.Modifiers & ModifierKeys.Alt) == ModifierKeys.Alt)
+                action = Config.GetPlayAction(ModifierKeys.Alt);
+            else if ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+                action = Config.GetPlayAction(ModifierKeys.Control);
+
+            // Do it
+            if (action == PlayActions.AddAndPlayNow)
+            {
+                player.Queue.Insert(0, lstView.SelectedItem as Song);
+                player.Playlist.Add(lstView.SelectedItem as Song);
+                player.NextSong(); // Is this always correct?
+            }
+            else if (action == PlayActions.AddAndPlayNext)
+            {
+                player.Queue.Insert(0, lstView.SelectedItem as Song);
+                player.Playlist.Add(lstView.SelectedItem as Song);
+            }
+            else if (action == PlayActions.Add)
+            {
+                player.Playlist.Add(lstView.SelectedItem as Song);
+                player.PlayPlaylist();
+            }
+            else if (action == PlayActions.PlayNowUseView)
+            {
+            }
+            else if (action == PlayActions.PlayNowReplacePlaylist)
+            {
+            }
+            if (player.PlaybackState != TP_PLAYBACKSTATE.Playing) player.PlayPause();
         }
     }
 }

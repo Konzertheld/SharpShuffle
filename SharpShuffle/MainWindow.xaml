@@ -104,7 +104,7 @@
                 </LinearGradientBrush>
             </ProgressBar.Background>
         </ProgressBar>
-        <ListView Name="lstView" Grid.ColumnSpan="5" Grid.Row="3" Grid.Column="0" ItemsSource="{Binding}" GridViewColumnHeader.Click="GridViewColumnHeaderClickedHandler" ItemContainerStyle="{DynamicResource CustomListViewItemStyle}" AlternationCount="2" Foreground="Black">
+        <ListView Name="lstView" Grid.ColumnSpan="5" Grid.Row="3" Grid.Column="0" ItemsSource="{Binding}" GridViewColumnHeader.Click="GridViewColumnHeaderClickedHandler" ItemContainerStyle="{DynamicResource CustomListViewItemStyle}" AlternationCount="2" Foreground="Black" KeyUp="lstView_KeyUp" MouseDoubleClick="lstView_MouseDoubleClick">
             <ListView.View>
                 <GridView/>
             </ListView.View>
