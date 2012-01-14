@@ -8,6 +8,8 @@ namespace SharpShuffle
 {
     public class Song : INotifyPropertyChanged
     {
+        public static string[] Attributes = new string[15] { "Artists","Comment","Composers","Conductor","Copyright","BPM","Version","Genres","Lyrics","Title","TrackNr","PlayCount","SkipCount","Rating","Length" };
+
         #region Notifying event stuff
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged(string name)
