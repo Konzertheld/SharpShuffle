@@ -12,6 +12,46 @@
             <Setter Property="VerticalAlignment" Value="Stretch" />
             <Setter Property="Background" Value="Transparent" />
         </Style>
+        <DataTemplate x:Key="HeaderTemplateArrowUp">
+            <DockPanel>
+                <TextBlock HorizontalAlignment="Center" Text="{Binding}"/>
+                <Path x:Name="arrow"
+           StrokeThickness = "1"                                     
+           Fill            = "gray"
+           Data            = "M 5,10 L 15,10 L 10,5 L 5,10"/>
+            </DockPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="HeaderTemplateArrowDown">
+            <DockPanel>
+                <TextBlock HorizontalAlignment="Center" Text="{Binding }"/>
+                <Path x:Name="arrow"
+              StrokeThickness = "1"                                  
+              Fill            = "gray"
+              Data            = "M 5,5 L 10,10 L 15,5 L 5,5"/>
+            </DockPanel>
+        </DataTemplate>
+        <Style x:Key="CustomListViewItemStyle" TargetType="{x:Type ListViewItem}">
+            <Style.Triggers>
+                <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                    <Setter Property="Background" Value="#6442C742"/>
+                </Trigger>
+                <Trigger Property="IsSelected" Value="true">
+                    <Setter Property="Background" Value="#cc3333"/>
+                    <Setter Property="BorderBrush" Value="Black"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="DarkBlue"/>
+                    <Setter Property="Background" Value="#66cc3333"/>
+                </Trigger>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsSelected" Value="true"/>
+                        <Condition Property="IsMouseOver" Value="true"/>
+                    </MultiTrigger.Conditions>
+                    <Setter Property="Background" Value="#cc3333"/>
+                </MultiTrigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
     <Grid Margin="8">
         <Grid.RowDefinitions>
@@ -64,8 +104,12 @@
                 </LinearGradientBrush>
             </ProgressBar.Background>
         </ProgressBar>
-        <DataGrid AutoGenerateColumns="True" Grid.ColumnSpan="5" Grid.Row="3" Name="dgrView" ItemsSource="{Binding}" MaxColumnWidth="400" AlternationCount="1" OpacityMask="Black" Background="White" IsTabStop="True" AlternatingRowBackground="#6442C742" GridLinesVisibility="None" IsReadOnly="True" KeyUp="dgrView_KeyUp" MouseUp="dgrView_MouseUp" />
-        <Menu Grid.ColumnSpan="5" Name="MainMenu" Background="{x:Null}">
+        <ListView Name="lstView" Grid.ColumnSpan="5" Grid.Row="3" Grid.Column="0" ItemsSource="{Binding}" GridViewColumnHeader.Click="GridViewColumnHeaderClickedHandler" ItemContainerStyle="{DynamicResource CustomListViewItemStyle}" AlternationCount="2" Foreground="Black">
+            <ListView.View>
+                <GridView/>
+            </ListView.View>
+        </ListView>
+        <Menu Grid.ColumnSpan="1" Name="MainMenu" Background="{x:Null}">
             <MenuItem Header="Ansicht">
                 <MenuItem Name="menSpalten" Header="Spalten" />
                 <MenuItem Name="menShowHistory" Header="Verlauf anzeigen" Click="menShowHistory_Click" />
@@ -73,7 +117,7 @@
             <MenuItem Header="Bibliothek">
                 <MenuItem Name="CleanUpFiles" Header="Verlorene Dateien löschen" Click="CleanUpFiles_Click" />
                 <MenuItem Name="ScanFolder" Header="Ordner (erneut) scannen" Click="ScanFolder_Click" />
-                </MenuItem>
+            </MenuItem>
         </Menu>
         <Button Content="Go" HorizontalAlignment="Left" Grid.Column="6" Margin="7,3,0,0" Name="btnPlay" Width="20" />
         <Button Content="|" HorizontalAlignment="Left" Grid.Column="6" Margin="34,3,0,0" Name="btnStop" Width="20" />
