@@ -11,6 +11,8 @@ namespace SharpShuffle
 {
     public class Player
     {
+        public static Player ActivePlayer;
+
         #region Songlists
         /// <summary>
         /// Songs to play

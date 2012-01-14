@@ -28,16 +28,14 @@ namespace SharpShuffle
         GridViewColumnHeader _lastHeaderClicked = null;
         ListSortDirection _lastDirection = ListSortDirection.Ascending;
 
-        Player player;
-
         List<String> viewColumns;
 
         public MainWindow()
         {
             InitializeComponent();
-            player = new Player();
-            player.PositionChanged += new PlayerPositionChangedHandler(player_PositionChanged);
-            player.PlaylistEnded += new PlaylistEndedHandler(player_PlaylistEnded);
+            Player.ActivePlayer = new Player();
+            Player.ActivePlayer.PositionChanged += new PlayerPositionChangedHandler(player_PositionChanged);
+            Player.ActivePlayer.PlaylistEnded += new PlaylistEndedHandler(player_PlaylistEnded);
             List<Song> fake = Startup.ActiveDB.LoadSongs("__VIEW");
 
             // TODO: Save the columns, their order and their width
@@ -48,7 +46,7 @@ namespace SharpShuffle
             RefreshView();
             RefreshPools();
 
-            lsvPlaylist.ItemsSource = player.Playlist;
+            lsvPlaylist.ItemsSource = Player.ActivePlayer.Playlist;
 
             ((GridView)(lsvPlaylist.View)).Columns.Add(new GridViewColumn());
             ((GridView)(lsvPlaylist.View)).Columns.Add(new GridViewColumn());
@@ -209,7 +207,7 @@ namespace SharpShuffle
         private void menShowHistory_Click(object sender, RoutedEventArgs e)
         {
             lsvFilterPool.SelectedItems.Clear();
-            songs = new ListCollectionView(player.PlayedHistory);
+            songs = new ListCollectionView(Player.ActivePlayer.PlayedHistory);
         }
 
         private void ScanFolder_Click(object sender, RoutedEventArgs e)
@@ -255,17 +253,17 @@ namespace SharpShuffle
             if (action == PlayActions.AddAndPlayNow || action == PlayActions.AddAndPlayNext)
             {
                 foreach (object item in lstView.SelectedItems)
-                    player.Queue.Insert(0, item as Song);
+                    Player.ActivePlayer.Queue.Insert(0, item as Song);
                 // TODO: Insert directly after the current song (at least for optical reasons when randomizing)
                 foreach (object item in lstView.SelectedItems)
-                    player.Playlist.Add(item as Song);
+                    Player.ActivePlayer.Playlist.Add(item as Song);
                 if (action == PlayActions.AddAndPlayNow)
-                    player.NextSong(); // Is this always correct?
+                    Player.ActivePlayer.NextSong(); // Is this always correct?
             }
             else if (action == PlayActions.Add)
             {
                 foreach (object item in lstView.SelectedItems)
-                    player.Playlist.Add(item as Song);
+                    Player.ActivePlayer.Playlist.Add(item as Song);
                 //player.PlayPlaylist();
             }
             else if (action == PlayActions.PlayNowUseView)
@@ -274,27 +272,27 @@ namespace SharpShuffle
             else if (action == PlayActions.PlayNowReplacePlaylist)
             {
             }
-            if (player.PlaybackState != TP_PLAYBACKSTATE.Playing) player.PlayPause();
+            if (Player.ActivePlayer.PlaybackState != TP_PLAYBACKSTATE.Playing) Player.ActivePlayer.PlayPause();
         }
 
         private void btnNext_Click(object sender, RoutedEventArgs e)
         {
-            player.NextSong();
+            Player.ActivePlayer.NextSong();
         }
 
         private void btnPrev_Click(object sender, RoutedEventArgs e)
         {
-            player.PrevSong();
+            Player.ActivePlayer.PrevSong();
         }
 
         private void btnPlay_Click(object sender, RoutedEventArgs e)
         {
-            player.PlayPlaylist();
+            Player.ActivePlayer.PlayPlaylist();
         }
 
         private void btnStop_Click(object sender, RoutedEventArgs e)
         {
-            player.Stop();
+            Player.ActivePlayer.Stop();
         }
     }
 }
