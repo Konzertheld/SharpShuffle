@@ -252,21 +252,21 @@ namespace SharpShuffle
                 action = Config.GetPlayAction(ModifierKeys.Control);
 
             // Do it
-            if (action == PlayActions.AddAndPlayNow)
+            if (action == PlayActions.AddAndPlayNow || action == PlayActions.AddAndPlayNext)
             {
-                player.Queue.Insert(0, lstView.SelectedItem as Song);
-                player.Playlist.Add(lstView.SelectedItem as Song);
-                player.NextSong(); // Is this always correct?
-            }
-            else if (action == PlayActions.AddAndPlayNext)
-            {
-                player.Queue.Insert(0, lstView.SelectedItem as Song);
-                player.Playlist.Add(lstView.SelectedItem as Song);
+                foreach (object item in lstView.SelectedItems)
+                    player.Queue.Insert(0, item as Song);
+                // TODO: Insert directly after the current song (at least for optical reasons when randomizing)
+                foreach (object item in lstView.SelectedItems)
+                    player.Playlist.Add(item as Song);
+                if (action == PlayActions.AddAndPlayNow)
+                    player.NextSong(); // Is this always correct?
             }
             else if (action == PlayActions.Add)
             {
-                player.Playlist.Add(lstView.SelectedItem as Song);
-                player.PlayPlaylist();
+                foreach (object item in lstView.SelectedItems)
+                    player.Playlist.Add(item as Song);
+                //player.PlayPlaylist();
             }
             else if (action == PlayActions.PlayNowUseView)
             {
@@ -275,6 +275,26 @@ namespace SharpShuffle
             {
             }
             if (player.PlaybackState != TP_PLAYBACKSTATE.Playing) player.PlayPause();
+        }
+
+        private void btnNext_Click(object sender, RoutedEventArgs e)
+        {
+            player.NextSong();
+        }
+
+        private void btnPrev_Click(object sender, RoutedEventArgs e)
+        {
+            player.PrevSong();
+        }
+
+        private void btnPlay_Click(object sender, RoutedEventArgs e)
+        {
+            player.PlayPlaylist();
+        }
+
+        private void btnStop_Click(object sender, RoutedEventArgs e)
+        {
+            player.Stop();
         }
     }
 }

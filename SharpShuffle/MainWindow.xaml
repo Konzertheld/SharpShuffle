@@ -119,9 +119,9 @@
                 <MenuItem Name="ScanFolder" Header="Ordner (erneut) scannen" Click="ScanFolder_Click" />
             </MenuItem>
         </Menu>
-        <Button Content="Go" HorizontalAlignment="Left" Grid.Column="6" Margin="7,3,0,0" Name="btnPlay" Width="20" />
-        <Button Content="|" HorizontalAlignment="Left" Grid.Column="6" Margin="34,3,0,0" Name="btnStop" Width="20" />
-        <Button Content=">" HorizontalAlignment="Left" Grid.Column="6" Margin="61,3,0,0" Name="btnNext" Width="20" />
-        <Button Content="&lt;" HorizontalAlignment="Left" Grid.Column="6" Margin="88,3,0,0" Name="btnPrev" Width="20" />
+        <Button Content="Go" HorizontalAlignment="Left" Grid.Column="6" Margin="7,3,0,0" Name="btnPlay" Width="20" Click="btnPlay_Click" />
+        <Button Content="|" HorizontalAlignment="Left" Grid.Column="6" Margin="34,3,0,0" Name="btnStop" Width="20" Click="btnStop_Click" />
+        <Button Content=">" HorizontalAlignment="Left" Grid.Column="6" Margin="61,3,0,0" Name="btnNext" Width="20" Click="btnNext_Click" />
+        <Button Content="&lt;" HorizontalAlignment="Left" Grid.Column="6" Margin="88,3,0,0" Name="btnPrev" Width="20" Click="btnPrev_Click" />
     </Grid>
 </Window>
