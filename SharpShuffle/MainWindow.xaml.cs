@@ -205,6 +205,7 @@ namespace SharpShuffle
         }
         #endregion
 
+        #region Menu Handlers
         private void menShowHistory_Click(object sender, RoutedEventArgs e)
         {
             lsvFilterPool.SelectedItems.Clear();
@@ -226,6 +227,7 @@ namespace SharpShuffle
         {
             Startup.ActiveDB.CleanAudiofiles();
         }
+        #endregion
 
         private void lstView_KeyUp(object sender, KeyEventArgs e)
         {
