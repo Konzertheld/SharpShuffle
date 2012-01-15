@@ -50,6 +50,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\3rdparty\System.Data.SQLite.Linq.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -71,6 +72,8 @@
     <Compile Include="DebuggingLog.xaml.cs">
       <DependentUpon>DebuggingLog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Testing.cs" />
+    <Compile Include="VLC.cs" />
     <Compile Include="wAddPool.xaml.cs">
       <DependentUpon>wAddPool.xaml</DependentUpon>
     </Compile>
@@ -147,6 +150,7 @@
       <Name>TagLibSharp</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

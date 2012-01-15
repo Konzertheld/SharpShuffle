@@ -6,6 +6,7 @@ using Declarations;
 using Declarations.Media;
 using Declarations.Players;
 using Implementation;
+using System.Windows.Interop;
 
 namespace SharpShuffle
 {
@@ -56,8 +57,10 @@ namespace SharpShuffle
         #endregion
 
         #region Events and VLC
-        private IVideoPlayer vlc;
+        //private IAudioPlayer vlc;
         private IMediaPlayerFactory factory;
+        VlcInstance instance;
+        VlcMediaPlayer vlc;
 
         public event PlayerPositionChangedHandler PositionChanged;
         public event PlaylistEndedHandler PlaylistEnded;
@@ -80,11 +83,20 @@ namespace SharpShuffle
             historyPosition = -1;
 
             // VLC Initialization
+            string[] args = new string[] {
+                "--ignore-config",
+                @"--plugin-path=C:\Program Files (x86)\VideoLAN\VLC\plugins",
+                //,"--vout-filter=deinterlace", "--deinterlace-mode=blend"
+            };
+
+            instance = new VlcInstance(args);
+            vlc = null;
             factory = new MediaPlayerFactory();
-            vlc = factory.CreatePlayer<IVideoPlayer>();
+            /*vlc = factory.CreatePlayer<IVideoPlayer>();
             vlc.Events.MediaEnded += new EventHandler(Events_MediaEnded);
             vlc.Events.TimeChanged += new EventHandler<Declarations.Events.MediaPlayerTimeChanged>(Events_TimeChanged);
-            vlc.Events.PlayerPlaying += new EventHandler(Events_PlayerPlaying);
+            vlc.Events.PlayerPlaying += new EventHandler(Events_PlayerPlaying);*/
+
         }
         #endregion
 
@@ -100,11 +112,11 @@ namespace SharpShuffle
         void Events_TimeChanged(object sender, Declarations.Events.MediaPlayerTimeChanged e)
         {
             //TODO: Use PositionChanged instead?!
-            double pos = (double)e.NewTime / vlc.Length;
+            /*double pos = (double)e.NewTime / vlc.Length;
             if (PositionChanged != null)
                 PositionChanged(pos);
             if (pos > 0.8 && PlaybackLoggingMode == TP_PLAYBACKLOG.After80Percent)
-                LogCurrentSong();
+                LogCurrentSong();*/
         }
 
         void Events_MediaEnded(object sender, EventArgs e)
@@ -217,9 +229,14 @@ namespace SharpShuffle
                 Stop();
 
                 // This is the point where the song is actually played for real.
-                IMedia media = factory.CreateMedia<IMedia>(temp);
+                //IMedia media = factory.CreateMedia<IMedia>(temp);
+                //factory.CreatePlayer<IAudioPlayer>().Open(media);
+                VlcMedia media = new VlcMedia(instance, temp);
                 CurrentSong = song;
-                vlc.Open(media);
+                if (vlc == null)
+                    vlc = new VlcMediaPlayer(media);
+                else
+                    vlc.Media = media;
                 vlc.Play();
                 PlaybackState = TP_PLAYBACKSTATE.Playing;
                 // If we are not already navigating, log the song to the navigation history so it is available in case the user starts skipping
@@ -248,7 +265,7 @@ namespace SharpShuffle
 
         public void PlayPause()
         {
-            if (vlc.IsPlaying)
+            if (vlc != null && vlc.IsPlaying)
             {
                 vlc.Pause();
                 PlaybackState = TP_PLAYBACKSTATE.Paused;
@@ -268,7 +285,8 @@ namespace SharpShuffle
         public void Stop()
         {
             // TODO: It is not enough to call this when vlc is not playing. We also have to reset it to avoid resuming skipped songs (see NextSong()).
-            vlc.Stop();
+            if (vlc != null && vlc.IsPlaying)
+                vlc.Stop();
             PlaybackState = TP_PLAYBACKSTATE.Stopped;
         }
 
@@ -277,7 +295,7 @@ namespace SharpShuffle
         /// </summary>
         public void NextSong()
         {
-            if (vlc.IsPlaying)
+            if (vlc != null && vlc.IsPlaying)
             {
                 // Playback is running, increase the current song's skip counter and skip to the next song
                 CurrentSong.SkipCount++;
