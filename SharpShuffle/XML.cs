@@ -38,7 +38,7 @@ namespace SharpShuffle
                                     string keyname = xr.ReadString();
                                     xr.Read(); // throw away the </key>
                                     try { xr.Read(); }
-                                    catch (XmlException E) { } // throw away the datatype element
+                                    catch (XmlException) { } // throw away the datatype element
                                     string value = xr.ReadString();
                                     xr.Read(); // throw away the datatype endelement
                                     // Process the read stuff.
